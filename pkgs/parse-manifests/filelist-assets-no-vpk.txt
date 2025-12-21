@@ -1,0 +1,12 @@
+tf/cfg/pure_server_full.txt
+tf/cfg/pure_server_minimal.txt
+tf/cfg/trusted_keys_base.txt
+tf/cfg/vscript_convar_allowlist.txt
+tf/gameinfo.txt
+tf/maps/itemtest.bsp
+tf/scripts/items/items_game.txt
+tf/scripts/items/items_game.txt.sig
+tf/scripts/protodefs/proto_defs.vpd
+tf/scripts/protodefs/proto_defs.vpd.sig
+tf/steam.inf
+thirdpartylegalnotices.txt
