@@ -30,6 +30,10 @@
           ;
         };
 
+        checks = {
+          run-tf2ds = pkgs.testers.runNixOSTest ./tests/run-tf2ds.nix;
+        };
+
         devShells.plugins =
           let
             inherit (inputs'.spire.packages) sourcepawn;
