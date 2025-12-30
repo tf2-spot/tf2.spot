@@ -17,34 +17,38 @@
     flake-parts.lib.mkFlake { inherit inputs; } {
       systems = [ "x86_64-linux" ];
 
-      perSystem = { inputs', config, lib, pkgs, ... }: {
-        packages = {
-          fetch-latest-manifests = pkgs.callPackage ./pkgs/fetch-latest-manifests { };
-          parse-manifests = pkgs.callPackage ./pkgs/parse-manifests { };
+      perSystem = { inputs', config, lib, pkgs, ... }:
+        let
+          chunks = lib.importJSON ./chunks.json;
+        in
+        {
+          packages = {
+            fetch-latest-manifests = pkgs.callPackage ./pkgs/fetch-latest-manifests { };
+            parse-manifests = pkgs.callPackage ./pkgs/parse-manifests { };
 
-          assets-joined =
-            let chunks = lib.importJSON ./chunks.json; in
-            pkgs.callPackage ./pkgs/assets-joined {
+
+            assets-joined = pkgs.callPackage ./pkgs/assets-joined {
               assets = chunks.assets;
-            }
-          ;
-        };
+            };
 
-        checks = {
-          run-tf2ds = pkgs.testers.runNixOSTest ./tests/run-tf2ds.nix;
-        };
-
-        devShells.plugins =
-          let
-            inherit (inputs'.spire.packages) sourcepawn;
-          in
-          pkgs.mkShell {
-            nativeBuildInputs = [
-              (sourcepawn.buildEnv [
-                sourcepawn.includes.sourcemod
-              ])
-            ];
+            windows-binaries = pkgs.callPackage ./pkgs/fetch-depot chunks.windows;
           };
-      };
+
+          checks = {
+            run-tf2ds = pkgs.testers.runNixOSTest ./tests/run-tf2ds.nix;
+          };
+
+          devShells.plugins =
+            let
+              inherit (inputs'.spire.packages) sourcepawn;
+            in
+            pkgs.mkShell {
+              nativeBuildInputs = [
+                (sourcepawn.buildEnv [
+                  sourcepawn.includes.sourcemod
+                ])
+              ];
+            };
+        };
     };
 }

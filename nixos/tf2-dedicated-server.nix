@@ -72,7 +72,7 @@ in
           wants = [ "network-online.target" ];
 
           environment = {
-            HOME = "%t/tf2ds/%i";
+            HOME = "%t/tf2ds/%i/.home";
             LD_LIBRARY_PATH = "%t/tf2ds/%i/bin:${pkgs.pkgsi686Linux.ncurses5}/lib";
             ARG_BIND = "-ip 0.0.0.0";
             ARG_SDR = "-enablefakeip";
