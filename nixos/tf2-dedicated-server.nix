@@ -4,14 +4,14 @@ let
 
   cfg = config.services.tf2-dedicated-server;
 
-  lowerdir = builtins.concatStringsSep ":" (cfg.addons ++ [ cfg.binaries cfg.assets ]);
-
   pre = pkgs.writeShellApplication {
     name = "tf2ds-pre-mount-overlay";
     text = ''
       inst=$1
-      path=$2
-      name=$(systemd-escape --path "$path")
+      name=$(systemd-escape --path "$RUNTIME_DIRECTORY")
+      upperdir=$(echo "$STATE_DIRECTORY" | cut -d ':' -f 1)
+      workdir=$(echo "$STATE_DIRECTORY" | cut -d ':' -f 2)
+      lowerdir=$(printf '%s:' "$TF2_ADDONS" "$TF2_BINARIES" "$TF2_ASSETS" | sed 's/::+/:/; s/^://; s/:$//')
 
       systemctl edit --runtime --full --force --stdin "$name".mount << END
       [Unit]
@@ -20,17 +20,13 @@ let
       [Mount]
       Type=overlay
       What=overlay
-      Where=$path
-      Options=${builtins.concatStringsSep "," [
-        "upperdir=%S/private/tf2ds/$inst"
-        "workdir=%S/private/tf2ds/.$inst"
-        "lowerdir=${lowerdir}"
-      ]}
+      Where=$RUNTIME_DIRECTORY
+      Options=upperdir=$upperdir,workdir=$workdir,lowerdir=$lowerdir
       END
 
       systemctl start "$name".mount
 
-      chown "tf2ds-$inst":"tf2ds-$inst" "$path"
+      chown "tf2ds-$inst":"tf2ds-$inst" "$RUNTIME_DIRECTORY"
     '';
   };
 in
@@ -80,10 +76,13 @@ in
             CMD_PURE = "+sv_pure 2";
             CMD_MAP = "+map itemtest";
             CMD_EXTRA = "";
+            TF2_ASSETS = cfg.assets;
+            TF2_BINARIES = cfg.binaries;
+            TF2_ADDONS = builtins.concatStringsSep ":" cfg.addons;
           };
 
           serviceConfig = {
-            ExecStartPre = "+${lib.getExe pre} %i %t/tf2ds/%i";
+            ExecStartPre = "+${lib.getExe pre} %i";
             ExecStart = ''
               %t/tf2ds/%i/srcds_linux -game tf ''${ARG_BIND} ''${ARG_SDR} $ARG_EXTRA ''${CMD_PURE} ''${CMD_MAP} $CMD_EXTRA
             '';
@@ -92,7 +91,7 @@ in
             User = "tf2ds-%i";
 
             RuntimeDirectory = "tf2ds/%i";
-            StateDirectory = "tf2ds/%i .tf2ds/%i";
+            StateDirectory = "tf2ds/%i tf2ds/.%i";
             WorkingDirectory = "%t/tf2ds/%i";
           };
         };
