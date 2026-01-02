@@ -1,13 +1,12 @@
 { symlinkJoin
 , linkFarm
-, callPackage
+, fetchDepot
 , assets
 }:
 let
-  fetchDepot = callPackage ../fetch-depot;
   maybeSingle = builtins.partition (x: x.singleFile) assets;
   singlesFarm =
-    linkFarm "assets-single-files"
+    linkFarm "tf2-dedicated-server-assets-single-files"
       (map (x: { name = x.fileList; path = fetchDepot x; }) maybeSingle.right);
 in
 symlinkJoin {

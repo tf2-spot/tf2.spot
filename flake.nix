@@ -17,21 +17,27 @@
     flake-parts.lib.mkFlake { inherit inputs; } {
       systems = [ "x86_64-linux" ];
 
-      perSystem = { inputs', config, lib, pkgs, ... }:
-        let
-          chunks = lib.importJSON ./chunks.json;
-        in
-        {
+      perSystem = { inputs', config, lib, pkgs, ... }: {
+        options = {
+          lib = lib.mkOption { type = lib.types.raw; };
+        };
+
+        config = {
+          lib = {
+            fetchDepot = pkgs.callPackage ./pkgs/fetch-depot;
+            chunks = lib.importJSON ./chunks.json;
+          };
+
           packages = {
             fetch-latest-manifests = pkgs.callPackage ./pkgs/fetch-latest-manifests { };
             parse-manifests = pkgs.callPackage ./pkgs/parse-manifests { };
 
-
             assets-joined = pkgs.callPackage ./pkgs/assets-joined {
-              assets = chunks.assets;
+              fetchDepot = config.lib.fetchDepot;
+              assets = config.lib.chunks.assets;
             };
 
-            windows-binaries = pkgs.callPackage ./pkgs/fetch-depot chunks.windows;
+            windows-binaries = config.lib.fetchDepot config.lib.chunks.windows;
           };
 
           checks = {
@@ -50,5 +56,6 @@
               ];
             };
         };
+      };
     };
 }
