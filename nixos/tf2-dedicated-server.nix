@@ -7,7 +7,7 @@ let
   pre = pkgs.writeShellApplication {
     name = "tf2ds-pre-mount-overlay";
     text = ''
-      inst=$1
+      unit=$1
       name=$(systemd-escape --path "$RUNTIME_DIRECTORY")
       upperdir=$(echo "$STATE_DIRECTORY" | cut -d ':' -f 1)
       workdir=$(echo "$STATE_DIRECTORY" | cut -d ':' -f 2)
@@ -15,7 +15,7 @@ let
 
       systemctl edit --runtime --full --force --stdin "$name".mount << END
       [Unit]
-      PartOf=tf2ds@$inst.service
+      PartOf=$unit
 
       [Mount]
       Type=overlay
@@ -26,7 +26,7 @@ let
 
       systemctl start "$name".mount
 
-      chown "tf2ds-$inst":"tf2ds-$inst" "$RUNTIME_DIRECTORY"
+      chown "$USER":"$USER" "$RUNTIME_DIRECTORY"
     '';
   };
 in
@@ -34,6 +34,10 @@ in
   options = {
     services.tf2-dedicated-server = {
       binaries = mkOption {
+        type = types.package;
+      };
+
+      windowsBinaries = mkOption {
         type = types.package;
       };
 
@@ -53,12 +57,18 @@ in
 
         default = { };
       };
+
+      windowsInstances = mkOption {
+        type = types.lazyAttrsOf (types.submodule {
+          options = { };
+        });
+
+        default = { };
+      };
     };
   };
 
   config = {
-    users.groups.tf2ds = { };
-
     systemd.services = lib.mkMerge (
       [{
         "tf2ds@" = {
@@ -82,9 +92,9 @@ in
           };
 
           serviceConfig = {
-            ExecStartPre = "+${lib.getExe pre} %i";
+            ExecStartPre = "+${lib.getExe pre} tf2ds@%i.service";
             ExecStart = ''
-              %t/tf2ds/%i/srcds_linux -game tf ''${ARG_BIND} ''${ARG_SDR} $ARG_EXTRA ''${CMD_PURE} ''${CMD_MAP} $CMD_EXTRA
+              /usr/bin/env ./srcds_linux -game tf ''${ARG_BIND} ''${ARG_SDR} $ARG_EXTRA ''${CMD_PURE} ''${CMD_MAP} $CMD_EXTRA
             '';
 
             DynamicUser = true;
@@ -95,9 +105,43 @@ in
             WorkingDirectory = "%t/tf2ds/%i";
           };
         };
-      }]
-      ++
-      lib.mapAttrsToList
+      }
+        {
+          "tf2ds-win@" = {
+            description = "%i — (Win) Team Fortress 2 Dedicated Server";
+
+            after = [ "network-online.target" ];
+            wants = [ "network-online.target" ];
+
+            environment = {
+              HOME = "%t/tf2ds-win/%i/.home";
+              ARG_BIND = "-ip 0.0.0.0";
+              ARG_SDR = "-enablefakeip";
+              ARG_EXTRA = "";
+              CMD_PURE = "+sv_pure 2";
+              CMD_MAP = "+map itemtest";
+              CMD_EXTRA = "";
+              TF2_ASSETS = cfg.assets;
+              TF2_BINARIES = cfg.windowsBinaries;
+              TF2_ADDONS = builtins.concatStringsSep ":" cfg.addons;
+            };
+
+            serviceConfig = {
+              ExecStartPre = "+${lib.getExe pre} tf2ds-win@%i.service";
+              ExecStart = ''
+                xfvb-run wine ./srcds.exe -game tf ''${ARG_BIND} ''${ARG_SDR} $ARG_EXTRA ''${CMD_PURE} ''${CMD_MAP} $CMD_EXTRA
+              '';
+
+              DynamicUser = true;
+              User = "tf2ds-win-%i";
+
+              RuntimeDirectory = "tf2ds-win/%i";
+              StateDirectory = "tf2ds-win/%i tf2ds-win/.%i";
+              WorkingDirectory = "%t/tf2ds-win/%i";
+            };
+          };
+        }]
+      ++ lib.mapAttrsToList
         (name: _: {
           "tf2ds@${name}" = {
             overrideStrategy = "asDropin";
@@ -105,6 +149,14 @@ in
           };
         })
         cfg.instances
+      ++ lib.mapAttrsToList
+        (name: _: {
+          "tf2ds-win@${name}" = {
+            overrideStrategy = "asDropin";
+            wantedBy = [ "multi-user.target" ];
+          };
+        })
+        cfg.windowsInstances
     );
   };
 

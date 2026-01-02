@@ -5,6 +5,7 @@ let
   binaries = pkgs.pkgsi686Linux.callPackage ../pkgs/linux-binaries {
     depot = pkgs.callPackage ../pkgs/fetch-depot chunks.linux;
   };
+  windowsBinaries = pkgs.callPackage ../pkgs/fetch-depot chunks.windows;
 in
 {
 
@@ -25,7 +26,7 @@ in
 
       imports = [ ../nixos/tf2-dedicated-server.nix ];
       services.tf2-dedicated-server = {
-        inherit binaries assets;
+        inherit binaries windowsBinaries assets;
 
         addons = [ ];
 
