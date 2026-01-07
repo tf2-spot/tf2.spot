@@ -1,6 +1,7 @@
 { symlinkJoin
 , linkFarm
 , fetchDepot
+, date
 , assets
 }:
 let
@@ -11,6 +12,6 @@ let
 in
 symlinkJoin {
   pname = "tf2-dedicated-server-assets";
-  version = (builtins.head assets).date;
+  version = date;
   paths = [ singlesFarm ] ++ (map fetchDepot maybeSingle.wrong);
 }

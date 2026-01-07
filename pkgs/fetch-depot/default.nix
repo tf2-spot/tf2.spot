@@ -8,7 +8,6 @@
 , fileList
 , hash
 , singleFile ? false
-, date ? null
 }:
 
 runCommand "depot-${depot}.${manifest}"

@@ -2,9 +2,11 @@
 , autoPatchelfHook
 , curlWithGnuTls
 , depot
+, date
 }:
 stdenv.mkDerivation {
-  name = "tf2ds-binaries";
+  pname = "tf2ds-binaries";
+  version = date;
 
   src = depot;
 

@@ -33,8 +33,13 @@
             parse-manifests = pkgs.callPackage ./pkgs/parse-manifests { };
 
             assets-joined = pkgs.callPackage ./pkgs/assets-joined {
+              inherit (config.lib.chunks) date assets;
               fetchDepot = config.lib.fetchDepot;
-              assets = config.lib.chunks.assets;
+            };
+
+            linux-binaries = pkgs.pkgsi686Linux.callPackage ./pkgs/linux-binaries {
+              inherit (config.lib.chunks) date;
+              depot = config.lib.fetchDepot config.lib.chunks.linux;
             };
 
             windows-binaries = config.lib.fetchDepot config.lib.chunks.windows;
