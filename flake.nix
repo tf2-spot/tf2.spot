@@ -31,6 +31,7 @@
           packages = {
             fetch-latest-manifests = pkgs.callPackage ./pkgs/fetch-latest-manifests { };
             parse-manifests = pkgs.callPackage ./pkgs/parse-manifests { };
+            prefetch-missing = pkgs.callPackage ./pkgs/prefetch-missing { };
 
             assets-joined = pkgs.callPackage ./pkgs/assets-joined {
               inherit (config.lib.chunks) date assets;
