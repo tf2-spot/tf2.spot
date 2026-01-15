@@ -1,0 +1,14 @@
+%syntax-version=1.0.0
+%project=fantasy
+%uri=https://fantasy.tf2.spot/
+
+schema                     2026-01-16T00:00:00Z Lucas <lucas@lde.sg> # schema for fantasy data
+schema-api                 2026-01-16T00:00:00Z Lucas <lucas@lde.sg> # schema for postgrest views and procedures
+manager [schema]           2026-01-16T00:00:00Z Lucas <lucas@lde.sg> # table
+region [schema]            2026-01-16T00:00:00Z Lucas <lucas@lde.sg> # table
+tournament [schema region] 2026-01-16T00:00:00Z Lucas <lucas@lde.sg> # table
+role-visitor               2026-01-16T00:00:00Z Lucas <lucas@lde.sg> # role
+role-manager               2026-01-16T00:00:00Z Lucas <lucas@lde.sg> # role
+role-admin                 2026-01-16T00:00:00Z Lucas <lucas@lde.sg> # role
+role-postgrest             2026-01-16T13:54:22Z Lucas <lucas@lde.sg> # role
+mathesar-perms [meta:@v1 schema manager region tournament role-admin] 2026-01-16T14:23:30Z Lucas <lucas@lde.sg> # permissions for mathesar user

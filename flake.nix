@@ -17,6 +17,10 @@
     flake-parts.lib.mkFlake { inherit inputs; } {
       systems = [ "x86_64-linux" ];
 
+      flake.nixosModules = {
+        fantasy = ./nixos/fantasy;
+      };
+
       perSystem = { inputs', config, lib, pkgs, ... }: {
         options = {
           lib = lib.mkOption { type = lib.types.raw; };
@@ -76,17 +80,29 @@
             );
           };
 
-          devShells.plugins =
-            let
-              inherit (inputs'.spire.packages) sourcepawn;
-            in
-            pkgs.mkShell {
-              nativeBuildInputs = [
-                (sourcepawn.buildEnv [
-                  sourcepawn.includes.sourcemod
-                ])
+          devShells = {
+            fantasy = pkgs.mkShell {
+              packages = [
+                pkgs.postgresql
+                pkgs.sqitchPg
+
+                # tmp
+                pkgs.podman-compose
               ];
             };
+
+            plugins = pkgs.mkShell {
+              nativeBuildInputs =
+                let
+                  inherit (inputs'.spire.packages) sourcepawn;
+                in
+                [
+                  (sourcepawn.buildEnv [
+                    sourcepawn.includes.sourcemod
+                  ])
+                ];
+            };
+          };
         };
       };
     };
