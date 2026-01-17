@@ -20,8 +20,11 @@ participant [tournament player real_team class] 2026-01-16T16:24:42Z Lucas <luca
 team [tournament manager] 2026-01-16T16:21:38Z Lucas <lucas@lde.sg> # table
 contract [meta:@v1 team participant] 2026-01-16T17:40:28Z Lucas <lucas@lde.sg> # table
 round [tournament] 2026-01-16T21:44:04Z Lucas <lucas@lde.sg> # table
-match [round] 2026-01-16T21:46:03Z Lucas <lucas@lde.sg> # table
+match [round real_team] 2026-01-16T21:46:03Z Lucas <lucas@lde.sg> # table
 map [match] 2026-01-16T21:46:09Z Lucas <lucas@lde.sg> # table
 logstf_document 2026-01-16T21:42:16Z Lucas <lucas@lde.sg> # table
 statistic 2026-01-16T22:05:19Z Lucas <lucas@lde.sg> # table
-multiplier [scoring_model] 2026-01-16T22:14:42Z Lucas <lucas@lde.sg> # table
+multiplier [scoring_model statistic] 2026-01-16T22:14:42Z Lucas <lucas@lde.sg> # table
+performance [map participant statistic] 2026-01-17T00:14:29Z Lucas <lucas@lde.sg> # table
+api-views 2026-01-17T00:48:17Z Lucas <lucas@lde.sg> # views
+create_transaction 2026-01-17T17:48:44Z Lucas <lucas@lde.sg> # function

@@ -1,0 +1,1 @@
+-- Verify fantasy:create_transaction to pg

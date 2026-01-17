@@ -11,8 +11,8 @@ create table match
 , team_red int    not null
 , primary key (id)
 , foreign key (round) references round
-, foreign key (team_blu) references team
-, foreign key (team_red) references team
+, foreign key (team_blu) references real_team
+, foreign key (team_red) references real_team
 );
 
 commit;
