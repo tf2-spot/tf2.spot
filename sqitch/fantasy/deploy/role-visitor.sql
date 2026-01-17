@@ -1,7 +1,7 @@
 -- Deploy fantasy:role-visitor to pg
 
-BEGIN;
+begin;
 
 create role fantasy_visitor;
 
-COMMIT;
+commit;

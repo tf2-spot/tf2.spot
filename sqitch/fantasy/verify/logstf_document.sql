@@ -1,0 +1,1 @@
+-- Verify fantasy:logstf_document in pg

@@ -1,7 +1,7 @@
 -- Revert fantasy:role-admin from pg
 
-BEGIN;
+begin;
 
 drop user fantasy_admin;
 
-COMMIT;
+commit;

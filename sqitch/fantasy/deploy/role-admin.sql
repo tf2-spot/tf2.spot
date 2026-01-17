@@ -1,7 +1,7 @@
 -- Deploy fantasy:role-admin to pg
 
-BEGIN;
+begin;
 
-create user fantasy_admin password :password_fantasy_admin;
+create user fantasy_admin noinherit password :password_fantasy_admin;
 
-COMMIT;
+commit;

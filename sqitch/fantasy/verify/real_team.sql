@@ -1,0 +1,1 @@
+-- Verify fantasy:real_team in pg

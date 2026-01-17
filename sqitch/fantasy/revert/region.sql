@@ -1,7 +1,9 @@
 -- Revert fantasy:region from pg
 
-BEGIN;
+begin;
 
-drop table fantasy.region;
+set search_path to fantasy, public;
 
-COMMIT;
+drop table region;
+
+commit;

@@ -1,7 +1,8 @@
 -- Deploy fantasy:mathesar-perms to pg
--- requires: meta:@v1 schema manager region tournament role-admin
 
-BEGIN;
+begin;
+
+set search_path to fantasy, public;
 
 grant usage on schema fantasy to mathesar;
 
@@ -10,15 +11,15 @@ grant select
     , update
     , delete
     , truncate
-on table fantasy.manager
-       , fantasy.region
-       , fantasy.tournament
+on table manager
+       , region
+       , tournament
 to mathesar;
 
 grant select
-on table fantasy.manager
-       , fantasy.region
-       , fantasy.tournament
+on table manager
+       , region
+       , tournament
 to fantasy_admin;
 
-COMMIT;
+commit;

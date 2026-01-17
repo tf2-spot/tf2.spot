@@ -1,7 +1,7 @@
 -- Revert fantasy:role-postgrest from pg
 
-BEGIN;
+begin;
 
 drop user fantasy_postgrest;
 
-COMMIT;
+commit;

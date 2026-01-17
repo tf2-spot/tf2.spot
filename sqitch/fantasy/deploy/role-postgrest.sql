@@ -1,7 +1,7 @@
 -- Deploy fantasy:role-postgrest to pg
 
-BEGIN;
+begin;
 
 create user fantasy_postgrest noinherit password :password_fantasy_postgrest;
 
-COMMIT;
+commit;

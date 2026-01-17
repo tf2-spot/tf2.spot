@@ -1,7 +1,7 @@
 -- Deploy meta:btree_gist to pg
 
-BEGIN;
+begin;
 
 create extension btree_gist;
 
-COMMIT;
+commit;

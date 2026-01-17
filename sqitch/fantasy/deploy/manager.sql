@@ -1,14 +1,17 @@
 -- Deploy fantasy:manager to pg
--- requires: schema
 
-BEGIN;
+begin;
 
-create table fantasy.manager
+set search_path to fantasy, public;
+
+create table manager
 ( steam_id text not null
 , name     text not null
-, avatar   text not null
+, avatar   mathesar_types.uri
 , muted    bool not null default false
 , primary key (steam_id)
 );
 
-COMMIT;
+comment on table manager is 'person taking part in the game of Fantasy TF2';
+
+commit;

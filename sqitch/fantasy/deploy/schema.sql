@@ -1,8 +1,8 @@
 -- Deploy fantasy:schema to pg
 
-BEGIN;
+begin;
 
 create schema fantasy;
-comment on schema fantasy is 'schema for fantasy.tf2.spot data';
+comment on schema fantasy is 'schema for data';
 
-COMMIT;
+commit;

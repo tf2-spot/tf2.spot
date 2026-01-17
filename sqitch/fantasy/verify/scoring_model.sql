@@ -1,0 +1,1 @@
+-- Verify fantasy:scoring_model in pg

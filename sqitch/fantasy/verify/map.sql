@@ -1,0 +1,1 @@
+-- Verify fantasy:map in pg

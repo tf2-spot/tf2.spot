@@ -1,7 +1,9 @@
 -- Revert fantasy:tournament from pg
 
-BEGIN;
+begin;
 
-drop table fantasy.tournament;
+set search_path to fantasy, public;
 
-COMMIT;
+drop table tournament;
+
+commit;

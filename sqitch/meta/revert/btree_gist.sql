@@ -1,7 +1,7 @@
 -- Revert meta:btree_gist from pg
 
-BEGIN;
+begin;
 
 drop extension btree_gist;
 
-COMMIT;
+commit;

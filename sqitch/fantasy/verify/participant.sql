@@ -1,0 +1,1 @@
+-- Verify fantasy:participant in pg

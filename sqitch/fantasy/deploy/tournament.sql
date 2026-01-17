@@ -1,17 +1,24 @@
 -- Deploy fantasy:tournament to pg
--- requires: schema region
 
-BEGIN;
+begin;
 
-create table fantasy.tournament
-( slug           text      not null
+set search_path to fantasy, public;
+
+create table tournament
+( id             serial    not null
 , name           text      not null
-, region         text      not null references fantasy.region (name)
+, logo           mathesar_types.uri
+, region         text      not null
+, scoring_model  int       not null
 , start_time     timestamp not null
 , end_time       timestamp
 , initial_budget int       not null
 , transactions   int       not null
-, primary key (slug)
+, primary key (id)
+, foreign key (region) references region
+, foreign key (scoring_model) references scoring_model
 );
 
-COMMIT;
+comment on table tournament is 'event, cup or season of organized matches';
+
+commit;

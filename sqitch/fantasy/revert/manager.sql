@@ -1,7 +1,9 @@
 -- Revert fantasy:manager from pg
 
-BEGIN;
+begin;
 
-drop table fantasy.manager;
+set search_path to fantasy, public;
 
-COMMIT;
+drop table manager;
+
+commit;

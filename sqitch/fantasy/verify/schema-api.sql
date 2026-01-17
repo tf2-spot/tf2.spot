@@ -1,7 +1,1 @@
--- Verify fantasy:schema-api on pg
-
-BEGIN;
-
--- XXX Add verifications here.
-
-ROLLBACK;
+-- Verify fantasy:schema-api in pg

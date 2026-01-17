@@ -1,7 +1,1 @@
--- Verify fantasy:role-manager on pg
-
-BEGIN;
-
--- XXX Add verifications here.
-
-ROLLBACK;
+-- Verify fantasy:role-manager in pg

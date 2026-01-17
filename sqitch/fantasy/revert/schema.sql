@@ -1,7 +1,7 @@
 -- Revert fantasy:schema from pg
 
-BEGIN;
+begin;
 
 drop schema fantasy;
 
-COMMIT;
+commit;

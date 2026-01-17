@@ -1,0 +1,1 @@
+-- Verify fantasy:friendship in pg

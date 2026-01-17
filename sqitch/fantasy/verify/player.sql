@@ -1,0 +1,1 @@
+-- Verify fantasy:player in pg

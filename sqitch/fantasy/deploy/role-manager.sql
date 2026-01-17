@@ -1,7 +1,7 @@
 -- Deploy fantasy:role-manager to pg
 
-BEGIN;
+begin;
 
 create role fantasy_manager;
 
-COMMIT;
+commit;

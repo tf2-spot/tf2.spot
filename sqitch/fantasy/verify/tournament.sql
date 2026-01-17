@@ -1,7 +1,1 @@
--- Verify fantasy:tournament on pg
-
-BEGIN;
-
--- XXX Add verifications here.
-
-ROLLBACK;
+-- Verify fantasy:tournament in pg

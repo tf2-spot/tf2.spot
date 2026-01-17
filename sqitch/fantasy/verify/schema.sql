@@ -1,7 +1,1 @@
--- Verify fantasy:schema on pg
-
-BEGIN;
-
--- XXX Add verifications here.
-
-ROLLBACK;
+-- Verify fantasy:schema in pg

@@ -2,13 +2,26 @@
 %project=fantasy
 %uri=https://fantasy.tf2.spot/
 
-schema                     2026-01-16T00:00:00Z Lucas <lucas@lde.sg> # schema for fantasy data
-schema-api                 2026-01-16T00:00:00Z Lucas <lucas@lde.sg> # schema for postgrest views and procedures
-manager [schema]           2026-01-16T00:00:00Z Lucas <lucas@lde.sg> # table
-region [schema]            2026-01-16T00:00:00Z Lucas <lucas@lde.sg> # table
-tournament [schema region] 2026-01-16T00:00:00Z Lucas <lucas@lde.sg> # table
-role-visitor               2026-01-16T00:00:00Z Lucas <lucas@lde.sg> # role
-role-manager               2026-01-16T00:00:00Z Lucas <lucas@lde.sg> # role
-role-admin                 2026-01-16T00:00:00Z Lucas <lucas@lde.sg> # role
-role-postgrest             2026-01-16T13:54:22Z Lucas <lucas@lde.sg> # role
-mathesar-perms [meta:@v1 schema manager region tournament role-admin] 2026-01-16T14:23:30Z Lucas <lucas@lde.sg> # permissions for mathesar user
+role-visitor 2026-01-16T00:00:00Z Lucas <lucas@lde.sg> # role
+role-manager 2026-01-16T00:00:00Z Lucas <lucas@lde.sg> # role
+role-admin 2026-01-16T00:00:00Z Lucas <lucas@lde.sg> # role
+role-postgrest 2026-01-16T13:54:22Z Lucas <lucas@lde.sg> # role
+schema 2026-01-16T00:00:00Z Lucas <lucas@lde.sg> # schema for data
+schema-api 2026-01-16T00:00:00Z Lucas <lucas@lde.sg> # schema for api views and procedures
+manager [schema] 2026-01-16T00:00:00Z Lucas <lucas@lde.sg> # table
+friendship [manager] 2026-01-16T16:42:24Z Lucas <lucas@lde.sg> # table
+region [schema] 2026-01-16T00:00:00Z Lucas <lucas@lde.sg> # table
+scoring_model 2026-01-16T22:00:31Z Lucas <lucas@lde.sg> # table
+tournament [region scoring_model] 2026-01-16T00:00:00Z Lucas <lucas@lde.sg> # table
+class [schema] 2026-01-16T15:57:35Z Lucas <lucas@lde.sg> # table
+real_team [tournament] 2026-01-16T16:04:00Z Lucas <lucas@lde.sg> # table
+player [schema] 2026-01-16T16:24:42Z Lucas <lucas@lde.sg> # table
+participant [tournament player real_team class] 2026-01-16T16:24:42Z Lucas <lucas@lde.sg> # table
+team [tournament manager] 2026-01-16T16:21:38Z Lucas <lucas@lde.sg> # table
+contract [meta:@v1 team participant] 2026-01-16T17:40:28Z Lucas <lucas@lde.sg> # table
+round [tournament] 2026-01-16T21:44:04Z Lucas <lucas@lde.sg> # table
+match [round] 2026-01-16T21:46:03Z Lucas <lucas@lde.sg> # table
+map [match] 2026-01-16T21:46:09Z Lucas <lucas@lde.sg> # table
+logstf_document 2026-01-16T21:42:16Z Lucas <lucas@lde.sg> # table
+statistic 2026-01-16T22:05:19Z Lucas <lucas@lde.sg> # table
+multiplier [scoring_model] 2026-01-16T22:14:42Z Lucas <lucas@lde.sg> # table

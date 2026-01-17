@@ -1,7 +1,1 @@
--- Verify fantasy:mathesar-perms on pg
-
-BEGIN;
-
--- XXX Add verifications here.
-
-ROLLBACK;
+-- Verify fantasy:mathesar-perms in pg

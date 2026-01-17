@@ -1,11 +1,13 @@
 -- Revert fantasy:mathesar-perms from pg
 
-BEGIN;
+begin;
+
+set search_path to fantasy, public;
 
 revoke select
-on table fantasy.manager
-       , fantasy.region
-       , fantasy.tournament
+on table manager
+       , region
+       , tournament
 from fantasy_admin;
 
 revoke select
@@ -13,11 +15,11 @@ revoke select
      , update
      , delete
      , truncate
-on table fantasy.manager
-       , fantasy.region
-       , fantasy.tournament
+on table manager
+       , region
+       , tournament
 from mathesar;
 
 revoke usage on schema fantasy from mathesar;
 
-COMMIT;
+commit;

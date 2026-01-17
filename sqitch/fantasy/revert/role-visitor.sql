@@ -1,7 +1,7 @@
 -- Revert fantasy:role-visitor from pg
 
-BEGIN;
+begin;
 
 drop role fantasy_visitor;
 
-COMMIT;
+commit;
