@@ -5,11 +5,11 @@ begin;
 set search_path to fantasy, public;
 
 create table friendship
-( left_manager  text not null
-, right_manager text not null
-, primary key (left_manager, right_manager)
-, foreign key (left_manager) references manager
-, foreign key (right_manager) references manager
+( manager_left  text not null
+, manager_right text not null
+, primary key (manager_left, manager_right)
+, foreign key (manager_left) references manager
+, foreign key (manager_right) references manager
 );
 
 comment on table friendship is 'graph of Steam friends';

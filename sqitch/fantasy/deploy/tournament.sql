@@ -19,6 +19,6 @@ create table tournament
 , foreign key (scoring_model) references scoring_model
 );
 
-comment on table tournament is 'event, cup or season of organized matches';
+comment on table tournament is '! event, cup or season of organized matches';
 
 commit;

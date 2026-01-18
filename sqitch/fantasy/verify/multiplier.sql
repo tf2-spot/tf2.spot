@@ -1,1 +1,0 @@
--- Verify fantasy:multiplier in pg

@@ -1,0 +1,1 @@
+-- Verify meta:mathesar_user in pg

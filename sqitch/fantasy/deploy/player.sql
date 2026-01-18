@@ -11,6 +11,6 @@ create table player
 , primary key (steam_id)
 );
 
-comment on table player is 'real player';
+comment on table player is '! real player';
 
 commit;

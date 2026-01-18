@@ -1,0 +1,1 @@
+-- Verify fantasy:fantasy in pg

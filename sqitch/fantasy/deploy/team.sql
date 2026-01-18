@@ -5,17 +5,15 @@ begin;
 set search_path to fantasy, public;
 
 create table team
-( id             serial not null
-, tournament     int    not null
-, manager        text   not null
-, name           text   not null
-, initial_budget int    not null
-, unique (tournament, manager)
+( id         serial not null
+, tournament int    not null
+, name       text   not null
+, tag        text
+, logo       mathesar_types.uri
 , primary key (id)
 , foreign key (tournament) references tournament
-, foreign key (manager) references manager
 );
 
-comment on table fantasy.team is 'fantasy roster in a tournament';
+comment on table team is '! real team participating in a tournament';
 
 commit;

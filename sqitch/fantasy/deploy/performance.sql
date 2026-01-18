@@ -5,14 +5,16 @@ begin;
 set search_path to fantasy, public;
 
 create table performance
-( map int not null
-, participant int not null
-, statistic text not null
-, value decimal not null
+( map         int     not null
+, participant int     not null
+, statistic   text    not null
+, value       decimal not null
 , primary key (map, participant, statistic)
 , foreign key (map) references map
 , foreign key (participant) references participant
 , foreign key (statistic) references statistic
 );
+
+comment on table performance is 'how much of a statistic has a player achieved during one map';
 
 commit;

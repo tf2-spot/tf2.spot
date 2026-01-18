@@ -1,0 +1,1 @@
+-- Verify fantasy:coefficient in pg

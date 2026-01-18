@@ -1,31 +1,33 @@
--- Deploy fantasy:create_transaction to pg
+-- Deploy fantasy:update_roster to pg
 
 begin;
 
 set search_path to fantasy, public;
 
-create function create_transaction(team_id int, desired_roster int[])
+create function update_roster(fantasy_id int, desired_roster int[])
 returns void
 language plpgsql
 strict
 as $$
+declare
+    now timestamp with time zone = now();
 begin
-    if not exists (select 1 from team where id = team_id) then
+    if not exists (select 1 from fantasy where id = fantasy_id) then
         raise exception 'Fantasy team does not exist';
     end if;
 
     if exists (
         select 1
         from tournament
-        join team on team.tournament = tournament.id
-        where team_id = team.id
-        and end_time < now()
+        join fantasy on fantasy.tournament = tournament.id
+        where fantasy_id = fantasy.id
+        and end_time < now
     ) then
         raise exception 'Tournament is over';
     end if;
 
     update contract
-    set time = tsrange(lower(time), now()::timestamp)
+    set time = tsrange(lower(time), now::timestamp)
       , sale_price = p.price
     from participant p
     where p.id = participant
@@ -34,9 +36,9 @@ begin
 
     insert into contract
     select nextval('contract_id_seq')
-         , team_id
+         , fantasy_id
          , participant.id
-         , tsrange(now()::timestamp, null)
+         , tsrange(now::timestamp, null)
          , participant.price
          , null
     from unnest(desired_roster)
@@ -46,9 +48,9 @@ begin
     if exists (
         select 1
         from contract
-        join team on team.id = contract.team
-        join tournament on tournament.id = team.tournament
-        where team = team_id
+        join fantasy on fantasy.id = contract.fantasy
+        join tournament on tournament.id = fantasy.tournament
+        where fantasy = fantasy_id
         group by (tournament.id)
         having count(upper(time)) > tournament.transactions
     ) then
@@ -58,10 +60,10 @@ begin
     if exists (
         select 1
         from contract
-        join team on team.id = contract.team
-        where contract.team = team_id
-        group by (team.id)
-        having team.initial_budget + sum(coalesce(sale_price, 0) - purchase_price) < 0
+        join fantasy on fantasy.id = contract.fantasy
+        where contract.fantasy = fantasy_id
+        group by (fantasy.id)
+        having fantasy.initial_budget + sum(coalesce(sale_price, 0) - purchase_price) < 0
     ) then
         raise exception 'Exceeded budget spending';
     end if;
@@ -70,7 +72,7 @@ begin
         select 1
         from contract
         join participant on participant.id = contract.participant
-        where team = team_id
+        where fantasy = fantasy_id
         and upper(time) is null
         having array_agg(main_class order by main_class)
             <> '{Demoman, Medic, Scout, Scout, Soldier, Soldier}'
@@ -82,9 +84,9 @@ begin
         select 1
         from contract
         join participant on participant.id = contract.participant
-        where team = team_id
+        where fantasy = fantasy_id
         and upper(time) is null
-        group by (team, participant.real_team)
+        group by (fantasy, participant.team)
         having count(participant.id) > 2
     ) then
         raise exception 'Fantasy team has a limit of 2 players from any team';
