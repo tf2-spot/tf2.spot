@@ -1,9 +1,9 @@
--- Revert fantasy:logstf_document from pg
+-- Revert fantasy:log from pg
 
 begin;
 
 set search_path to fantasy, public;
 
-drop table logstf_document;
+drop table log;
 
 commit;

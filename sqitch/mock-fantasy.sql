@@ -10,7 +10,7 @@ insert into friendship values ('76561197990142005', '76561198020242938');
 insert into scoring_model values (1, 'V1');
 
 insert into coefficient
-select row_number() over ()
+select nextval('coefficient_id_seq')
      , 1
      , name
      , 1 / (random() * random())
@@ -19,7 +19,7 @@ from statistic;
 insert into tournament values (1, 'poLANd', null, 'Europe', 1, now(), now() + interval '2 week', 1000, 10);
 
 insert into round
-select row_number() over ()
+select nextval('round_id_seq')
      , 1
      , generate_series::text
      , generate_series
@@ -47,7 +47,7 @@ from team
 join class on true;
 
 insert into participant
-select row_number() over ()
+select nextval('participant_id_seq')
      , 1 as tournament
      , team.name::text || ' ' || class.name as player
      , id as team
@@ -57,7 +57,7 @@ from team
 join class on true;
 
 insert into match
-select row_number() over ()
+select nextval('match_id_seq')
      , round_id
      , min(team_id)
      , max(team_id)
@@ -71,7 +71,7 @@ from (
 group by round_id, match_num;
 
 insert into map
-select row_number() over ()
+select nextval('map_id_seq')
      , id
      , 'cp_badlands'
 from match
