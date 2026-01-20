@@ -15,20 +15,20 @@ comment on table statistic is 'static set of possible measurements of a player d
 insert into statistic values
 ('win',              'Won the map'),
 ('win-diff',         'Point difference when winning'),
-('kill',             'Killed an enemy'),
+('kills',             'Killed an enemy'),
 ('medic-kill',       'Killed an enemy medic'),
-('kill-as-medic',    'Killed as a medic'),
-('death',            'Died'),
+('kills_as_medic',    'Killed as a medic'),
+('deaths',            'Died'),
 ('dpm',              'Damage per minute'),
-('uber',             'Ubercharge used'),
-('uber-drop',        'Ubercharge dropped'),
+('ubers',             'Ubercharge used'),
+('drops',        'Ubercharge dropped'),
 ('team-medic-death', 'Friendly Medic died'),
 ('top-kill',         'Has the highest number of kills'),
 ('top-damage',       'Has the highest number of damage'),
 ('top-kdr',          'Has the highest kill to death ratio'),
-('airshot',          'Has hit an enemy in the air with a projectile'),
-('assist',           ''),
-('backstab',         ''),
-('headshot-kill',    '');
+('airshots',          'Has hit an enemy in the air with a projectile'),
+('assists',           ''),
+('backstabs',         ''),
+    ('headshots',    '');
 
 commit;

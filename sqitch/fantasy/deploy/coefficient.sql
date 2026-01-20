@@ -12,6 +12,7 @@ create table coefficient
 , primary key (id)
 , foreign key (scoring_model) references scoring_model
 , foreign key (statistic) references statistic
+, unique (scoring_model, statistic)
 );
 
 comment on table coefficient is '! how many points should each statistic give';

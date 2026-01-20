@@ -5,10 +5,10 @@ begin;
 set search_path to fantasy, public;
 
 create table manager
-( steam_id text not null
-, name     text not null
-, avatar   mathesar_types.uri
-, muted    bool not null default false
+( steam_id    text not null
+, name        text not null
+, avatar      mathesar_types.uri
+, muted_until timestamp
 , primary key (steam_id)
 );
 
