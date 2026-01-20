@@ -26,7 +26,7 @@ participant [tournament player team class] 2026-01-16T16:24:42Z Lucas <lucas@lde
 
 match [round team] 2026-01-16T21:46:03Z Lucas <lucas@lde.sg> # table
 map [match] 2026-01-16T21:46:09Z Lucas <lucas@lde.sg> # table
-substitution [team map player] 2026-01-18T12:47:01Z Lucas <lucas@lde.sg> # table
+substitution [map participant player] 2026-01-18T12:47:01Z Lucas <lucas@lde.sg> # table
 log [map] 2026-01-16T21:42:16Z Lucas <lucas@lde.sg> # table
 performance [map player statistic] 2026-01-17T00:14:29Z Lucas <lucas@lde.sg> # table
 
