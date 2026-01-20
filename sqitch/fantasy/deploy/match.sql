@@ -15,6 +15,6 @@ create table match
 , foreign key (team_right) references team
 );
 
-comment on table match is '! match between two teams';
+comment on table match is '[ADM] match between two teams';
 
 commit;

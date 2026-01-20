@@ -7,7 +7,7 @@ set search_path to fantasy, public;
 create table participant
 ( id         serial not null
 , tournament int    not null
-, player     text   not null
+, player     bigint not null
 , team       int    not null
 , main_class text   not null
 , price      int    not null
@@ -19,6 +19,6 @@ create table participant
 , foreign key (main_class) references class
 );
 
-comment on table fantasy.participant is '! real player participating in a tournament with a team';
+comment on table fantasy.participant is '[ADM] real player participating in a tournament with a team';
 
 commit;

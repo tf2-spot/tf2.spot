@@ -14,6 +14,6 @@ create table team
 , foreign key (tournament) references tournament
 );
 
-comment on table team is '! real team participating in a tournament';
+comment on table team is '[ADM] real team participating in a tournament';
 
 commit;

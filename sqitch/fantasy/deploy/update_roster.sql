@@ -68,6 +68,7 @@ begin
         raise exception 'Exceeded budget spending';
     end if;
 
+    -- TODO
     if exists (
         select 1
         from contract

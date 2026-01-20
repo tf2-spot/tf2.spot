@@ -12,6 +12,6 @@ create table map
 , foreign key (match) references match
 );
 
-comment on table map is '! map played as part of a match';
+comment on table map is '[ADM] map played as part of a match';
 
 commit;

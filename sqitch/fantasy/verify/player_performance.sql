@@ -1,0 +1,1 @@
+-- Verify fantasy:player_performance to pg

@@ -11,6 +11,6 @@ create table log
 , foreign key (map) references map
 );
 
-comment on table log is '! id of a log from logs.tf for a played map';
+comment on table log is '[ADM] id of a log from logs.tf for a played map';
 
 commit;

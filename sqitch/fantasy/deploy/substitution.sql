@@ -8,7 +8,7 @@ create table substitution
 ( id          serial not null
 , map         int    not null
 , participant int    not null
-, substitute  text   not null
+, substitute  bigint not null
 , primary key (id)
 , foreign key (map) references map
 , foreign key (participant) references participant
@@ -16,6 +16,6 @@ create table substitution
 -- check map -> match -> { team left / team right } = participant -> team
 );
 
-comment on table substitution is '! which player was used as substitute during a map';
+comment on table substitution is '[ADM] which player was used as substitute during a map';
 
 commit;

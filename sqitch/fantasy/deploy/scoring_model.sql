@@ -10,6 +10,6 @@ create table scoring_model
 , primary key (id)
 );
 
-comment on table scoring_model is '! how all performances will be scored during a tournament';
+comment on table scoring_model is '[ADM] how all performances will be scored during a tournament';
 
 commit;

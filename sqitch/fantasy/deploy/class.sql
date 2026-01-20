@@ -12,14 +12,14 @@ create table class
 comment on table class is 'static set of TF2 classes';
 
 insert into class (name) values
-('Scout'),
-('Soldier'),
-('Pyro'),
-('Demoman'),
-('Heavy'),
-('Engineer'),
-('Sniper'),
-('Medic'),
-('Spy');
+('scout'),
+('soldier'),
+('pyro'),
+('demoman'),
+('heavy'),
+('engineer'),
+('sniper'),
+('medic'),
+('spy');
 
 commit;

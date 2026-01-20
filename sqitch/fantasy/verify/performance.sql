@@ -1,1 +1,0 @@
--- Verify fantasy:performance to pg

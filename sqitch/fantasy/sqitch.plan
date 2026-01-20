@@ -8,14 +8,19 @@ role-admin 2026-01-16T00:00:00Z Lucas <lucas@lde.sg> # role
 role-postgrest 2026-01-16T13:54:22Z Lucas <lucas@lde.sg> # role
 
 schema 2026-01-16T00:00:00Z Lucas <lucas@lde.sg> # schema
-schema-api 2026-01-16T00:00:00Z Lucas <lucas@lde.sg> # schema
+
+to_steamid64 [schema] 2026-01-20T12:26:03Z Lucas <lucas@lde.sg> # function
 
 scoring_model [schema] 2026-01-16T22:00:31Z Lucas <lucas@lde.sg> # table
-statistic [schema] 2026-01-16T22:05:19Z Lucas <lucas@lde.sg> # table
-coefficient [scoring_model statistic] 2026-01-16T22:14:42Z Lucas <lucas@lde.sg> # table
+team_statistic [schema] 2026-01-20T17:23:45Z Lucas <lucas@lde.sg> # table
+team_coefficient [scoring_model team_statistic] 2026-01-20T17:23:59Z Lucas <lucas@lde.sg> # table
+player_statistic [schema] 2026-01-16T22:05:19Z Lucas <lucas@lde.sg> # table
+player_coefficient [scoring_model player_statistic] 2026-01-16T22:14:42Z Lucas <lucas@lde.sg> # table
+
+composition 2026-01-20T17:39:45Z Lucas <lucas@lde.sg> # table
 
 region [schema] 2026-01-16T00:00:00Z Lucas <lucas@lde.sg> # table
-tournament [region scoring_model] 2026-01-16T00:00:00Z Lucas <lucas@lde.sg> # table
+tournament [region scoring_model composition] 2026-01-16T00:00:00Z Lucas <lucas@lde.sg> # table
 round [tournament] 2026-01-16T21:44:04Z Lucas <lucas@lde.sg> # table
 
 class [schema] 2026-01-16T15:57:35Z Lucas <lucas@lde.sg> # table
@@ -28,7 +33,8 @@ match [round team] 2026-01-16T21:46:03Z Lucas <lucas@lde.sg> # table
 map [match] 2026-01-16T21:46:09Z Lucas <lucas@lde.sg> # table
 substitution [map participant player] 2026-01-18T12:47:01Z Lucas <lucas@lde.sg> # table
 log [map] 2026-01-16T21:42:16Z Lucas <lucas@lde.sg> # table
-performance [map player statistic] 2026-01-17T00:14:29Z Lucas <lucas@lde.sg> # table
+team_performance [map team team_statistic] 2026-01-20T17:24:03Z Lucas <lucas@lde.sg> # table
+player_performance [map player player_statistic] 2026-01-17T00:14:29Z Lucas <lucas@lde.sg> # table
 
 logstf_document [schema] 2026-01-18T12:47:17Z Lucas <lucas@lde.sg> # table
 
