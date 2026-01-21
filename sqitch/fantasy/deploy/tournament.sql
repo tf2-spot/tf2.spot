@@ -10,6 +10,7 @@ create table tournament
 , logo           mathesar_types.uri
 , region         text      not null
 , scoring_model  int       not null
+, composition    int       not null
 , start_time     timestamp not null
 , end_time       timestamp
 , initial_budget int       not null
@@ -17,6 +18,7 @@ create table tournament
 , primary key (id)
 , foreign key (region) references region
 , foreign key (scoring_model) references scoring_model
+, foreign key (composition) references composition
 );
 
 comment on table tournament is '[ADM] event, cup or season of organized matches';
