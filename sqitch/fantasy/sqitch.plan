@@ -44,3 +44,5 @@ fantasy [tournament manager] 2026-01-16T16:21:38Z Lucas <lucas@lde.sg> # table
 contract [meta:@v1 fantasy participant] 2026-01-16T17:40:28Z Lucas <lucas@lde.sg> # table
 
 update_roster [schema] 2026-01-17T17:48:44Z Lucas <lucas@lde.sg> # function
+price_history 2026-01-21T01:44:20Z Lucas <lucas@lde.sg> # table
+trigger_price_history 2026-01-21T01:48:45Z Lucas <lucas@lde.sg> # function and trigger
