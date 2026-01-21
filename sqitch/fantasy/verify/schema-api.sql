@@ -1,1 +1,0 @@
--- Verify fantasy:schema-api in pg

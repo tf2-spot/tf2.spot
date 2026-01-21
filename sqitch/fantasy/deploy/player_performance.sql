@@ -5,12 +5,12 @@ begin;
 set search_path to fantasy, public;
 
 create table player_performance
-( log              int     not null
+( map              int     not null
 , player           bigint  not null
 , player_statistic text    not null
 , value            decimal not null
-, primary key (log, player, player_statistic)
-, foreign key (log) references log
+, primary key (map, player, player_statistic)
+, foreign key (map) references map
 , foreign key (player) references player
 , foreign key (player_statistic) references player_statistic
 );

@@ -1,1 +1,0 @@
--- Verify fantasy:log in pg

@@ -1,1 +1,0 @@
--- Verify fantasy:api-views to pg

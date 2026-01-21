@@ -1,1 +1,0 @@
--- Verify fantasy:mathesar-perms in pg
