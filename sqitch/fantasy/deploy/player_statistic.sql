@@ -5,7 +5,8 @@ begin;
 set search_path to fantasy, public;
 
 create table player_statistic
-( name text not null
+( id          text not null
+, short       text not null
 , description text not null
 , primary key (name)
 );

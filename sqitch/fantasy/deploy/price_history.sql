@@ -5,10 +5,10 @@ begin;
 set search_path to fantasy, public;
 
 create table price_history
-( id serial not null
-, participant int not null
-, price int not null
-, until timestamp not null
+( id          serial    not null
+, participant int       not null
+, price       int       not null
+, until       timestamp not null
 , primary key (id)
 , foreign key (participant) references participant
 );

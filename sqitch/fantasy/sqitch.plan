@@ -41,4 +41,4 @@ friendship [manager] 2026-01-16T16:42:24Z Lucas <lucas@lde.sg> # table
 fantasy [tournament manager] 2026-01-16T16:21:38Z Lucas <lucas@lde.sg> # table
 contract [meta:@v1 fantasy participant] 2026-01-16T17:40:28Z Lucas <lucas@lde.sg> # table
 
-update_roster [schema] 2026-01-17T17:48:44Z Lucas <lucas@lde.sg> # function
+update_roster [contract] 2026-01-17T17:48:44Z Lucas <lucas@lde.sg> # function
