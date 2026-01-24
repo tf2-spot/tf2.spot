@@ -7,7 +7,7 @@ set search_path to fantasy, public;
 create table participant
 ( id         serial not null
 , tournament int    not null
-, player     bigint not null
+, player     text   not null
 , team       int    not null
 , main_class text   not null
 , price      int    not null

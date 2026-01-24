@@ -6,7 +6,7 @@ set search_path to fantasy, public;
 
 create table player_performance
 ( map              int     not null
-, player           bigint  not null
+, player           text    not null
 , player_statistic text    not null
 , value            decimal not null
 , primary key (map, player, player_statistic)

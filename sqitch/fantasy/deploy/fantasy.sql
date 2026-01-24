@@ -7,7 +7,7 @@ set search_path to fantasy, public;
 create table fantasy
 ( id             serial not null
 , tournament     int    not null
-, manager        bigint not null
+, manager        text   not null
 , name           text   not null
 , initial_budget int    not null
 , unique (tournament, manager)

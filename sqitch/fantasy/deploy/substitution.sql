@@ -8,7 +8,7 @@ create table substitution
 ( id          serial not null
 , map         int    not null
 , participant int    not null
-, substitute  bigint not null
+, substitute  text   not null
 , primary key (id)
 , foreign key (map) references map
 , foreign key (participant) references participant
