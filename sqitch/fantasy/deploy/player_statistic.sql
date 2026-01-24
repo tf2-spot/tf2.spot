@@ -8,7 +8,7 @@ create table player_statistic
 ( id          text not null
 , short       text not null
 , description text not null
-, primary key (name)
+, primary key (id)
 );
 
 comment on table player_statistic is 'static set of possible measurements of a player during a map';
