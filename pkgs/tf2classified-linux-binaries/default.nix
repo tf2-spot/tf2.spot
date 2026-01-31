@@ -1,6 +1,8 @@
 { stdenv
 , autoPatchelfHook
+, auto-patchelf
 , curlWithGnuTls
+, curl
 , SDL2
 , openal
 , bzip2
@@ -25,6 +27,7 @@ stdenv.mkDerivation {
 
   nativeBuildInputs = [
     autoPatchelfHook
+    auto-patchelf
   ];
 
   buildInputs = [
@@ -45,8 +48,17 @@ stdenv.mkDerivation {
   installPhase = ''
     runHook preInstall
 
-    mkdir $out
-    cp -r $src/. $out
+    mkdir tmp
+    cp -r $src/. tmp
+
+    chmod -R +w tmp
+
+    mv tmp/bin/linux64/curlmgr.so .
+
+    auto-patchelf --libs "${stdenv.cc.cc.lib}/lib" "${curl.out}/lib" --ignore-missing=libtier0.so --paths curlmgr.so
+
+    mv tmp $out
+    mv curlmgr.so $out/bin/linux64/
 
     chmod +x $out/srcds_linux64
 

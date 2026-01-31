@@ -40,6 +40,7 @@
               tf2classified-assets = [
                 { app = "3557020"; depot = "3545061"; fileList = builtins.readFile ./files-tf2classified-assets.txt; }
                 { app = "3557020"; depot = "3545061"; startsWith = "tf2classified/vpks/tf2c_assets_"; }
+                { app = "3557020"; depot = "3545061"; startsWith = "tf2classified/vpks/tf2c_overrides_"; }
                 { app = "3557020"; depot = "3545061"; startsWith = "tf2classified/maps/4arena_"; }
                 { app = "3557020"; depot = "3545061"; startsWith = "tf2classified/maps/4dom_"; }
                 { app = "3557020"; depot = "3545061"; startsWith = "tf2classified/maps/4plr_"; }
@@ -88,6 +89,7 @@
               chunk = config.lib.chunks.tf2classified-assets;
             };
 
+            tf2classified-linux-raw = config.lib.fetchDepot (builtins.head config.lib.chunks.tf2classified-linux);
             tf2classified-linux = pkgs.callPackage ./pkgs/tf2classified-linux-binaries {
               date = config.lib.chunks.dates."3557023";
               depot = config.lib.fetchDepot (builtins.head config.lib.chunks.tf2classified-linux);

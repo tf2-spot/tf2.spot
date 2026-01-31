@@ -4,31 +4,69 @@ let
 
   cfg = config.services.tf2classified-dedicated-server;
 
-  pre = pkgs.writeShellApplication {
-    name = "tf2classified-ds-pre-mount-overlay";
-    text = ''
-      unit=$1
-      name=$(systemd-escape --path "$RUNTIME_DIRECTORY")
-      upperdir=$(echo "$STATE_DIRECTORY" | cut -d ':' -f 1)
-      workdir=$(echo "$STATE_DIRECTORY" | cut -d ':' -f 2)
-      lowerdir=$(printf '%s:' "$TF2_ADDONS" "$TF2_BINARIES" "$TF2_ASSETS" | sed 's/::+/:/; s/^://; s/:$//')
+  searchPaths = [
+    {
+      keys = [ "game" "mod" "vgui" ];
+      path = "${cfg.assets}/tf2classified/vpks/tf2c_assets.vpk";
+    }
+    {
+      keys = [ "game" "mod" "vgui" ];
+      path = "${cfg.assets}/tf2classified/vpks/mb2_tf_content.vpk";
+    }
+    {
+      keys = [ "game" "mod" "vgui" ];
+      path = "${cfg.assets}/tf2classified/vpks/mb2_shared_content.vpk";
+    }
+    {
+      keys = [ "game" "mod" ];
+      path = "${cfg.assets}/tf2classified/vpks/tf2c_overrides.vpk";
+    }
+    {
+      keys = [ "game" "mod" "vgui" ];
+      path = "${cfg.tf-assets}/tf/tf2_misc.vpk";
+    }
+    {
+      keys = [ "game" "vgui" ];
+      path = "${cfg.tf-assets}/hl2/hl2_misc.vpk";
+    }
+    {
+      keys = [ "mod" "game" "mod_write" "game_write" "default_write_path" ];
+      path = "tf2classified";
+    }
+    {
+      keys = [ "gamebin" ];
+      path = "${cfg.binaries}/tf2classified/bin";
+    }
+    {
+      keys = [ "game" ];
+      path = "${cfg.tf-assets}/hl2";
+    }
+    {
+      keys = [ "game" "download" ];
+      path = "tf2classified/download";
+    }
+  ];
 
-      systemctl edit --runtime --full --force --stdin "$name".mount << END
-      [Unit]
-      PartOf=$unit
+  gameinfo =
+    let
+      paths =
+        lib.concatMapStringsSep "\n      "
+          ({ keys, path }: ''"${lib.concatStringsSep "+" keys}" "${path}"'')
+          searchPaths;
+    in
+    pkgs.writeTextDir "gameinfo.txt" ''
+      // This file was auto-generated
 
-      [Mount]
-      Type=overlay
-      What=overlay
-      Where=$RUNTIME_DIRECTORY
-      Options=upperdir=$upperdir,workdir=$workdir,lowerdir=$lowerdir
-      END
+      #base "${cfg.assets}/tf2classified/gameinfo.txt"
 
-      systemctl start "$name".mount
-
-      chown "$USER":"$USER" "$RUNTIME_DIRECTORY"
+      GameInfo {
+        FileSystem {
+          SearchPaths {
+            ${paths}
+          }
+        }
+      }
     '';
-  };
 in
 {
   options = {
@@ -74,14 +112,14 @@ in
           wants = [ "network-online.target" ];
 
           environment = {
-            HOME = "%t/tf2classified-ds/%i/.home";
-            # LD_LIBRARY_PATH = "%t/tf2classified-ds/%i/bin/linux64";
+            HOME = "%S/tf2classified-ds/%i";
+            LD_LIBRARY_PATH = "${cfg.binaries}/bin/linux64:${pkgs.ncurses5}/lib";
             ARG_BIND = "-ip 0.0.0.0";
             ARG_SDR = "-enablefakeip";
             ARG_EXTRA = "";
-            CMD_PURE = "+sv_pure 2";
+            CMD_PURE = "";
             CMD_MAP = "+map itemtest";
-            CMD_EXTRA = "";
+            CMD_EXTRA = "+status";
             TF2_ASSETS = cfg.assets;
             TF2_BINARIES = cfg.binaries;
             TF2_ADDONS = builtins.concatStringsSep ":" cfg.addons;
@@ -89,20 +127,19 @@ in
 
           serviceConfig = {
             ExecStartPre = [
-              "+${lib.getExe pre} tf2classified-ds@%i.service"
               "${pkgs.coreutils}/bin/mkdir -p \${HOME}/.steam"
-              "${pkgs.coreutils}/bin/ln -sf ${cfg.steamworks}/linux64 \${HOME}/.steam/sdk64"
+              "${pkgs.coreutils}/bin/ln -snf ${cfg.steamworks}/linux64 \${HOME}/.steam/sdk64"
             ];
+
             ExecStart = ''
-              /bin/sh ./srcds.sh -tf_path ${cfg.tf-assets} ''${ARG_BIND} ''${ARG_SDR} $ARG_EXTRA ''${CMD_PURE} ''${CMD_MAP} $CMD_EXTRA
+              ${cfg.binaries}/srcds_linux64 -game ${gameinfo} -tf_path ${cfg.tf-assets} ''${ARG_BIND} ''${ARG_SDR} $ARG_EXTRA ''${CMD_PURE} ''${CMD_MAP} $CMD_EXTRA
             '';
 
             DynamicUser = true;
             User = "tf2classified-ds-%i";
 
-            RuntimeDirectory = "tf2classified-ds/%i";
-            StateDirectory = "tf2classified-ds/%i tf2classified-ds/.%i";
-            WorkingDirectory = "%t/tf2classified-ds/%i";
+            StateDirectory = "tf2classified-ds/%i";
+            WorkingDirectory = "%S/tf2classified-ds/%i";
           };
         };
       }]
