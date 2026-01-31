@@ -1,0 +1,12 @@
+tf2classified/cfg/config_default.cfg
+tf2classified/cfg/default.cfg
+tf2classified/cfg/mapcycle_default.txt
+tf2classified/cfg/motd_default.txt
+tf2classified/cfg/trusted_keys_base.txt
+tf2classified/gameinfo.txt
+tf2classified/maps/itemtest.bsp
+tf2classified/maps/itemtest_4team.bsp
+tf2classified/steam.inf
+tf2classified/videoconfig_add.cfg
+tf2classified/vpks/tf2c_overrides_000.vpk
+tf2classified/vpks/tf2c_overrides_dir.vpk

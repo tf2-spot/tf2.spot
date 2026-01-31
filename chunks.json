@@ -1,22 +1,5 @@
 {
-  "date": "2025.12.23",
-  "windows": {
-    "app": "232250",
-    "depot": "232255",
-    "manifest": "6635356743563280882",
-    "fileList": null,
-    "hash": "sha256-dmHF6+wFK+mGHg1Y76ylwE3zlLc4vH5aqDp1Zm38o3g=",
-    "singleFile": false
-  },
-  "linux": {
-    "app": "232250",
-    "depot": "232256",
-    "manifest": "3175798638504180955",
-    "fileList": null,
-    "hash": "sha256-ZFG/2YWHzWcsqucd+cyL5TPIsGjei2yJyg3TY/aqBio=",
-    "singleFile": false
-  },
-  "assets": [
+  "tf-assets": [
     {
       "app": "232250",
       "depot": "232250",
@@ -297,5 +280,856 @@
       "hash": "19b602f8f29b31739d6ee30a0dc949d5adb2f48a",
       "singleFile": true
     }
-  ]
+  ],
+  "tf-linux": [
+    {
+      "app": "232250",
+      "depot": "232256",
+      "manifest": "3175798638504180955",
+      "fileList": null,
+      "hash": "sha256-ZFG/2YWHzWcsqucd+cyL5TPIsGjei2yJyg3TY/aqBio=",
+      "singleFile": false
+    }
+  ],
+  "tf-windows": [
+    {
+      "app": "232250",
+      "depot": "232255",
+      "manifest": "6635356743563280882",
+      "fileList": null,
+      "hash": "sha256-dmHF6+wFK+mGHg1Y76ylwE3zlLc4vH5aqDp1Zm38o3g=",
+      "singleFile": false
+    }
+  ],
+  "tf2classified-assets": [
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/cfg/config_default.cfg\ntf2classified/cfg/default.cfg\ntf2classified/cfg/mapcycle_default.txt\ntf2classified/cfg/motd_default.txt\ntf2classified/cfg/trusted_keys_base.txt\ntf2classified/gameinfo.txt\ntf2classified/maps/itemtest.bsp\ntf2classified/maps/itemtest_4team.bsp\ntf2classified/steam.inf\ntf2classified/videoconfig_add.cfg\ntf2classified/vpks/tf2c_overrides_000.vpk\ntf2classified/vpks/tf2c_overrides_dir.vpk\n",
+      "hash": "sha256-/HN/GdAlrDfzal7YpNMQ1YuHGZqmsdnoY//pcGfZnyQ=",
+      "singleFile": false
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/vpks/tf2c_assets_000.vpk",
+      "hash": "7122071b1cde2521535537289827b4689ef6fa86",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/vpks/tf2c_assets_001.vpk",
+      "hash": "8137c35740cb5a559936eb77702e82466dbba01f",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/vpks/tf2c_assets_002.vpk",
+      "hash": "0dd123d3eab57c2aa86c901f6f3d1a85887f443c",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/vpks/tf2c_assets_003.vpk",
+      "hash": "6ee05e8b426e25cbd82c7de353f0afc4b4c23f07",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/vpks/tf2c_assets_004.vpk",
+      "hash": "888c5c7160857a88446e807fe2bd037173e44cf4",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/vpks/tf2c_assets_005.vpk",
+      "hash": "20d16f567650200a6e0d4e1f4684fe8b83f5c125",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/vpks/tf2c_assets_dir.vpk",
+      "hash": "cfd7117c9b384afd90c02042318eefc935d7f72d",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/maps/4arena_flask.bsp",
+      "hash": "4b4fa8773c17ee203b931b4d63d7e31c5dfaf214",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/maps/4arena_flask.nav",
+      "hash": "08f3cbcd32f6ffaec8a4906929e64c18e9b1757c",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/maps/4arena_floodgate.bsp",
+      "hash": "79a6807c6755324cd0a5a33f5243cfc1e55b91b5",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/maps/4arena_floodgate.nav",
+      "hash": "656af5a6f46793cba516caefcbf8e66e201fc459",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/maps/4dom_hydro.bsp",
+      "hash": "535d689d398967dae8a4ac286c59ef16bc1454b1",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/maps/4dom_hydro.nav",
+      "hash": "27b894fb9a83f8694fd62d1f000558d1638cbcc4",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/maps/4dom_krepost.bsp",
+      "hash": "13f5d67869600161ea1ed52d50c4550ea8c47c0d",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/maps/4dom_krepost.nav",
+      "hash": "e1e546254a8644bc2c14d12d0c38babd5951d1bd",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/maps/4plr_sisyphus.bsp",
+      "hash": "c8be9ad753543b1d5920956ae935401fbe3dc04f",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/maps/arena_badlands.bsp",
+      "hash": "be043c90744bc54867d2afbd428246c37ef82f14",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/maps/arena_badlands.nav",
+      "hash": "43826f9a19fe4fc36ad9548985c7168ed3cedfe5",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/maps/arena_granary.bsp",
+      "hash": "99c84dec678033aadecf7b84f0c756e44ffc6f83",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/maps/arena_granary.nav",
+      "hash": "bc86ce038b79cc0b3569eb2161e9ab8cbda86fc5",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/maps/arena_lumberyard.bsp",
+      "hash": "cff1a575c97047818706dbc44f9dd83cd109b90f",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/maps/arena_lumberyard.nav",
+      "hash": "4107dbedcc0325dd183d24399fe4e428f94e5116",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/maps/arena_nucleus.bsp",
+      "hash": "99480c43a1d34c4c8aae903a78626af32d66afcf",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/maps/arena_nucleus.nav",
+      "hash": "7c1455e69407c655f10df1a7802dcbd983ac38f5",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/maps/arena_offblast_final.bsp",
+      "hash": "5277864f996fcbd9e71706780f5057d7ff895dd1",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/maps/arena_offblast_final.nav",
+      "hash": "7289131a998a9ae875057037201266fafdab329d",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/maps/arena_ravine.bsp",
+      "hash": "44b4adc7bea86bf762f157316580c67d8e4aee9b",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/maps/arena_ravine.nav",
+      "hash": "c9067e2243872245806cc1804076b90e779096b2",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/maps/arena_sawmill.bsp",
+      "hash": "661e9be5db498992dbbcc38cb6d41ffb2bdec310",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/maps/arena_sawmill.nav",
+      "hash": "7e0cbbc3f88a5fc041bf6efa2aa53a2ae27c7f5b",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/maps/arena_watchtower.bsp",
+      "hash": "4fd2ddf4ad7317b586fe510bb295cba85244a8f1",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/maps/arena_watchtower.nav",
+      "hash": "28cde53ac6f765b5966fb74fd3a4b5ea0c4672f4",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/maps/arena_well.bsp",
+      "hash": "4c38ed4b59e9eaf9b220acb9852da7d51cd71b16",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/maps/arena_well.nav",
+      "hash": "2221ab60ebd35b7af82095ae5bb9f8f2588c704a",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/maps/cp_5gorge.bsp",
+      "hash": "47f43b7a8a405327d6b403c58209eba34a24a314",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/maps/cp_5gorge.nav",
+      "hash": "2ada5dd04b08a050f8eda450a2a5c347187b9782",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/maps/cp_amaranth.bsp",
+      "hash": "a3ffbc9a287606b0876e8e921e312641c150498c",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/maps/cp_amaranth.nav",
+      "hash": "8e4c4fdedd0b0e1aa6a4407e0859eca8f9cf0ccb",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/maps/cp_badlands.bsp",
+      "hash": "812d0035dbf80fac301111cbdb7b93075c46428a",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/maps/cp_badlands.nav",
+      "hash": "5dd148ea02f8278d2c80fbdeab1530d9f844afc2",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/maps/cp_coldfront.bsp",
+      "hash": "dc75d886ee5899a1210ce771f841f079476d58ae",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/maps/cp_coldfront.nav",
+      "hash": "437444eda720e10320100bbc4bd1a80fc1c07494",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/maps/cp_degrootkeep.bsp",
+      "hash": "7948ec964cc1159f923991151c8fb1e27e6007f2",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/maps/cp_degrootkeep.nav",
+      "hash": "e232f47a2279438acf1702ed0b594d4d7beaa0fd",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/maps/cp_dustbowl.bsp",
+      "hash": "052facb724b9f892e1a04afbae3588374bf3d839",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/maps/cp_dustbowl.nav",
+      "hash": "3e39d5d9c7bed662e7b514223f93bf7f90db8048",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/maps/cp_egypt_final.bsp",
+      "hash": "4bfbaadda5d2b0642e95b3e742d16b2a7c2d9505",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/maps/cp_egypt_final.nav",
+      "hash": "73f899b3e2e59bc7a5b74b2b2bd696a5a709d5ca",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/maps/cp_fastlane.bsp",
+      "hash": "4a2663744cee770fc9e6bb04052bfbd797c76ea7",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/maps/cp_fastlane.nav",
+      "hash": "e9fdc40e593ade8b1851fbb0b6a1af659efbee5b",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/maps/cp_foundry.bsp",
+      "hash": "9cf597ee13e8587c479de1561ddbafeb1ff14c6e",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/maps/cp_foundry.nav",
+      "hash": "3e3525fbaf58db4a2b2c9a975d671f0f692229bb",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/maps/cp_freight_final1.bsp",
+      "hash": "cb6c5741e43359a290385535371e28d1bb5aac66",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/maps/cp_freight_final1.nav",
+      "hash": "3b3865b057fd542868fcf7b2270e19b9f1725f99",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/maps/cp_furnace_rc.bsp",
+      "hash": "5e1c20b5882b832155d6be3f9971974c8afd7a17",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/maps/cp_furnace_rc.nav",
+      "hash": "70f63b81179739df4daa4b3ae99bb19e8632077b",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/maps/cp_gorge.bsp",
+      "hash": "6b38bc622b94f3a99216adc74222283ca333ad29",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/maps/cp_gorge.nav",
+      "hash": "632773f323431784e9d1b644c9625c67653becf3",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/maps/cp_granary.bsp",
+      "hash": "6770dbe32e613a6eee60ec06f418d33cf50bf017",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/maps/cp_granary.nav",
+      "hash": "1c91c645d16f324c58b8a4a45ed7ca396e9b0931",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/maps/cp_gravelpit.bsp",
+      "hash": "b2da9e1a8ff0d0700513e3de86a121a79f0b81cc",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/maps/cp_gravelpit.nav",
+      "hash": "ac79c2ce29f10d9a9447110caf35a5cd029b1137",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/maps/cp_gullywash.bsp",
+      "hash": "f1b4c7d525ba7fee3c408f95f088fd257a7a4ac6",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/maps/cp_gullywash.nav",
+      "hash": "fe85feac6363f19b2a88b8873bc285a021b1f3d5",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/maps/cp_junction_final.bsp",
+      "hash": "79cfe52ff982007f4719ed3f8010da6e58c224d3",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/maps/cp_junction_final.nav",
+      "hash": "cd2a0055401d11ef3972ade4bb1cd07551f7e571",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/maps/cp_mountainlab.bsp",
+      "hash": "cb366a46a6d4ba4537739a8e68558c5657902132",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/maps/cp_mountainlab.nav",
+      "hash": "9e8aa7fef0af7e04857f6dea3669651197e6921a",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/maps/cp_powerhouse.bsp",
+      "hash": "1e42cd0fa7902b0d4484129631f040824df9b884",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/maps/cp_powerhouse.nav",
+      "hash": "82ad26d07d8f247a660652e6259807dab628ab95",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/maps/cp_steel.bsp",
+      "hash": "cac4cb29587293e024f7bb8a2ecad6575c1a7e9b",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/maps/cp_steel.nav",
+      "hash": "d262db8e2df970a0712bee6199a1e31e44107bc1",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/maps/cp_tidal_v4.bsp",
+      "hash": "8af3ce7d5ae31fb35184b83c9975a4da22c09359",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/maps/cp_tidal_v4.nav",
+      "hash": "ab507739f49b0453df477a08d05199564a6b782c",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/maps/cp_well.bsp",
+      "hash": "e159fec23b0e1645a56c8d1ee5207d68ebd473e5",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/maps/cp_well.nav",
+      "hash": "cbd84ea58e72f41566fc6d6aa47813318ac467bc",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/maps/cp_yukon_final.bsp",
+      "hash": "e59b4f3e9a486268c365e39d97d9a19feed19201",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/maps/cp_yukon_final.nav",
+      "hash": "628b78ef7cf6d5e786011271e6575f1c4ad0fb7e",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/maps/ctf_2fort.bsp",
+      "hash": "63288e409ff0f02ca51543624ff4a531a92b2e7f",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/maps/ctf_2fort.nav",
+      "hash": "bd2f83a0d117021db196fa76987e13c5beaa3295",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/maps/ctf_doublecross.bsp",
+      "hash": "a5b1a400d6a62d9600c711bad4ad07a3b064815c",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/maps/ctf_doublecross.nav",
+      "hash": "93a9a76f7aa2d4c64eae709830e50479646615f2",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/maps/ctf_landfall.bsp",
+      "hash": "eda812af17dc4af3a571f8e7cd9691552272b957",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/maps/ctf_landfall.nav",
+      "hash": "742776c1f97fab4616a56ed504bc447aa66f619d",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/maps/ctf_pelican_peak.bsp",
+      "hash": "eda68ba4c73d8543a8619364cbe82de533ff5fe7",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/maps/ctf_pelican_peak.nav",
+      "hash": "fedf5d8857a1fd532082bec3399ac1dfd3dd4e94",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/maps/ctf_sawmill.bsp",
+      "hash": "49fdf8d5f5238760881a0cbb1b20030d2c912244",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/maps/ctf_sawmill.nav",
+      "hash": "2159a24a688385d42bbae4f903481eb0f4408dbc",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/maps/ctf_turbine.bsp",
+      "hash": "0575d1a07038a5c9657fd4373c36031e62924cfc",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/maps/ctf_turbine.nav",
+      "hash": "d4d7e53a5e0313cb16007733865ee691f0927950",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/maps/ctf_well.bsp",
+      "hash": "9e3d2a42fd5fb8d566db6583960ebd950ab0ba4e",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/maps/ctf_well.nav",
+      "hash": "214661c4c5680ec1c3cebe98b012eb5b93762a2e",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/maps/dom_oilcanyon.bsp",
+      "hash": "ca08418e113f7fe2a20624fe6aecd41fd316f1e1",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/maps/dom_oilcanyon.nav",
+      "hash": "a8e565e63db57a6e97c4df34805dc3ca419edb8a",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/maps/dom_railway.bsp",
+      "hash": "4243955973e8c56091e8c367f507adc7b7ebf648",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/maps/dom_railway.nav",
+      "hash": "04c494cedb8593c0aef1c5bd472e41583add9e69",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/maps/dom_sawtooth.bsp",
+      "hash": "3023e74942f8c95f7ed466830626b5a0a1eaf78a",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545061",
+      "manifest": "3171213521571013375",
+      "fileList": "tf2classified/maps/dom_sawtooth.nav",
+      "hash": "f3a5a122e9f09904f0e4c8f19bbae90aa81b02ac",
+      "singleFile": true
+    },
+    {
+      "app": "3557020",
+      "depot": "3545064",
+      "manifest": "8521159015313682465",
+      "fileList": null,
+      "hash": "sha256-O6H6MCwfsOVozx0hplf0QCXuGTn2/alQ3hNhAxAggBE=",
+      "singleFile": false
+    }
+  ],
+  "tf2classified-linux": [
+    {
+      "app": "3557020",
+      "depot": "3557023",
+      "manifest": "2683780840542109514",
+      "fileList": null,
+      "hash": "sha256-gyYniqiZ4jfc6yjdKkDqBvTS/lD2C9OznAQbhFaxykk=",
+      "singleFile": false
+    }
+  ],
+  "tf2classified-windows": [
+    {
+      "app": "3557020",
+      "depot": "3557022",
+      "manifest": "6923656013864931927",
+      "fileList": null,
+      "hash": "sha256-Fv1QUmgb35jQP1jhom6xzn3cV6ema+kFm518p7nsELw=",
+      "singleFile": false
+    }
+  ],
+  "dates": {
+    "232250": "2025.12.23",
+    "232256": "2025.12.23",
+    "232255": "2025.12.23",
+    "3545061": "2026.01.30",
+    "3545064": "2026.01.30",
+    "3557023": "2026.01.30",
+    "3557022": "2026.01.30"
+  }
 }
