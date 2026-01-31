@@ -25,6 +25,8 @@
         config = {
           lib = {
             manifests = {
+              steamworks-linux = [{ app = "1007"; depot = "1006"; }];
+
               tf-windows = [{ app = "232250"; depot = "232255"; }];
               tf-linux = [{ app = "232250"; depot = "232256"; }];
               tf-assets = [
@@ -65,6 +67,8 @@
             parse-manifests = pkgs.callPackage ./pkgs/parse-manifests { inherit (config.lib) manifests; };
             prefetch-missing = pkgs.callPackage ./pkgs/prefetch-missing { };
 
+            steamworks-linux = config.lib.fetchDepot (builtins.head config.lib.chunks.steamworks-linux);
+
             tf-assets = config.lib.fetchJoinChunk {
               name = "tf2ds-assets";
               date = config.lib.chunks.dates."232250";
@@ -91,7 +95,17 @@
           };
 
           checks = {
-            run-tf2ds = pkgs.testers.runNixOSTest ./tests/run-tf2ds.nix;
+            run-tf2ds = pkgs.testers.runNixOSTest (
+              import ./tests/run-tf2ds.nix {
+                inherit (config.packages) tf-assets tf-linux tf-windows;
+              }
+            );
+
+            run-tf2classified-ds = pkgs.testers.runNixOSTest (
+              import ./tests/run-tf2classified-ds.nix {
+                inherit (config.packages) steamworks-linux tf-assets tf2classified-assets tf2classified-linux;
+              }
+            );
           };
 
           devShells.plugins =

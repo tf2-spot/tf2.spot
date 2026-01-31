@@ -1,4 +1,14 @@
 {
+  "steamworks-linux": [
+    {
+      "app": "1007",
+      "depot": "1006",
+      "manifest": "6403079453713498174",
+      "fileList": null,
+      "hash": "sha256-q1A2ooLzKojf3kj5VCFSLngFv6522rXd5nApBQFDrHA=",
+      "singleFile": false
+    }
+  ],
   "tf-assets": [
     {
       "app": "232250",
@@ -1124,6 +1134,7 @@
     }
   ],
   "dates": {
+    "1006": "2025.11.25",
     "232250": "2025.12.23",
     "232256": "2025.12.23",
     "232255": "2025.12.23",
