@@ -7,6 +7,10 @@
 
 	encode zstd gzip
 
+	handle_path /postgrest/* {
+		reverse_proxy postgrest:3000
+	}
+
 	handle_path /media/* {
 		@downloads {
 			query dl=*

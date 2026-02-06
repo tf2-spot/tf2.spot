@@ -1,7 +1,8 @@
 %syntax-version=1.0.0
 %project=meta
 
+btree_gist 2026-01-16T00:00:00Z Lucas <lucas@lde.sg> # install extension btree_gist
 mathesar_user 2026-01-16T00:00:00Z Lucas <lucas@lde.sg> # user for mathesar
 mathesar_db [mathesar_user] 2026-01-16T00:00:00Z Lucas <lucas@lde.sg> # database for mathesar
-btree_gist 2026-01-16T00:00:00Z Lucas <lucas@lde.sg> # install extension btree_gist
+postgrest_user 2026-02-05T20:50:57Z Lucas <lucas@lde.sg> # user
 @v1 2026-01-16T00:00:00Z Lucas <lucas@lde.sg> # v1

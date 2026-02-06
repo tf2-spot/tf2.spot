@@ -2,7 +2,7 @@
 
 begin;
 
-set search_path to fantasy, public;
+set search_path to fantasy;
 
 create table logstf_document
 ( log_id   int       not null

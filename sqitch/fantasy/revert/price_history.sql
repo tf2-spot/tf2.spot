@@ -2,7 +2,7 @@
 
 begin;
 
-set search_path to fantasy, public;
+set search_path to fantasy;
 
 drop trigger trigger_price_history on participant;
 

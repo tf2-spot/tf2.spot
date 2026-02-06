@@ -1,0 +1,1 @@
+-- Verify fantasy:v0/permissions to pg

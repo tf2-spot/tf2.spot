@@ -1,1 +1,0 @@
--- Verify fantasy:role-postgrest in pg

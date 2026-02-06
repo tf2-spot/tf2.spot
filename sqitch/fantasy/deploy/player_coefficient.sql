@@ -2,7 +2,7 @@
 
 begin;
 
-set search_path to fantasy, public;
+set search_path to fantasy;
 
 create table player_coefficient
 ( id               serial  not null

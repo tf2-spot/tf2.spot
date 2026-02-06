@@ -2,7 +2,7 @@
 
 begin;
 
-set search_path to fantasy, public;
+set search_path to fantasy;
 
 drop function to_steamid64(text);
 

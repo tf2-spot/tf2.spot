@@ -5,7 +5,6 @@
 role-visitor 2026-01-16T00:00:00Z Lucas <lucas@lde.sg> # role
 role-manager 2026-01-16T00:00:00Z Lucas <lucas@lde.sg> # role
 role-admin 2026-01-16T00:00:00Z Lucas <lucas@lde.sg> # role
-role-postgrest 2026-01-16T13:54:22Z Lucas <lucas@lde.sg> # role
 
 schema 2026-01-16T00:00:00Z Lucas <lucas@lde.sg> # schema
 
@@ -42,3 +41,9 @@ fantasy [tournament manager] 2026-01-16T16:21:38Z Lucas <lucas@lde.sg> # table
 contract [meta:@v1 fantasy participant] 2026-01-16T17:40:28Z Lucas <lucas@lde.sg> # table
 
 update_roster [contract] 2026-01-17T17:48:44Z Lucas <lucas@lde.sg> # function
+
+permissions [meta:@v1 role-visitor role-manager] 2026-02-05T18:03:06Z Lucas <lucas@lde.sg> # permissions
+
+v0/schema 2026-02-04T19:31:36Z Lucas <lucas@lde.sg> # schema
+v0/manager 2026-02-05T18:03:42Z Lucas <lucas@lde.sg> # view
+v0/permissions 2026-02-05T18:03:27Z Lucas <lucas@lde.sg> # permissions

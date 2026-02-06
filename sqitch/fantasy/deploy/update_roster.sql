@@ -2,7 +2,7 @@
 
 begin;
 
-set search_path to fantasy, public;
+set search_path to fantasy;
 
 create function update_roster(fantasy_id int, desired_roster int[])
 returns void

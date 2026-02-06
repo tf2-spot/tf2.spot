@@ -26,9 +26,10 @@ services:
     image: docker.io/postgrest/postgrest:latest
     environment:
       <<: *config
-      PGRST_DB_URI: postgres://fantasy_postgrest:fantasy_postgrest@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}
-      PGRST_DB_SCHEMA: fantasy_api
+      PGRST_DB_URI: postgres://postgrest:postgrest@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}
+      PGRST_DB_SCHEMA: fantasy_v0
       PGRST_DB_ANON_ROLE: fantasy_visitor
+      PGRST_JWT_SECRET: m93oLRACWZOFGrgHiXFnp4mZoqL3qHy4
     restart: always
     expose:
       - "3000"

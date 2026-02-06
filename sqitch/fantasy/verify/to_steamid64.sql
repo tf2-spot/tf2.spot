@@ -1,6 +1,6 @@
 -- Verify fantasy:to_steamid64 to pg
 
-set search_path to fantasy, public;
+set search_path to fantasy;
 
 do $$
 begin

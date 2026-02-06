@@ -1,0 +1,1 @@
+-- Verify meta:postgrest_user to pg

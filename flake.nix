@@ -86,6 +86,16 @@
                 pkgs.postgresql
                 pkgs.sqitchPg
 
+                (pkgs.python3.withPackages (p: [
+                  p.flask
+                  p.flask-assets
+                  p.requests
+                  p.pyjwt
+                  (p.callPackage ./pkgs/python-postgrest { })
+                ]))
+                pkgs.tailwindcss_4
+                pkgs.watchman
+
                 # tmp
                 pkgs.podman-compose
               ];

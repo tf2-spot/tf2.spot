@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  {% block head %}
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  {% assets "../tailwind.css", output="tailwind.css" %}
+    <link rel="stylesheet" href="{{ ASSET_URL }}" />
+  {% endassets %}
+
+  <title>{% block fulltitle %}{% block title %}{% endblock title %} — Fantasy TF2{% endblock fulltitle %}</title>
+
+  {% endblock head %}
+</head>
+
+<body class="bg-blue-100">
+  {% block body %}{% endblock body %}
+</body>
+</html>

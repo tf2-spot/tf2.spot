@@ -1,6 +1,11 @@
+# Nix
 result
 result-*
-
-manifests
-
 .nixos-test-history
+
+# Python
+__pycache__
+.webassets-cache
+
+# Ours
+manifests
