@@ -4,6 +4,6 @@ begin;
 
 set search_path to fantasy;
 
-drop table team_performance;
+drop materialized view team_performance;
 
 commit;

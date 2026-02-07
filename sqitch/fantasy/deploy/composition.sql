@@ -19,7 +19,7 @@ create table composition
 , primary key (id)
 );
 
-comment on table composition is '[ADM] how many of each class should there be in a team';
+comment on table composition is 'how many of each class should there be in a team';
 
 insert into composition (name, scout, soldier, demoman, medic) values ('6v6', 2, 2, 1, 1);
 insert into composition values (nextval('composition_id_seq'), 'Highlander', 1, 1, 1, 1, 1, 1, 1, 1, 1);

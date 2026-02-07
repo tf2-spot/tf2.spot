@@ -13,6 +13,8 @@ create table substitution
 , foreign key (map) references map
 , foreign key (participant) references participant
 , foreign key (substitute) references player
+, unique (map, participant)
+, unique (map, substitute)
 -- check map -> match -> { team left / team right } = participant -> team
 );
 

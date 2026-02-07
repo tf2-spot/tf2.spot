@@ -3,4 +3,15 @@
 {% block body %}
 <h1>Welcome to Fantasy TF2</h1>
 <p>Please bear with us as the website as is under construction.</p>
+
+{% if me %}
+<p>I'm logged in :-)</p>
+{% endif %}
+
+<div>
+  {% for tournament in tournaments %}
+    <div>
+    </div>
+  {% endfor %}
+</div>
 {% endblock body %}

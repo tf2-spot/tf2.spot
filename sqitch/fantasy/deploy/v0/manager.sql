@@ -4,6 +4,6 @@ begin;
 
 set search_path to fantasy_v0;
 
-create view manager as select * from fantasy.manager; 
+create view manager as select * from fantasy.manager;
 
 commit;

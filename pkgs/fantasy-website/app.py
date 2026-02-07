@@ -64,7 +64,7 @@ def openid_steam():
     session = jwt.encode(dict(role="fantasy_manager", manager_id=id), key=JWT_SECRET, algorithm=JWT_ALGORITHM)
     
     api.auth(session)
-    req = api.table("manager").upsert(dict(steam_id=id, last_login=datetime.now().isoformat())).execute()
+    req = api.table("me").upsert(dict(steam_id=id, last_login=datetime.now().isoformat())).execute()
 
     resp = make_response(redirect(url_for("homepage")))
     resp.set_cookie(SESSION_COOKIE, session, max_age=timedelta(days=30))

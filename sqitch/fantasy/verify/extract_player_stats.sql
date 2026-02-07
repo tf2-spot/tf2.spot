@@ -1,0 +1,1 @@
+-- Verify fantasy:extract_player_stats to pg

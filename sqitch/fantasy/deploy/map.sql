@@ -7,9 +7,9 @@ set search_path to fantasy;
 create table map
 ( id                serial not null
 , match             int    not null
-, name              text   not null
-, log_id            int    not null
-, golden_cap_log_id int    not null
+, name              text
+, log_id            int
+, golden_cap_log_id int
 , primary key (id)
 , foreign key (match) references match
 );
