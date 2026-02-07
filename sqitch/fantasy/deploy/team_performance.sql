@@ -18,6 +18,6 @@ set search_path to fantasy;
 create materialized view team_performance as
 select 1;
 
-comment on view team_performance is 'how much of a statistic has a team achieved';
+comment on materialized view team_performance is 'how much of a statistic has a team achieved';
 
 commit;
