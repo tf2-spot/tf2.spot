@@ -10,7 +10,7 @@ language plpgsql
 strict
 as $$
 declare
-    now timestamp with time zone = now();
+    now timestamptz = now();
 begin
     if not exists (select 1 from fantasy where id = fantasy_id) then
         raise exception 'Fantasy team does not exist';
@@ -27,7 +27,7 @@ begin
     end if;
 
     update contract
-    set time = tsrange(lower(time), now::timestamp)
+    set time = tstzrange(lower(time), now)
       , sale_price = p.price
     from participant p
     where p.id = participant
@@ -37,7 +37,7 @@ begin
     insert into contract (fantasy, participant, time, purchase_price)
     select fantasy_id
          , participant.id
-         , tsrange(now::timestamp, null)
+         , tstzrange(now, null)
          , participant.price
     from unnest(desired_roster)
     join participant on participant.id = unnest

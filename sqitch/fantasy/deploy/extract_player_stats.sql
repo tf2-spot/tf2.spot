@@ -149,7 +149,7 @@ with extract_player as (
 )
 
 select log_id
-     , steam_id
+     , to_steamid64(steam_id)::text as steam_id
      , key as statistic
      , case when value = jsonb 'null' then 0 else value::decimal end as value
 from (
