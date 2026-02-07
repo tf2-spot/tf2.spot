@@ -10,14 +10,14 @@ schema 2026-01-16T00:00:00Z Lucas <lucas@lde.sg> # schema
 
 to_steamid64 [schema] 2026-01-20T12:26:03Z Lucas <lucas@lde.sg> # function
 
-logstf_document [schema] 2026-01-18T12:47:17Z Lucas <lucas@lde.sg> # table
-extract_player_stats [logstf_document] 2026-02-07T13:45:03Z Lucas <lucas@lde.sg> # view
-
 scoring_model [schema] 2026-01-16T22:00:31Z Lucas <lucas@lde.sg> # table
 player_statistic [schema] 2026-01-16T22:05:19Z Lucas <lucas@lde.sg> # table
 player_coefficient [scoring_model player_statistic] 2026-01-16T22:14:42Z Lucas <lucas@lde.sg> # table
 team_statistic [schema] 2026-01-20T17:23:45Z Lucas <lucas@lde.sg> # table
 team_coefficient [scoring_model team_statistic] 2026-01-20T17:23:59Z Lucas <lucas@lde.sg> # table
+
+logstf_document [schema] 2026-01-18T12:47:17Z Lucas <lucas@lde.sg> # table
+extract_player_stats [logstf_document] 2026-02-07T13:45:03Z Lucas <lucas@lde.sg> # view
 
 region [schema] 2026-01-16T00:00:00Z Lucas <lucas@lde.sg> # table
 composition [schema] 2026-01-20T17:39:45Z Lucas <lucas@lde.sg> # table

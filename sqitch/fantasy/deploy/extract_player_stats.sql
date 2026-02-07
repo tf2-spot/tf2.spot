@@ -151,7 +151,7 @@ with extract_player as (
 select log_id
      , steam_id
      , key as statistic
-     , value::decimal
+     , case when value = jsonb 'null' then 0 else value::decimal end as value
 from (
   select log_id, steam_id, key, value from extract_player, jsonb_each(to_jsonb(extract_player))
   union
@@ -162,7 +162,8 @@ from (
   select log_id, steam_id, key, value from extract_class_deaths, jsonb_each(to_jsonb(extract_class_deaths))
 )
 where key not in ('log_id', 'steam_id')
-and value not in (jsonb 'null', jsonb '0')
 ;
+
+comment on view extract_player_stats is 'internal';
 
 commit;
