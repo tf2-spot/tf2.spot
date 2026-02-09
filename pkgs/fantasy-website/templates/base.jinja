@@ -17,6 +17,20 @@
 </head>
 
 <body class="bg-blue-100">
-  {% block body %}{% endblock body %}
+  <header>
+    <a href="{{ url_for('homepage') }}">Fantasy TF2</a>
+    {% if me is not none %}
+    <a href="{{ url_for('profile', id=me.manager_id) }}">My Profile</a>
+    <a href="{{ url_for('logout') }}">Sign out</a>
+    {% else %}
+    <a href="{{ url_for('login') }}">
+      <img src="https://community.fastly.steamstatic.com/public/images/signinthroughsteam/sits_01.png" />
+    </a>
+    {% endif %}
+  </header>
+  
+  <main>
+    {% block body %}{% endblock body %}
+  </main>
 </body>
 </html>

@@ -1,0 +1,15 @@
+[project]
+name = "fantasy-website"
+version = "0.1.0"
+description = "Flask website that serves https://fantasy.tf2.spot"
+requires-python = ">=3.13"
+dependencies = [
+    "flask>=3.1.2",
+    "flask-assets>=2.1.0",
+    "httpx[http2]>=0.28.1",
+    "postgrest>=2.27.3",
+    "pyjwt>=2.11.0",
+]
+
+[tool.ruff.lint]
+extend-select = ["I"]

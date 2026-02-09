@@ -1,12 +1,10 @@
-{% extends "base.html" %}
+{% extends "base.jinja" %}
+
+{% block fulltitle %}Fantasy TF2{% endblock %}
 
 {% block body %}
 <h1>Welcome to Fantasy TF2</h1>
 <p>Please bear with us as the website as is under construction.</p>
-
-{% if me %}
-<p>I'm logged in :-)</p>
-{% endif %}
 
 <div>
   {% for tournament in tournaments %}

@@ -86,6 +86,10 @@
                 pkgs.postgresql
                 pkgs.sqitchPg
 
+                pkgs.uv
+                pkgs.ruff
+                pkgs.ty
+                pkgs.jinja-lsp
                 (pkgs.python3.withPackages (p: [
                   p.flask
                   p.flask-assets
@@ -93,6 +97,7 @@
                   p.pyjwt
                   (p.callPackage ./pkgs/python-postgrest { })
                 ]))
+
                 pkgs.tailwindcss_4
                 pkgs.watchman
 
