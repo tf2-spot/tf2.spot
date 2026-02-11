@@ -17,20 +17,43 @@
 </head>
 
 <body class="bg-blue-100">
-  <header>
-    <a href="{{ url_for('homepage') }}">Fantasy TF2</a>
+  <header class="max-w-3xl mx-auto mt-4 mb-12 flex items-baseline">
+    <a
+      href="{{ url_for('homepage') }}"
+      class="flex-5 text-5xl"
+    >Fantasy TF2</a>
+
     {% if me is not none %}
-    <a href="{{ url_for('profile', id=me.manager_id) }}">My Profile</a>
-    <a href="{{ url_for('logout') }}">Sign out</a>
+
+    <a
+      href="{{ url_for('manager', id=me.manager_id) }}"
+      class="flex-1 mx-auto hover:underline"
+    >My Profile</a>
+
+    <a
+      href="{{ url_for('logout') }}"
+      class="flex-1 mx-auto hover:underline"
+    >Sign out</a>
+
     {% else %}
-    <a href="{{ url_for('login') }}">
-      <img src="https://community.fastly.steamstatic.com/public/images/signinthroughsteam/sits_01.png" />
+
+    <a
+      href="{{ url_for('login') }}"
+      class="flex-2 mx-auto text-green-700 hover:bg-green-500"
+    >
+      Sign in through STEAM&reg;
+      {# <img src="https://community.fastly.steamstatic.com/public/images/signinthroughsteam/sits_01.png" /> #}
     </a>
+
     {% endif %}
   </header>
   
-  <main>
-    {% block body %}{% endblock body %}
+  <main class="max-w-5xl mx-auto">
+    {% block main %}{% endblock main %}
   </main>
+
+  <footer class="flex justify-center mx-auto mt-12 mb-4">
+    <a href="https://tf2.spot" class="text-sm text-stone-500/30 hover:underline hover:text-stone-500/90">a tf2.spot project</a>
+  </footer>
 </body>
 </html>

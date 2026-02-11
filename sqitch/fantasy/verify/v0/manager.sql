@@ -1,1 +1,0 @@
--- Verify fantasy:v0/manager to pg

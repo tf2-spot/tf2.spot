@@ -1,3 +1,5 @@
+from babel.dates import format_timedelta, format_datetime
+from whenever import OffsetDateTime, Instant
 import urllib.parse
 from datetime import datetime, timedelta
 
@@ -9,36 +11,80 @@ from flask import Flask, make_response, redirect, render_template, request, url_
 
 app = Flask(__name__)
 app.config.from_prefixed_env()
+app.jinja_env.add_extension("jinja2.ext.debug")
 
 assets = flask_assets.Environment(app)
 
-SESSION_COOKIE = "session"
+AUTHN_COOKIE = "authn"
 POSTGREST = "http://localhost:8080/postgrest"
 STEAM_OPENID = "https://steamcommunity.com/openid/login"
 JWT_SECRET = "m93oLRACWZOFGrgHiXFnp4mZoqL3qHy4"
 JWT_ALGORITHM = "HS256"
+JWT_ROLE = "fantasy_manager"
 
-api = postgrest.SyncPostgrestClient(POSTGREST, schema="fantasy_v0")
 
-
-def get_session_cookie():
-    try:
-        return jwt.decode(
-            request.cookies[SESSION_COOKIE], key=JWT_SECRET, algorithms=JWT_ALGORITHM
-        )
-    except:
-        pass
-    return None
+def api(auth=None):
+    client = postgrest.SyncPostgrestClient(POSTGREST, schema="fantasy_v0")
+    if auth is not None:
+        client.auth(auth)
+    return client
 
 
 @app.route("/")
 def homepage():
-    return render_template("homepage.jinja", me=get_session_cookie())
+    client = api()
+    tournaments = client.table("tournament").select().execute()
+    return render_template("homepage.jinja", tournaments=tournaments.data)
 
 
-@app.route("/profiles/<id>")
-def profile(id):
-    return "Nah", 404
+@app.route("/t/<slug>")
+def tournament(slug):
+    client = api()
+    tournament = (
+        client.table("tournament")
+        .select(
+            "*",
+            "composition(*)",
+            """
+            scoring_model(
+                player_coefficient(
+                    variable: player_statistic!variable(*),
+                    divide_by: player_statistic!divide_by(*),
+                    highest,
+                    lowest,
+                    score_coefficient
+                ),
+                team_coefficient(
+                    variable: team_statistic(*),
+                    coefficient
+                )
+            )
+            """,
+            "upcoming_rounds: round(*)",
+            "past_rounds: round(*)",
+        )
+        .eq("slug", slug)
+        .gte("upcoming_rounds.time", "now")
+        .lt("past_rounds.time", "now")
+        .maybe_single()
+        .execute()
+    )
+    return render_template("tournament.jinja", tournament=tournament.data)
+
+
+@app.route("/t/<slug>/manage")
+def manage(slug):
+    return render_template("manage.jinja")
+
+
+@app.route("/t/<slug>/participants")
+def participants(slug):
+    return render_template("participants.jinja")
+
+
+@app.route("/m/<id>")
+def manager(id):
+    return "", 404
 
 
 @app.route("/login")
@@ -61,41 +107,39 @@ def openid_steam():
     try:
         validation = {
             k: request.args[k]
-            for k in ("openid.assoc_handle", "openid.signed", "openid.sig", "openid.ns")
+            for k in {
+                f"openid.{signed}"
+                for signed in request.args["openid.signed"].split(",")
+            }
+            | {"openid.assoc_handle", "openid.signed", "openid.sig", "openid.ns"}
         }
     except KeyError:
-        return render_template("login-fail.jinja", me=None), 401
-
-    for signed in request.args["openid.signed"].split(","):
-        key = f"openid.{signed}"
-        if key not in validation:
-            validation[key] = request.args[key]
+        return render_template("login-fail.jinja"), 401
 
     validation["openid.mode"] = "check_authentication"
 
     req = httpx.post(STEAM_OPENID, data=validation)
 
-    app.logger.error(req)
     if "is_valid:true" not in req.text:
-        return render_template("login-fail.jinja", me=None), 401
+        return render_template("login-fail.jinja"), 401
 
     id = request.args["openid.identity"].split("/")[-1]
 
-    session = jwt.encode(
-        dict(role="fantasy_manager", manager_id=id),
+    authn = jwt.encode(
+        dict(role=JWT_ROLE, manager_id=id),
         key=JWT_SECRET,
         algorithm=JWT_ALGORITHM,
     )
 
-    api.auth(session)
+    client = api(authn)
     req = (
-        api.table("me")
+        client.table("me")
         .upsert(dict(steam_id=id, last_login=datetime.now().isoformat()))
         .execute()
     )
 
     resp = make_response(redirect(url_for("homepage")))
-    resp.set_cookie(SESSION_COOKIE, session, max_age=timedelta(days=30))
+    resp.set_cookie(AUTHN_COOKIE, authn, max_age=timedelta(days=31))
 
     return resp
 
@@ -103,8 +147,37 @@ def openid_steam():
 @app.route("/logout")
 def logout():
     resp = make_response(redirect(url_for("homepage")))
-    resp.set_cookie(SESSION_COOKIE, "", expires=0)
+    resp.set_cookie(AUTHN_COOKIE, "", expires=0)
     return resp
+
+
+@app.context_processor
+def ctx_login():
+    try:
+        authn = jwt.decode(
+            request.cookies[AUTHN_COOKIE], key=JWT_SECRET, algorithms=JWT_ALGORITHM
+        )
+        return dict(me=authn)
+    except KeyError:
+        pass
+    except jwt.DecodeError:
+        pass
+    return dict(me=None)
+
+
+@app.template_filter()
+def to_now(dt):
+    dt = OffsetDateTime.parse_common_iso(dt)
+    now = Instant.now()
+    delta = dt - now
+    delta = delta.py_timedelta()
+    return format_timedelta(delta, locale="en_US", add_direction=True, threshold=2.4)
+
+
+@app.template_filter("datetime")
+def _datetime(dt):
+    dt = OffsetDateTime.parse_common_iso(dt)
+    return format_datetime(dt.py_datetime(), locale="en_US")
 
 
 if __name__ == "__main__":

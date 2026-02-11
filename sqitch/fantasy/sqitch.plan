@@ -45,6 +45,5 @@ update_roster [contract] 2026-01-17T17:48:44Z Lucas <lucas@lde.sg> # function
 permissions [meta:@v1 role-visitor role-manager] 2026-02-05T18:03:06Z Lucas <lucas@lde.sg> # permissions
 
 v0/schema 2026-02-04T19:31:36Z Lucas <lucas@lde.sg> # schema
-v0/me 2026-02-06T01:21:20Z Lucas <lucas@lde.sg> # view
-v0/manager 2026-02-05T18:03:42Z Lucas <lucas@lde.sg> # view
+v0/views 2026-02-10T00:29:27Z Lucas <lucas@lde.sg> # views
 v0/permissions 2026-02-05T18:03:27Z Lucas <lucas@lde.sg> # permissions

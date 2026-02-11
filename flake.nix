@@ -91,11 +91,13 @@
                 pkgs.ty
                 pkgs.jinja-lsp
                 (pkgs.python3.withPackages (p: [
+                  p.babel
                   p.flask
                   p.flask-assets
                   p.requests
                   p.pyjwt
                   (p.callPackage ./pkgs/python-postgrest { })
+                  p.whenever
                 ]))
 
                 pkgs.tailwindcss_4
