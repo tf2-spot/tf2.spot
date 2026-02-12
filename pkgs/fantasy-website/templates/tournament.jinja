@@ -6,8 +6,8 @@
 <div>
   <div>
     <h1 class="text-2xl">{{ tournament.name }}</h1>
-    <p>Start {{ tournament.start_time | to_now }}, {{ tournament.start_time | datetime }}</p>
-    <p>End {{ tournament.end_time | to_now }}, {{ tournament.end_time | datetime }}</p>
+    <p>from {{ temporal(tournament.start_time) }}</p>
+    <p>to {{ temporal(tournament.end_time) }}</p>
 
     <a href={{ url_for('manage', slug=tournament.slug) }}>Manage your team</a>
     <a href={{ url_for('participants', slug=tournament.slug) }}>View participants</a>
@@ -18,7 +18,7 @@
     <table>
       <thead>
         <tr>
-          <th>Tournament ruleset</th>
+          <th colspan=2>Tournament ruleset</th>
         </tr>
       </thead>
       <tbody>
@@ -66,7 +66,7 @@
               {{ coef.variable.short }}
               {%- if coef.divide_by is not none %}/{{ coef.divide_by.short }}{% endif %}
             </td>
-            <td>&times; {{ coef.score_coefficient }}</td>
+            <td>&times; {{ coef.coefficient }}</td>
           </tr>
         {% endfor %}
 
@@ -85,20 +85,16 @@
   {% for round in tournament.upcoming_rounds %}
     <div>
       {{ round.name }},
-      {{ round.time | to_now }} on {{ round.time | datetime }}
+      <span class="temporal" data-ts="{{ round.time }}">{{ round.time }}</span>
     </div>
   {% endfor %}
 
   {% for round in tournament.past_rounds %}
     <div>
-      {{ round.name }},
-      {{ round.time | to_now }} on {{ round.time | datetime }}
+      {{ round.name }}, {{ temporal(round.time) }}
     </div>
   {% endfor %}
   </div>
-    
-  <hr />
-  <pre>{{ tournament | tojson(indent=2) }}</pre>
 </div>
 {% endblock main %}
 

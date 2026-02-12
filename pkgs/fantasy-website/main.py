@@ -1,5 +1,3 @@
-from babel.dates import format_timedelta, format_datetime
-from whenever import OffsetDateTime, Instant
 import urllib.parse
 from datetime import datetime, timedelta
 
@@ -7,7 +5,9 @@ import flask_assets
 import httpx
 import jwt
 import postgrest
+from babel.dates import format_datetime, format_timedelta
 from flask import Flask, make_response, redirect, render_template, request, url_for
+from whenever import Instant, OffsetDateTime
 
 app = Flask(__name__)
 app.config.from_prefixed_env()
@@ -44,7 +44,6 @@ def tournament(slug):
         client.table("tournament")
         .select(
             "*",
-            "composition(*)",
             """
             scoring_model(
                 player_coefficient(
@@ -52,7 +51,7 @@ def tournament(slug):
                     divide_by: player_statistic!divide_by(*),
                     highest,
                     lowest,
-                    score_coefficient
+                    coefficient
                 ),
                 team_coefficient(
                     variable: team_statistic(*),
@@ -60,6 +59,7 @@ def tournament(slug):
                 )
             )
             """,
+            "composition(*)",
             "upcoming_rounds: round(*)",
             "past_rounds: round(*)",
         )
@@ -84,7 +84,7 @@ def participants(slug):
 
 @app.route("/m/<id>")
 def manager(id):
-    return "", 404
+    return render_template("manager.jinja")
 
 
 @app.route("/login")
@@ -176,8 +176,8 @@ def to_now(dt):
 
 @app.template_filter("datetime")
 def _datetime(dt):
-    dt = OffsetDateTime.parse_common_iso(dt)
-    return format_datetime(dt.py_datetime(), locale="en_US")
+    dt = OffsetDateTime.parse_common_iso(dt).to_tz("UTC")
+    return format_datetime(dt.py_datetime(), "long", locale="en_US")
 
 
 if __name__ == "__main__":

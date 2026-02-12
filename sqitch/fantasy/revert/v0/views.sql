@@ -4,6 +4,15 @@ begin;
 
 set search_path to fantasy_v0;
 
+drop view manager;
+drop view me;
 drop view tournament;
+drop view composition;
+drop view scoring_model;
+drop view player_coefficient;
+drop view player_statistic;
+drop view team_coefficient;
+drop view team_statistic;
+drop view round;
 
 commit;

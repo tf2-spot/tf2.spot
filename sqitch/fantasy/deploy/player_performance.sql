@@ -35,7 +35,7 @@ with pre as (
 
               else sum(var.value)
          end as total
-       , coef.score_coefficient
+       , coef.coefficient
        , divide_by is not null and not highest and not lowest as is_average
        , sum(var.value) as variable
        , sum(div.value) as divide_by
@@ -75,7 +75,7 @@ select participant
             when any_value(is_average) then sum(variable)/greatest(sum(divide_by), 1)
             else sum(total)
        end as total
-     , sum(total * score_coefficient) as score
+     , sum(total * coefficient) as score
 from pre
 group by grouping sets
 ( (participant, tournament, round, match, map, player_coefficient)

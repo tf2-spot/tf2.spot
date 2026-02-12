@@ -15,9 +15,6 @@ where steam_id = current_setting('request.jwt.claims', true)::json->>'manager_id
 create view tournament as
 select * from fantasy.tournament;
 
-create view composition as
-select * from fantasy.composition;
-
 create view scoring_model as
 select * from fantasy.scoring_model;
 
@@ -32,6 +29,9 @@ select * from fantasy.team_coefficient;
 
 create view team_statistic as
 select * from fantasy.team_statistic;
+
+create view composition as
+select * from fantasy.composition;
 
 create view round as
 select * from fantasy.round;

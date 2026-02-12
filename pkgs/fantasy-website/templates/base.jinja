@@ -1,3 +1,7 @@
+{% macro temporal(ts) %}
+  <span class="temporal" data-ts="{{ ts }}">{{ ts | datetime }} ({{ ts | to_now }})</span>
+{% endmacro -%}
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -10,6 +14,10 @@
   {% assets "../tailwind.css", output="tailwind.css" %}
     <link rel="stylesheet" href="{{ ASSET_URL }}" />
   {% endassets %}
+
+  <script src="/static/temporal.js"></script>
+
+  <link rel="icon" href="data:image/png;base64,iVBORw0KGgo=">
 
   <title>{% block fulltitle %}{% block title %}{% endblock title %} — Fantasy TF2{% endblock fulltitle %}</title>
 
