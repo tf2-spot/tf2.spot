@@ -16,6 +16,8 @@ on manager
  , team_coefficient
  , team_statistic
  , round
+ , fantasy
+ , contract
 from fantasy_visitor, fantasy_manager;
 
 revoke usage on schema fantasy_v0 from fantasy_visitor, fantasy_manager;

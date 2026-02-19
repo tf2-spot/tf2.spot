@@ -3,22 +3,26 @@
 {% block title %}{{ tournament.name }}{% endblock %}
 
 {% block main %}
-<div>
   <div>
-    <h1 class="text-2xl">{{ tournament.name }}</h1>
-    <p>from {{ temporal(tournament.start_time) }}</p>
-    <p>to {{ temporal(tournament.end_time) }}</p>
+    <div>
+      <h1 class="text-2xl">{{ tournament.name }}</h1>
+      <p>from {{ temporal(tournament.start_time) }}</p>
+      <p>to {{ temporal(tournament.end_time) }}</p>
 
-    <a href={{ url_for('manage', slug=tournament.slug) }}>Manage your team</a>
-    <a href={{ url_for('participants', slug=tournament.slug) }}>View participants</a>
-  </div>
+      <a href="{{ url_for('manage', slug=tournament.slug) }}"
+        >Manage your team</a
+      >
+      <a href="{{ url_for('participants', slug=tournament.slug) }}"
+        >View participants</a
+      >
+    </div>
 
-  <hr />
+    <hr />
 
     <table>
       <thead>
         <tr>
-          <th colspan=2>Tournament ruleset</th>
+          <th colspan="2">Tournament ruleset</th>
         </tr>
       </thead>
       <tbody>
@@ -42,20 +46,21 @@
           <td>{{ tournament.composition.name }}</td>
         </tr>
 
-        {% for c in ('scout', 'soldier', 'pyro', 'demoman', 'heavy', 'engineer', 'medic', 'sniper', 'spy')
-           if tournament.composition[c]
+        {%
+          for c in ('scout', 'soldier', 'pyro', 'demoman', 'heavy', 'engineer', 'medic', 'sniper', 'spy')
+          if tournament.composition[c]
         %}
           <tr>
             <td class="text-right">{{ c | capitalize }}</td>
             <td>{{ tournament.composition[c] }}</td>
           </tr>
         {% endfor %}
-      
+
         <tr>
           <th class="text-right">Scoring model</th>
         </tr>
 
-        {% for coef in tournament.scoring_model.player_coefficient %}    
+        {% for coef in tournament.scoring_model.player_coefficient %}
           <tr>
             <td class="text-right">
               {% if coef.highest %}
@@ -70,7 +75,7 @@
           </tr>
         {% endfor %}
 
-        {% for coef in tournament.scoring_model.team_coefficient %}    
+        {% for coef in tournament.scoring_model.team_coefficient %}
           <tr>
             <td class="text-right">{{ coef.variable.short }}</td>
             <td>&times; {{ coef.coefficient }}</td>
@@ -79,22 +84,21 @@
       </tbody>
     </table>
 
-  <hr />
+    <hr />
 
-  <div>
-  {% for round in tournament.upcoming_rounds %}
     <div>
-      {{ round.name }},
-      <span class="temporal" data-ts="{{ round.time }}">{{ round.time }}</span>
-    </div>
-  {% endfor %}
+      {% for round in tournament.upcoming_rounds %}
+        <div>
+          {{ round.name }},
+          <span class="temporal" data-ts="{{ round.time }}"
+            >{{ round.time }}</span
+          >
+        </div>
+      {% endfor %}
 
-  {% for round in tournament.past_rounds %}
-    <div>
-      {{ round.name }}, {{ temporal(round.time) }}
+      {% for round in tournament.past_rounds %}
+        <div>{{ round.name }}, {{ temporal(round.time) }}</div>
+      {% endfor %}
     </div>
-  {% endfor %}
   </div>
-</div>
 {% endblock main %}
-

@@ -84,7 +84,14 @@ def participants(slug):
 
 @app.route("/m/<id>")
 def manager(id):
-    return render_template("manager.jinja")
+    client = api()
+    manager = (
+        client.table("manager")
+        .select("*", "fantasy(*, tournament(*), contract(*))")
+        .maybe_single()
+        .execute()
+    )
+    return render_template("manager.jinja", manager=manager.data)
 
 
 @app.route("/login")
@@ -93,7 +100,7 @@ def login():
         {
             "openid.ns": "http://specs.openid.net/auth/2.0",
             "openid.mode": "checkid_setup",
-            "openid.return_to": f"{request.host_url}openid/steam",
+            "openid.return_to": f"{request.host_url}{url_for('openid_steam')}",
             "openid.realm": request.host_url,
             "openid.identity": "http://specs.openid.net/auth/2.0/identifier_select",
             "openid.claimed_id": "http://specs.openid.net/auth/2.0/identifier_select",

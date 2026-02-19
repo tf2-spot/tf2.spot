@@ -3,10 +3,10 @@
 {% block title %}Login failure{% endblock %}
 
 {% block main %}
-<h1>Login failure</h1>
-<p>
-  We failed to verify your identity during the Steam authentication process.
-  <br />
-  <a href="{{ url_for('login') }}">Try again</a>
-</p>
+  <h1>Login failure</h1>
+  <p>
+    We failed to verify your identity during the Steam authentication process.
+    <br />
+    <a href="{{ url_for('login') }}">Try again</a>
+  </p>
 {% endblock main %}

@@ -3,14 +3,14 @@
 {% block fulltitle %}Fantasy TF2{% endblock %}
 
 {% block main %}
-<h1>Welcome to Fantasy TF2</h1>
-<p>Please bear with us as the website as is under construction.</p>
+  <h1>Welcome to Fantasy TF2</h1>
+  <p>Please bear with us as the website as is under construction.</p>
 
-<div>
-  {% for tournament in tournaments %}
-    <a href="{{ url_for('tournament', slug=tournament.slug) }}"><div>
-      {{ tournament.name }}
-    </div></a>
-  {% endfor %}
-</div>
+  <div>
+    {% for tournament in tournaments %}
+      <a href="{{ url_for('tournament', slug=tournament.slug) }}"
+        ><div>{{ tournament.name }}</div></a
+      >
+    {% endfor %}
+  </div>
 {% endblock main %}

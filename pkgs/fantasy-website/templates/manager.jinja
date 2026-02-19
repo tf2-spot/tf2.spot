@@ -1,5 +1,13 @@
 {% extends "base.jinja" %}
 
+{% block title %}
+  {% if manager.name is not none %}
+    {{ manager.name }}
+  {% else %}
+    Manager #{{ manager.steam_id }}
+  {% endif %}
+{% endblock title %}
+
 {% block main %}
-TODO
+  <pre>{{ manager | tojson(2) }}</pre>
 {% endblock main %}

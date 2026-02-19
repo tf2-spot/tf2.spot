@@ -18,6 +18,8 @@ on manager
  , team_coefficient
  , team_statistic
  , round
+ , fantasy
+ , contract
 to fantasy_visitor, fantasy_manager;
 
 commit;

@@ -36,4 +36,10 @@ select * from fantasy.composition;
 create view round as
 select * from fantasy.round;
 
+create view fantasy as
+select * from fantasy.fantasy;
+
+create view contract as
+select * from fantasy.contract;
+
 commit;

@@ -14,5 +14,6 @@ drop view player_statistic;
 drop view team_coefficient;
 drop view team_statistic;
 drop view round;
+drop view fantasy;
 
 commit;

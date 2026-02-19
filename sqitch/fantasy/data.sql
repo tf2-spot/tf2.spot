@@ -2,7 +2,7 @@ begin;
 
 set search_path to fantasy;
 
-insert into scoring_model values (1, 'V1');
+insert into scoring_model values (1, '6v6 v1');
 
 insert into player_coefficient values
 (1, 1, 'kills', null, false, false, 1.0),

@@ -105,6 +105,7 @@
 
                 # tmp
                 pkgs.podman-compose
+                pkgs.nodejs
               ];
             };
 
