@@ -62,4 +62,12 @@ as $$
   select * from player_performance where participant = $1.id
 $$;
 
+create function player_coefficient(player_performance)
+returns setof player_coefficient rows 1
+stable
+language sql
+as $$
+  select * from player_coefficient where id = $1.player_coefficient
+$$;
+
 commit;

@@ -32,6 +32,8 @@ services:
       PGRST_JWT_SECRET: m93oLRACWZOFGrgHiXFnp4mZoqL3qHy4
       PGRST_OPENAPI_MODE: ignore-privileges
       PGRST_DB_PREPARED_STATEMENTS: "false"
+      PGRST_LOG_LEVEL: info
+      PGRST_LOG_QUERY: "true"
     restart: always
     expose:
       - "3000"

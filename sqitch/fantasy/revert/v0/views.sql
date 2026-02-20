@@ -5,6 +5,7 @@ begin;
 set search_path to fantasy_v0;
 
 drop function player_performance(participant);
+drop function player_coefficient(player_performance);
 
 drop view manager;
 drop view me;

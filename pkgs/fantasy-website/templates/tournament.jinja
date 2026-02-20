@@ -1,3 +1,4 @@
+{% from "_helpers.jinja" import temporal %}
 {% extends "base.jinja" %}
 
 {% block title %}{{ tournament.name }}{% endblock %}
@@ -72,7 +73,7 @@
               {% if coef.highest %}
                 Top
               {% elif coef.lowest %}
-                Bot
+                Bottom
               {% endif %}
               {{ coef.variable.short }}
               {%- if coef.divide_by is not none %}/{{ coef.divide_by.short }}{% endif %}
@@ -98,12 +99,7 @@
 
     <div>
       {% for round in tournament.upcoming_rounds %}
-        <div>
-          {{ round.name }},
-          <span class="temporal" data-ts="{{ round.time }}"
-            >{{ round.time }}</span
-          >
-        </div>
+        <div>{{ round.name }}, {{ temporal(round.time) }}</div>
       {% else %}
         <p>No upcoming rounds</p>
       {% endfor %}

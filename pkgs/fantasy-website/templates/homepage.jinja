@@ -27,6 +27,8 @@
     a round and buying a player that hasn't played yet.
   </details>
 
+  <hr />
+
   <div>
     {% for tournament in tournaments %}
       <a href="{{ url_for('tournament', slug=tournament.slug) }}"

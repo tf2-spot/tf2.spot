@@ -89,21 +89,43 @@ def participants(slug):
             id,
             slug,
             name,
+            scoring_model(
+                player_coefficient(
+                    id,
+                    variable: player_statistic!variable(*),
+                    divide_by: player_statistic!divide_by(*),
+                    highest,
+                    lowest,
+                    coefficient
+                ),
+                team_coefficient(
+                    variable: team_statistic(*),
+                    coefficient
+                )
+            ),
             team(
                 *,
                 participant(
                     *,
                     player(*),
-                    player_performance(score)
+                    total_score: player_performance(score),
+                    perf: player_performance(
+                        *,
+                        player_coefficient(id)
+                    )
                 )
             )
             """
         )
         .eq("slug", slug)
-        .is_("team.participant.player_performance.round", "null")
-        .is_("team.participant.player_performance.match", "null")
-        .is_("team.participant.player_performance.map", "null")
-        .is_("team.participant.player_performance.player_coefficient", "null")
+        .is_("team.participant.total_score.round", "null")
+        .is_("team.participant.total_score.match", "null")
+        .is_("team.participant.total_score.map", "null")
+        .is_("team.participant.total_score.player_coefficient", "null")
+        .is_("team.participant.perf.round", "null")
+        .is_("team.participant.perf.match", "null")
+        .is_("team.participant.perf.map", "null")
+        .not_.is_("team.participant.perf.player_coefficient", "null")
         .maybe_single()
         .execute()
     )
@@ -169,7 +191,7 @@ def openid_steam():
     client = api(authn)
     req = (
         client.table("me")
-        .upsert(dict(steam_id=id, last_login=datetime.now().isoformat()))
+        .upsert(dict(steam_id=id, last_login=Instant.now().format_common_iso()))
         .execute()
     )
 
