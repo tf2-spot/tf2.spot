@@ -1,5 +1,27 @@
 {% extends "base.jinja" %}
 
+{% block title %}{{ tournament.name }}{% endblock %}
+
 {% block main %}
-  TODO
+  {% for team in tournament.team %}
+    <table>
+      <thead>
+        <tr>
+          <th colspan="3">{{ team.name }}</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for participant in team.participant | sort_by_main_class %}
+          <tr>
+            <td><img class="w-6" src="/static/class/{{ participant.main_class }}.svg"></img></td>
+            <td>{{ participant.player.name }}</td>
+            <td class="slashed-zero tabular-nums">{{ participant.player_performance[0].score }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% endfor %}
+
+  <pre>{{ tournament |tojson(2) }}</pre>
 {% endblock main %}

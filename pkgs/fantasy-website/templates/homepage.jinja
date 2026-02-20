@@ -4,13 +4,36 @@
 
 {% block main %}
   <h1>Welcome to Fantasy TF2</h1>
-  <p>Please bear with us as the website as is under construction.</p>
+
+  <p>
+    Please bear with us as this website is hastily thrown together. The
+    functionality behind the scenes was built to last more than one event, if
+    you feel like you could contribute with the frontend, get in touch! :)
+  </p>
+
+  <details open>
+    <summary>What is Fantasy TF2?</summary>
+    You are the manager of a fictional roster of real players, your goal is to
+    get as many points as possible by trading the players you think will do best
+    according to the scoring model.
+  </details>
+
+  <details open>
+    <summary>How is score calculated?</summary>
+    You get score from all the players you have in active contracts, for each
+    round, <b>as the round starts</b>. This means that you <b>must</b> purchase
+    players before a round starts if you want to get score from them. It also
+    means that you cannot "double dip" by selling a player that played early in
+    a round and buying a player that hasn't played yet.
+  </details>
 
   <div>
     {% for tournament in tournaments %}
       <a href="{{ url_for('tournament', slug=tournament.slug) }}"
         ><div>{{ tournament.name }}</div></a
       >
+    {% else %}
+      No tournaments planned yet
     {% endfor %}
   </div>
 {% endblock main %}

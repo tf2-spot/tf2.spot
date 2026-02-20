@@ -28,17 +28,23 @@
       <tbody>
         <tr>
           <th class="text-right">Initial budget</th>
-          <td>{{ tournament.initial_budget }}</td>
+          <td class="slashed-zero tabular-nums">
+            {{ tournament.initial_budget }}
+          </td>
         </tr>
 
         <tr>
           <th class="text-right">Max transactions</th>
-          <td>{{ tournament.transactions }}</td>
+          <td class="slashed-zero tabular-nums">
+            {{ tournament.transactions }}
+          </td>
         </tr>
 
         <tr>
           <th class="text-right">Max players from a single team</th>
-          <td>{{ tournament.max_from_single_team }}</td>
+          <td class="slashed-zero tabular-nums">
+            {{ tournament.max_from_single_team }}
+          </td>
         </tr>
 
         <tr>
@@ -52,7 +58,7 @@
         %}
           <tr>
             <td class="text-right">{{ c | capitalize }}</td>
-            <td>{{ tournament.composition[c] }}</td>
+            <td class="tabular-nums">{{ tournament.composition[c] }}</td>
           </tr>
         {% endfor %}
 
@@ -71,14 +77,18 @@
               {{ coef.variable.short }}
               {%- if coef.divide_by is not none %}/{{ coef.divide_by.short }}{% endif %}
             </td>
-            <td>&times; {{ coef.coefficient }}</td>
+            <td class="slashed-zero tabular-nums">
+              &times; {{ coef.coefficient }}
+            </td>
           </tr>
         {% endfor %}
 
         {% for coef in tournament.scoring_model.team_coefficient %}
           <tr>
             <td class="text-right">{{ coef.variable.short }}</td>
-            <td>&times; {{ coef.coefficient }}</td>
+            <td class="slashed-zero tabular-nums">
+              &times; {{ coef.coefficient }}
+            </td>
           </tr>
         {% endfor %}
       </tbody>
@@ -94,6 +104,8 @@
             >{{ round.time }}</span
           >
         </div>
+      {% else %}
+        <p>No upcoming rounds</p>
       {% endfor %}
 
       {% for round in tournament.past_rounds %}

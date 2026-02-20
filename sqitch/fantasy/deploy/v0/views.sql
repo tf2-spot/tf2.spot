@@ -36,10 +36,30 @@ select * from fantasy.composition;
 create view round as
 select * from fantasy.round;
 
+create view team as
+select * from fantasy.team;
+
+create view participant as
+select * from fantasy.participant;
+
+create view player as
+select * from fantasy.player;
+
+create view player_performance as
+select * from fantasy.player_performance;
+
 create view fantasy as
 select * from fantasy.fantasy;
 
 create view contract as
 select * from fantasy.contract;
+
+create function player_performance(participant)
+returns setof player_performance
+stable
+language sql
+as $$
+  select * from player_performance where participant = $1.id
+$$;
 
 commit;

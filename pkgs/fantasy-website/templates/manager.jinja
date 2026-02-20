@@ -1,10 +1,10 @@
 {% extends "base.jinja" %}
 
 {% block title %}
-  {% if manager.name is not none %}
-    {{ manager.name }}
-  {% else %}
+  {% if manager.name is none %}
     Manager #{{ manager.steam_id }}
+  {% else %}
+    {{ manager.name }}
   {% endif %}
 {% endblock title %}
 

@@ -16,6 +16,10 @@ on manager
  , team_coefficient
  , team_statistic
  , round
+ , team
+ , participant
+ , player
+ , player_performance
  , fantasy
  , contract
 from fantasy_visitor, fantasy_manager;

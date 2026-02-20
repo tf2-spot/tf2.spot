@@ -11,13 +11,15 @@ from whenever import Instant, OffsetDateTime
 
 app = Flask(__name__)
 app.config.from_prefixed_env()
+app.jinja_options["autoescape"] = True
 app.jinja_env.add_extension("jinja2.ext.debug")
 
 assets = flask_assets.Environment(app)
 
-AUTHN_COOKIE = "authn"
-POSTGREST = "http://localhost:8080/postgrest"
 STEAM_OPENID = "https://steamcommunity.com/openid/login"
+
+COOKIE_AUTHN = "authn"
+POSTGREST = "http://localhost:8080/postgrest"
 JWT_SECRET = "m93oLRACWZOFGrgHiXFnp4mZoqL3qHy4"
 JWT_ALGORITHM = "HS256"
 JWT_ROLE = "fantasy_manager"
@@ -79,7 +81,33 @@ def manage(slug):
 
 @app.route("/t/<slug>/participants")
 def participants(slug):
-    return render_template("participants.jinja")
+    tournament = (
+        api()
+        .table("tournament")
+        .select(
+            """
+            id,
+            slug,
+            name,
+            team(
+                *,
+                participant(
+                    *,
+                    player(*),
+                    player_performance(score)
+                )
+            )
+            """
+        )
+        .eq("slug", slug)
+        .is_("team.participant.player_performance.round", "null")
+        .is_("team.participant.player_performance.match", "null")
+        .is_("team.participant.player_performance.map", "null")
+        .is_("team.participant.player_performance.player_coefficient", "null")
+        .maybe_single()
+        .execute()
+    )
+    return render_template("participants.jinja", tournament=tournament.data)
 
 
 @app.route("/m/<id>")
@@ -146,7 +174,7 @@ def openid_steam():
     )
 
     resp = make_response(redirect(url_for("homepage")))
-    resp.set_cookie(AUTHN_COOKIE, authn, max_age=timedelta(days=31))
+    resp.set_cookie(COOKIE_AUTHN, authn, max_age=timedelta(days=31))
 
     return resp
 
@@ -154,7 +182,7 @@ def openid_steam():
 @app.route("/logout")
 def logout():
     resp = make_response(redirect(url_for("homepage")))
-    resp.set_cookie(AUTHN_COOKIE, "", expires=0)
+    resp.set_cookie(COOKIE_AUTHN, "", expires=0)
     return resp
 
 
@@ -162,7 +190,7 @@ def logout():
 def ctx_login():
     try:
         authn = jwt.decode(
-            request.cookies[AUTHN_COOKIE], key=JWT_SECRET, algorithms=JWT_ALGORITHM
+            request.cookies[COOKIE_AUTHN], key=JWT_SECRET, algorithms=JWT_ALGORITHM
         )
         return dict(me=authn)
     except KeyError:
@@ -172,19 +200,35 @@ def ctx_login():
     return dict(me=None)
 
 
+@app.context_processor
+def ctx_now():
+    return dict(now=datetime.now())
+
+
 @app.template_filter()
 def to_now(dt):
     dt = OffsetDateTime.parse_common_iso(dt)
     now = Instant.now()
     delta = dt - now
-    delta = delta.py_timedelta()
-    return format_timedelta(delta, locale="en_US", add_direction=True, threshold=2.4)
+    return format_timedelta(
+        delta.py_timedelta(), locale="en_US", add_direction=True, threshold=2.4
+    )
 
 
 @app.template_filter("datetime")
 def _datetime(dt):
     dt = OffsetDateTime.parse_common_iso(dt).to_tz("UTC")
     return format_datetime(dt.py_datetime(), "long", locale="en_US")
+
+
+CLASS_ORDER = dict(
+    scout=1, soldier=2, pyro=3, demoman=4, heavy=5, engineer=6, medic=7, sniper=8, spy=9
+)
+
+
+@app.template_filter()
+def sort_by_main_class(participants):
+    return sorted(participants, key=lambda p: CLASS_ORDER[p["main_class"]])
 
 
 if __name__ == "__main__":

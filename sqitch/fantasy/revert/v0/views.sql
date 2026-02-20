@@ -4,6 +4,8 @@ begin;
 
 set search_path to fantasy_v0;
 
+drop function player_performance(participant);
+
 drop view manager;
 drop view me;
 drop view tournament;
@@ -14,6 +16,11 @@ drop view player_statistic;
 drop view team_coefficient;
 drop view team_statistic;
 drop view round;
+drop view team;
+drop view participant;
+drop view player;
+drop view player_performance;
 drop view fantasy;
+drop view contract;
 
 commit;
