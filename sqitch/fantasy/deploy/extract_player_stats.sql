@@ -37,7 +37,7 @@ with extract_player as (
 
   , advantages_lost              int   path '$.value.medicstats.advantages_lost'
   , biggest_advantage_lost       int   path '$.value.medicstats.biggest_advantage_lost'
-  , deaths_with_95_uber          int   path '$.value.medicstats.deaths_with_95_99_uber'
+  , deaths_with_95_99_uber       int   path '$.value.medicstats.deaths_with_95_99_uber'
   , deaths_within_20s_after_uber int   path '$.value.medicstats.deaths_within_20s_after_uber'
   , average_time_before_healing  float path '$.value.medicstats.avg_time_before_healing'
   , average_time_to_build        float path '$.value.medicstats.avg_time_to_build'
@@ -161,8 +161,7 @@ from (
   union
   select log_id, steam_id, key, value from extract_class_deaths, jsonb_each(to_jsonb(extract_class_deaths))
 )
-where key not in ('log_id', 'steam_id')
-;
+where key not in ('log_id', 'steam_id');
 
 comment on view extract_player_stats is 'internal';
 

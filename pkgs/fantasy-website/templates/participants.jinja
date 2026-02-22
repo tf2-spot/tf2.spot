@@ -6,18 +6,17 @@
   <table class="border-separate border-spacing-x-6 pt-24">
     <thead>
       <tr>
-        <th colspan="3">Participant</th>
+        <td></td>
+        <th colspan="2">Participant</th>
 
-        <td class="whitespace-nowrap">
-          <div class="w-0 origin-left -rotate-45">Cost</div>
-        </td>
+        <th>Cost</th>
 
-        <td class="whitespace-nowrap">
+        <th class="whitespace-nowrap">
           <div class="w-0 origin-left -rotate-45">Total score</div>
-        </td>
+        </th>
 
         {% for coef in tournament.scoring_model.player_coefficient %}
-          <td class="whitespace-nowrap">
+          <th class="whitespace-nowrap">
             <div class="w-0 origin-left -rotate-45">
               {% if coef.highest %}
                 Top
@@ -27,30 +26,37 @@
               {{ coef.variable.short }}
               {%- if coef.divide_by is not none %}/{{ coef.divide_by.short }}{% endif %}
             </div>
-          </td>
+          </th>
         {% endfor %}
       </tr>
     </thead>
 
-    {% for team in tournament.team %}
-      <tbody>
+    <tbody>
+      {% for team in tournament.team %}
         {% for participant in team.participant | sort_by_main_class %}
           <tr>
-            <th>{{ team.name }}</th>
+            <td></td>
             <td>
               <img
                 class="w-6"
                 src="/static/class/{{ participant.main_class }}.svg"
               />
             </td>
-            <td>{{ participant.player.name }}</td>
+            <td>
+              <a
+                href="https://steamcommunity.com/profiles/{{ participant.player.steam_id }}"
+              >
+                <span class="text-black/50">{{ team.tag }}</span>
+                <span>{{ participant.player.name }}</span>
+              </a>
+            </td>
 
             <td class="text-right slashed-zero tabular-nums">
               ${{ participant.price }}
             </td>
 
             <td class="text-right slashed-zero tabular-nums">
-              {{ participant.total_score[0].score }}
+              {% for i in participant.total_score %}{{ i.score }}{% else %}0.0{% endfor %}
             </td>
 
             {% for coef in tournament.scoring_model.player_coefficient %}
@@ -62,8 +68,8 @@
             {% endfor %}
           </tr>
         {% endfor %}
-      </tbody>
-    {% endfor %}
+      {% endfor %}
+    </tbody>
   </table>
 
   <pre>{{ tournament |tojson(2) }}</pre>

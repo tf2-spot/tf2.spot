@@ -10,7 +10,9 @@
         <link rel="stylesheet" href="{{ ASSET_URL }}" />
       {% endassets %}
 
-      <script src="/static/temporal.js"></script>
+      {% assets "../temporal.js", output="temporal.js" %}
+        <script src="{{ ASSET_URL }}"></script>
+      {% endassets %}
 
       <link rel="icon" href="data:image/png;base64,iVBORw0KGgo=" />
 
@@ -49,7 +51,7 @@
 
     <main class="mx-auto max-w-5xl">{% block main %}{% endblock main %}</main>
 
-    <footer class="mx-auto mt-12 mb-4 flex justify-center">
+    <footer class="mt-12 mb-4 flex justify-center">
       <a
         href="https://tf2.spot"
         class="text-sm text-stone-500/30 hover:text-stone-500/90 hover:underline"
