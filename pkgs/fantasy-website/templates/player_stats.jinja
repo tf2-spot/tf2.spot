@@ -4,7 +4,6 @@
 {% block title %}{{ tournament.name }}{% endblock %}
 
 {% block main %}
-  <p>Sorry, this looks particularly awful for now.</p>
   <div class="flex overflow-x-auto">
     <table
       class="shrink-0 grow table-fixed border-separate border-spacing-x-6 bg-gray-100 p-4 pt-30 pr-6"
@@ -51,18 +50,18 @@
               </td>
 
               <td class="text-right slashed-zero tabular-nums">
-                ${{ participant.price }}
+                {{ participant.price | currencyformat("USD") }}
               </td>
 
               <td class="slashed-zero tabular-nums">
-                {% for i in participant.total_score %}{{ i.score }}{% else %}0.0{% endfor %}
+                {% for i in participant.total_score %}{{ i.score | decimalformat("#.0") }}{% else %}0.0{% endfor %}
               </td>
 
               {% for coef in tournament.scoring_model.player_coefficient %}
                 <td class="slashed-zero tabular-nums">
                   {% for perf in participant.perf if perf.player_coefficient.id == coef.id %}
                     <div class="group relative">
-                      <div>{{ perf.total }}</div>
+                      <div>{{ perf.total | decimalformat("#.#") }}</div>
                       <div
                         class="absolute bottom-full hidden rounded bg-black px-2 py-1 text-xs text-white group-hover:block"
                       >

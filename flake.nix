@@ -94,6 +94,7 @@
                   p.babel
                   p.flask
                   p.flask-assets
+                  p.flask-babel
                   p.requests
                   p.pyjwt
                   (p.callPackage ./pkgs/python-postgrest { })

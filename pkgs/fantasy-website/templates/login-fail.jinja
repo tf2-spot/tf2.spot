@@ -9,7 +9,10 @@
       We failed to verify your identity during the Steam authentication process.
     </p>
     <div class="flex">
-      <a class="mx-auto p-4 hover:bg-red-500/50" href="{{ url_for('login') }}">
+      <a
+        class="mx-auto p-4 hover:bg-red-500/50"
+        href="{{ url_for('login', next=request.args.get('next')) }}"
+      >
         Try again
       </a>
     </div>

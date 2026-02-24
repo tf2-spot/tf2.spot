@@ -28,7 +28,10 @@ window.addEventListener("load", () => {
       let dtText = dt.abs().toLocaleString("en-US", { style: "short" });
       let relText = dt.sign == 1 ? `in ${dtText}` : `${dtText} ago`;
 
+      console.log(el.innerHTML);
       el.innerHTML = `${tsText} (${relText})`;
+      console.log(el.innerHTML);
+      console.log();
     }, 30 * 1000);
   });
 });

@@ -1,12 +1,13 @@
 import urllib.parse
-from datetime import datetime, timedelta
+from datetime import timedelta
 
 import flask_assets
 import httpx
 import jwt
 import postgrest
-from babel.dates import format_datetime, format_timedelta
 from flask import Flask, make_response, redirect, render_template, request, url_for
+from flask_babel import Babel
+from werkzeug.routing import BuildError as RoutingBuildError
 from whenever import Instant, OffsetDateTime
 
 app = Flask(__name__)
@@ -15,6 +16,8 @@ app.jinja_options["autoescape"] = True
 app.jinja_env.add_extension("jinja2.ext.debug")
 
 assets = flask_assets.Environment(app)
+
+babel = Babel(app)
 
 STEAM_OPENID = "https://steamcommunity.com/openid/login"
 
@@ -32,25 +35,33 @@ def api(auth=None):
     return client
 
 
+class NotAuthenticated(Exception):
+    pass
+
+
+def authn():
+    try:
+        return jwt.decode(
+            request.cookies[COOKIE_AUTHN], key=JWT_SECRET, algorithms=JWT_ALGORITHM
+        )
+    except KeyError:
+        raise NotAuthenticated from None
+    except jwt.DecodeError:
+        raise NotAuthenticated from None
+
+
 @app.route("/")
 def homepage():
-    client = api()
-    tournaments = client.table("tournament").select().execute()
+    tournaments = api().table("tournament").select().execute()
     return render_template("homepage.jinja", tournaments=tournaments.data)
 
 
 @app.route("/me")
 def my_profile():
     try:
-        authn = jwt.decode(
-            request.cookies[COOKIE_AUTHN], key=JWT_SECRET, algorithms=JWT_ALGORITHM
-        )
-        return redirect(url_for("manager", id=authn["manager_id"]))
-    except KeyError:
-        pass
-    except jwt.DecodeError:
-        pass
-    return redirect(url_for("login"))
+        return redirect(url_for("manager", id=authn()["manager_id"]))
+    except NotAuthenticated:
+        return redirect(url_for("login", next="my_profile"))
 
 
 @app.route("/t/<slug>")
@@ -171,7 +182,7 @@ def login():
         {
             "openid.ns": "http://specs.openid.net/auth/2.0",
             "openid.mode": "checkid_setup",
-            "openid.return_to": f"{request.host_url}{url_for('openid_steam')}",
+            "openid.return_to": f"{request.host_url}{url_for('openid_steam', next=request.args.get('next'))}",
             "openid.realm": request.host_url,
             "openid.identity": "http://specs.openid.net/auth/2.0/identifier_select",
             "openid.claimed_id": "http://specs.openid.net/auth/2.0/identifier_select",
@@ -216,7 +227,11 @@ def openid_steam():
         .execute()
     )
 
-    resp = make_response(redirect(url_for("homepage")))
+    try:
+        url = url_for(request.args.get("next"))
+    except RoutingBuildError:
+        url = url_for("homepage")
+    resp = make_response(redirect(url))
     resp.set_cookie(COOKIE_AUTHN, authn, max_age=timedelta(days=31))
 
     return resp
@@ -243,25 +258,14 @@ def ctx_login():
     return dict(me=None)
 
 
-@app.context_processor
-def ctx_now():
-    return dict(now=datetime.now())
+@app.template_filter()
+def diffnow(dt):
+    return (OffsetDateTime.from_py_datetime(dt) - Instant.now()).py_timedelta()
 
 
 @app.template_filter()
-def to_now(dt):
-    dt = OffsetDateTime.parse_common_iso(dt)
-    now = Instant.now()
-    delta = dt - now
-    return format_timedelta(
-        delta.py_timedelta(), locale="en_US", add_direction=True, threshold=2.4
-    )
-
-
-@app.template_filter("datetime")
-def _datetime(dt):
-    dt = OffsetDateTime.parse_common_iso(dt).to_tz("UTC")
-    return format_datetime(dt.py_datetime(), "long", locale="en_US")
+def parsedatetime(dt):
+    return OffsetDateTime.parse_common_iso(dt).py_datetime()
 
 
 CLASS_ORDER = dict(

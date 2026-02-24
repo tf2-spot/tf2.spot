@@ -1,7 +1,8 @@
 {% macro temporal(ts) %}
-  <span class="temporal" data-ts="{{ ts }}"
-    >{{ ts | datetime }} ({{ ts | to_now }})</span
-  >
+  <span class="temporal" data-ts="{{ ts }}">
+    {{ ts | parsedatetime | datetimeformat("long") }}
+    ({{ ts | parsedatetime | diffnow | timedeltaformat(add_direction=True, threshold=2.4) }})
+  </span>
 {% endmacro %}
 
 {% macro coef_short(coef) %}
@@ -30,22 +31,24 @@
 
 {% macro perf_explanation(coef, perf) %}
   {% if coef.highest or coef.lowest %}
-    <span class="text-green-200">{{ perf.total }}</span>
+    <span class="text-green-200">{{ perf.total | decimalformat }}</span>
     {% if coef.highest %}highest{% else %}lowest{% endif %} amount of
     {{ coef.variable.description }}
     {% if coef.divide_by is not none -%}
       divided by {{ coef.divide_by.description }}
     {%- endif %}
   {% else %}
-    <span class="text-green-200">{{ perf.total }}</span>
+    <span class="text-green-200">{{ perf.total | decimalformat }}</span>
     {{ coef.variable.description }}
     {% if coef.divide_by is not none -%}
       divided by {{ coef.divide_by.description }}
     {%- endif %}
   {% endif %}
   <br />
-  &times; <span class="text-yellow-200">{{ coef.coefficient }}</span> score
-  coefficient
+  &times;
+  <span class="text-yellow-200">{{ coef.coefficient | decimalformat }}</span>
+  score coefficient
   <br />
-  &equals; <span class="text-red-200">{{ perf.score }}</span> total score
+  &equals;
+  <span class="text-red-200">{{ perf.score | decimalformat }}</span> total score
 {% endmacro %}
