@@ -1,0 +1,83 @@
+{% from "_helpers.jinja" import temporal, coef_short, coef_description, perf_explanation %}
+{% extends "base.jinja" %}
+
+{% block title %}{{ tournament.name }}{% endblock %}
+
+{% block main %}
+  <p>Sorry, this looks particularly awful for now.</p>
+  <div class="flex overflow-x-auto">
+    <table
+      class="shrink-0 grow table-fixed border-separate border-spacing-x-6 bg-gray-100 p-4 pt-30 pr-6"
+    >
+      <thead>
+        <tr>
+          <td></td>
+          <th colspan="2">Participant</th>
+
+          <th>Cost</th>
+
+          <th class="whitespace-nowrap">
+            <div class="w-0 origin-left -rotate-45">Total score</div>
+          </th>
+
+          {% for coef in tournament.scoring_model.player_coefficient %}
+            <th class="whitespace-nowrap">
+              <div class="w-0 origin-left -rotate-45">
+                {{ coef_short(coef) }}
+              </div>
+            </th>
+          {% endfor %}
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for team in tournament.team %}
+          {% for participant in team.participant | sort_by_main_class %}
+            <tr>
+              <td></td>
+              <td>
+                <img
+                  class="w-6"
+                  src="/static/class/{{ participant.main_class }}.svg"
+                />
+              </td>
+              <td>
+                <a
+                  href="https://steamcommunity.com/profiles/{{ participant.player.steam_id }}"
+                >
+                  <span class="text-black/50">{{ team.tag }}</span>
+                  <span>{{ participant.player.name }}</span>
+                </a>
+              </td>
+
+              <td class="text-right slashed-zero tabular-nums">
+                ${{ participant.price }}
+              </td>
+
+              <td class="slashed-zero tabular-nums">
+                {% for i in participant.total_score %}{{ i.score }}{% else %}0.0{% endfor %}
+              </td>
+
+              {% for coef in tournament.scoring_model.player_coefficient %}
+                <td class="slashed-zero tabular-nums">
+                  {% for perf in participant.perf if perf.player_coefficient.id == coef.id %}
+                    <div class="group relative">
+                      <div>{{ perf.total }}</div>
+                      <div
+                        class="absolute bottom-full hidden rounded bg-black px-2 py-1 text-xs text-white group-hover:block"
+                      >
+                        {{ perf_explanation(coef, perf) }}
+                      </div>
+                    </div>
+                  {% else %}
+                    0
+                  {% endfor %}
+                </td>
+              {% endfor %}
+            </tr>
+          {% endfor %}
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}

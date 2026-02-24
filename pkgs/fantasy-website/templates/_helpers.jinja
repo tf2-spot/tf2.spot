@@ -3,3 +3,49 @@
     >{{ ts | datetime }} ({{ ts | to_now }})</span
   >
 {% endmacro %}
+
+{% macro coef_short(coef) %}
+  {% if coef.highest %}
+    Top
+  {% elif coef.lowest %}
+    Bottom
+  {% endif %}
+  {{ coef.variable.short }}
+  {%- if coef.divide_by is not none %}/{{ coef.divide_by.short }}{% endif %}
+{% endmacro %}
+
+{% macro coef_description(coef) %}
+  {% if coef.highest %}
+    When the player has the highest amount of
+  {% elif coef.lowest %}
+    When the player has the lowest amount of
+  {% else %}
+    Score multiplied by the amount of
+  {% endif %}
+  {{ coef.variable.description }}
+  {% if coef.divide_by is not none -%}
+    divided by {{ coef.divide_by.description }}
+  {%- endif %}
+{% endmacro %}
+
+{% macro perf_explanation(coef, perf) %}
+  {% if coef.highest or coef.lowest %}
+    <span class="text-green-200">{{ perf.total }}</span>
+    {% if coef.highest %}highest{% else %}lowest{% endif %} amount of
+    {{ coef.variable.description }}
+    {% if coef.divide_by is not none -%}
+      divided by {{ coef.divide_by.description }}
+    {%- endif %}
+  {% else %}
+    <span class="text-green-200">{{ perf.total }}</span>
+    {{ coef.variable.description }}
+    {% if coef.divide_by is not none -%}
+      divided by {{ coef.divide_by.description }}
+    {%- endif %}
+  {% endif %}
+  <br />
+  &times; <span class="text-yellow-200">{{ coef.coefficient }}</span> score
+  coefficient
+  <br />
+  &equals; <span class="text-red-200">{{ perf.score }}</span> total score
+{% endmacro %}

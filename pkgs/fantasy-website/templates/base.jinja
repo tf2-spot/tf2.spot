@@ -17,39 +17,26 @@
       <link rel="icon" href="data:image/png;base64,iVBORw0KGgo=" />
 
       <title>
-        {% block fulltitle %}{% block title %}{% endblock title %} — Fantasy TF2{% endblock fulltitle %}
+        {% block fulltitle %}{% block title %}{% endblock %} — Fantasy TF2{% endblock %}
       </title>
     {% endblock head %}
   </head>
 
   <body class="bg-blue-100">
-    <header class="mx-auto mt-4 mb-12 flex max-w-3xl items-baseline">
-      <a href="{{ url_for('homepage') }}" class="flex-5 text-5xl"
-        >Fantasy TF2</a
+    <header
+      class="mx-auto mt-4 mb-12 flex max-w-3xl items-baseline justify-between"
+    >
+      <a href="{{ url_for('homepage') }}" class="text-5xl">Fantasy TF2</a>
+
+      <a
+        href="{{ url_for('my_profile') }}"
+        class="rounded px-4 py-2 hover:bg-blue-300/50 hover:underline"
       >
-
-      {% if me is not none %}
-        <a
-          href="{{ url_for('manager', id=me.manager_id) }}"
-          class="mx-auto flex-1 hover:underline"
-          >My Profile</a
-        >
-
-        <a href="{{ url_for('logout') }}" class="mx-auto flex-1 hover:underline"
-          >Sign out</a
-        >
-      {% else %}
-        <a
-          href="{{ url_for('login') }}"
-          class="mx-auto flex-2 text-green-700 hover:bg-green-500"
-        >
-          Sign in through STEAM&reg;
-          {# <img src="https://community.fastly.steamstatic.com/public/images/signinthroughsteam/sits_01.png" /> #}
-        </a>
-      {% endif %}
+        My Profile
+      </a>
     </header>
 
-    <main class="mx-auto max-w-5xl">{% block main %}{% endblock main %}</main>
+    <main class="mx-auto max-w-5xl">{% block main %}{% endblock %}</main>
 
     <footer class="mt-12 mb-4 flex justify-center">
       <a

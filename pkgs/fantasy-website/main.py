@@ -39,6 +39,20 @@ def homepage():
     return render_template("homepage.jinja", tournaments=tournaments.data)
 
 
+@app.route("/me")
+def my_profile():
+    try:
+        authn = jwt.decode(
+            request.cookies[COOKIE_AUTHN], key=JWT_SECRET, algorithms=JWT_ALGORITHM
+        )
+        return redirect(url_for("manager", id=authn["manager_id"]))
+    except KeyError:
+        pass
+    except jwt.DecodeError:
+        pass
+    return redirect(url_for("login"))
+
+
 @app.route("/t/<slug>")
 def tournament(slug):
     client = api()
@@ -67,7 +81,9 @@ def tournament(slug):
         )
         .eq("slug", slug)
         .gte("upcoming_rounds.time", "now")
+        .order(foreign_table="upcoming_rounds", column="time")
         .lt("past_rounds.time", "now")
+        .order(foreign_table="past_rounds", column="time")
         .maybe_single()
         .execute()
     )
@@ -79,8 +95,8 @@ def manage(slug):
     return render_template("manage.jinja")
 
 
-@app.route("/t/<slug>/participants")
-def participants(slug):
+@app.route("/t/<slug>/player-stats")
+def player_stats(slug):
     tournament = (
         api()
         .table("tournament")
@@ -129,7 +145,12 @@ def participants(slug):
         .maybe_single()
         .execute()
     )
-    return render_template("participants.jinja", tournament=tournament.data)
+    return render_template("player_stats.jinja", tournament=tournament.data)
+
+
+@app.route("/t/<slug>/leaderboard")
+def leaderboard(slug):
+    return render_template("leaderboard.jinja")
 
 
 @app.route("/m/<id>")

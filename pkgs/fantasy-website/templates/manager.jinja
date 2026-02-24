@@ -1,13 +1,40 @@
 {% extends "base.jinja" %}
 
-{% block title %}
-  {% if manager.name is none %}
-    Manager #{{ manager.steam_id }}
-  {% else %}
-    {{ manager.name }}
-  {% endif %}
-{% endblock title %}
+{% set name = "Manager #" + manager.steam_id if manager.name is none else manager.name %}
+{% set id = manager.steam_id %}
+
+{% block title %}{{ name }}{% endblock %}
 
 {% block main %}
+  <div class="align-center flex flex-col">
+    <div class="flex bg-gray-100">
+      <img class="h-46 w-46" src="{{ manager.avatar }}" />
+      <div class="flex flex-col justify-between p-8">
+        <span class="text-4xl">{{ name }}</span>
+        <div class="flex justify-center space-x-2">
+          {%
+            for name, url in (
+              ("Steam", "https://steamcommunity.com/profiles/"),
+              ("logs.tf", "https://logs.tf/profile/"),
+              ("ETF2L", "https://etf2l.org/search/"),
+              ("RGL", "https://rgl.gg/Public/PlayerProfile.aspx?p="),
+              ("ozfortress", "https://warzone.ozfortress.com/users/steam_id/"),
+            )
+          %}
+            <a
+              class="block rounded p-4 hover:bg-blue-200/50 hover:underline"
+              href="{{ url }}{{ id }}"
+              >{{ name }}</a
+            >
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    {% for team in manager.fantasy %}
+      <div></div>
+    {% endfor %}
+  </div>
+
   <pre>{{ manager | tojson(2) }}</pre>
-{% endblock main %}
+{% endblock %}

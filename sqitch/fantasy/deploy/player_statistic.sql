@@ -15,9 +15,9 @@ comment on table player_statistic is 'static set of possible measurements of a p
 
 copy player_statistic (id, short, description) from stdin with delimiter ',';
 advantages_lost,,
-airshots,,
-assists,,
-assists_as_demoman,,
+airshots,Airshots,airshots
+assists,Assists,assists
+assists_as_demoman,assists :demoman:,assists as demoman
 assists_as_engineer,,
 assists_as_heavyweapons,,
 assists_as_medic,,

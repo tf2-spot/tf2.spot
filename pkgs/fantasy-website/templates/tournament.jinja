@@ -1,35 +1,47 @@
-{% from "_helpers.jinja" import temporal %}
+{% from "_helpers.jinja" import temporal, coef_short, coef_description %}
 {% extends "base.jinja" %}
 
 {% block title %}{{ tournament.name }}{% endblock %}
 
 {% block main %}
-  <div>
-    <div>
+  <div class="grid gap-4 lg:grid-cols-2">
+    <div class="bg-gray-100 p-4">
       <h1 class="text-2xl">{{ tournament.name }}</h1>
-      <p>from {{ temporal(tournament.start_time) }}</p>
-      <p>to {{ temporal(tournament.end_time) }}</p>
-
-      <a href="{{ url_for('manage', slug=tournament.slug) }}"
-        >Manage your team</a
-      >
-      <a href="{{ url_for('participants', slug=tournament.slug) }}"
-        >View participants</a
-      >
+      <p>Starts {{ temporal(tournament.start_time) }}</p>
+      <p>Ends {{ temporal(tournament.end_time) }}</p>
     </div>
 
-    <hr />
+    <div class="flex items-center justify-between">
+      <a
+        class="rounded bg-blue-800/75 p-4 text-white hover:bg-blue-800/80"
+        href="{{ url_for('manage', slug=tournament.slug) }}"
+      >
+        Manage your team
+      </a>
+      <a
+        class="rounded bg-blue-800/75 p-4 text-white hover:bg-blue-800/80"
+        href="{{ url_for('player_stats', slug=tournament.slug) }}"
+      >
+        Player stats
+      </a>
+      <a
+        class="rounded bg-blue-800/75 p-4 text-white hover:bg-blue-800/80"
+        href="{{ url_for('leaderboard', slug=tournament.slug) }}"
+      >
+        Leaderboard
+      </a>
+    </div>
 
-    <table>
+    <table class="border-separate border-spacing-x-2 bg-gray-100 p-4">
       <thead>
         <tr>
-          <th colspan="2">Tournament ruleset</th>
+          <th class="text-right text-lg">Tournament ruleset</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <th class="text-right">Initial budget</th>
-          <td class="slashed-zero tabular-nums">
+          <th class="w-2/3 text-right">Initial budget</th>
+          <td class="w-1/3 slashed-zero tabular-nums">
             ${{ tournament.initial_budget }}
           </td>
         </tr>
@@ -58,7 +70,10 @@
           if tournament.composition[c]
         %}
           <tr>
-            <td class="text-right">{{ c | capitalize }}</td>
+            <td class="text-right">
+              {{ c | capitalize }}
+              <img class="inline h-5" src="/static/class/{{ c }}.svg" />
+            </td>
             <td class="tabular-nums">{{ tournament.composition[c] }}</td>
           </tr>
         {% endfor %}
@@ -70,13 +85,14 @@
         {% for coef in tournament.scoring_model.player_coefficient %}
           <tr>
             <td class="text-right">
-              {% if coef.highest %}
-                Top
-              {% elif coef.lowest %}
-                Bottom
-              {% endif %}
-              {{ coef.variable.short }}
-              {%- if coef.divide_by is not none %}/{{ coef.divide_by.short }}{% endif %}
+              <div class="group relative">
+                <div>{{ coef_short(coef) }}</div>
+                <div
+                  class="absolute bottom-full hidden rounded bg-black px-2 py-1 text-xs text-white group-hover:block"
+                >
+                  {{ coef_description(coef) }}
+                </div>
+              </div>
             </td>
             <td class="slashed-zero tabular-nums">
               &times; {{ coef.coefficient }}
@@ -95,18 +111,27 @@
       </tbody>
     </table>
 
-    <hr />
-
-    <div>
+    <div class="space-y-2 bg-gray-100 p-4">
       {% for round in tournament.upcoming_rounds %}
-        <div>{{ round.name }}, {{ temporal(round.time) }}</div>
+        <div>
+          <span class="text-lg">{{ round.name }}</span>
+          <br />
+          <span class="text-sm">{{ temporal(round.time) }}</span>
+        </div>
       {% else %}
         <p>No upcoming rounds</p>
       {% endfor %}
 
+      {% if tournament.past_rounds %}
+        <hr />
+      {% endif %}
       {% for round in tournament.past_rounds %}
-        <div>{{ round.name }}, {{ temporal(round.time) }}</div>
+        <div>
+          <span class="text-lg">{{ round.name }}</span>
+          <br />
+          <span class="text-sm">{{ temporal(round.time) }}</span>
+        </div>
       {% endfor %}
     </div>
   </div>
-{% endblock main %}
+{% endblock %}
