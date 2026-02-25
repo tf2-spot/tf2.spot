@@ -153,6 +153,7 @@ select log_id
      , key as statistic
      , case when value = jsonb 'null' then 0 else value::decimal end as value
 from (
+  -- TODO: These UNIONs are problematic for postgREST
   select log_id, steam_id, key, value from extract_player, jsonb_each(to_jsonb(extract_player))
   union
   select log_id, steam_id, key, value from extract_class_kills, jsonb_each(to_jsonb(extract_class_kills))

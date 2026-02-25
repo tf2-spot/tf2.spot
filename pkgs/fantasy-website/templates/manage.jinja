@@ -1,4 +1,15 @@
 {% extends "base.jinja" %}
 
+{% block title %}Manage{% endblock %}
+
 {% block main %}
+  <div>
+    <input
+      type="text"
+      name="name"
+      hx-trigger="keyup changed delay:500ms"
+      hx-post="{{ url_for('manage', slug=request.view_args.slug) }}"
+      placeholder="Fantasy team name"
+    />
+  </div>
 {% endblock %}

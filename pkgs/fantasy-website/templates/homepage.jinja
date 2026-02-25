@@ -4,8 +4,8 @@
 {% block fulltitle %}Fantasy TF2{% endblock %}
 
 {% block main %}
-  <div class="grid space-y-4 space-x-4 md:grid-cols-2">
-    <div class="space-y-4 bg-gray-100 p-4">
+  <div class="grid gap-4 md:grid-cols-2">
+    <div class="space-y-4 bg-gray-100 p-4 dark:bg-red-900">
       <h1 class="text-xl/12 font-light">Welcome to Fantasy TF2</h1>
 
       <p>
@@ -40,7 +40,7 @@
       {% for tournament in tournaments %}
         <a
           href="{{ url_for('tournament', slug=tournament.slug) }}"
-          class="block bg-gray-100 p-4"
+          class="block bg-gray-100 p-4 hover:bg-white dark:bg-red-900 hover:dark:bg-red-800"
         >
           <div class="text-lg">{{ tournament.name }}</div>
           {% if tournament.start_time is not none %}

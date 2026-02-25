@@ -7,11 +7,21 @@
 
 {% block main %}
   <div class="align-center flex flex-col">
-    <div class="flex bg-gray-100">
-      <img class="h-46 w-46" src="{{ manager.avatar }}" />
-      <div class="flex flex-col justify-between p-8">
+    <div class="flex justify-center">
+      <img
+        class="h-46 w-46 bg-black"
+        {% if manager.avatar is not none %}src="{{ manager.avatar }}"{% endif %}
+      />
+      <div
+        class="flex flex-col justify-between bg-gray-100 p-8 pb-4 dark:bg-red-900"
+      >
         <span class="text-4xl">{{ name }}</span>
-        <div class="flex justify-center space-x-2">
+        {% if manager.fetched is none %}
+          <span class="text-sm text-black/33">
+            Fetching profile data from Steam...
+          </span>
+        {% endif %}
+        <div class="flex justify-center gap-2">
           {%
             for name, url in (
               ("Steam", "https://steamcommunity.com/profiles/"),
@@ -22,10 +32,11 @@
             )
           %}
             <a
-              class="block rounded p-4 hover:bg-blue-200/50 hover:underline"
+              class="block rounded p-4 shadow-lg hover:bg-blue-200/50 hover:underline hover:dark:bg-red-700/50"
               href="{{ url }}{{ id }}"
-              >{{ name }}</a
             >
+              {{ name }}
+            </a>
           {% endfor %}
         </div>
       </div>
@@ -36,5 +47,5 @@
     {% endfor %}
   </div>
 
-  <pre>{{ manager | tojson(2) }}</pre>
+  <pre class="text-xs">{{ manager | tojson(2) }}</pre>
 {% endblock %}

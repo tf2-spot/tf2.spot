@@ -5,37 +5,40 @@
 
 {% block main %}
   <div class="grid gap-4 lg:grid-cols-2">
-    <div class="bg-gray-100 p-4">
+    <div class="bg-gray-100 p-4 dark:bg-red-900">
       <h1 class="text-2xl">{{ tournament.name }}</h1>
       <p>Starts {{ temporal(tournament.start_time) }}</p>
       <p>Ends {{ temporal(tournament.end_time) }}</p>
     </div>
 
     <div class="flex items-center justify-between">
-      <a
-        class="rounded bg-blue-800/75 p-4 text-white hover:bg-blue-800/80"
-        href="{{ url_for('manage', slug=tournament.slug) }}"
-      >
-        Manage your team
-      </a>
-      <a
-        class="rounded bg-blue-800/75 p-4 text-white hover:bg-blue-800/80"
-        href="{{ url_for('player_stats', slug=tournament.slug) }}"
-      >
-        Player stats
-      </a>
-      <a
-        class="rounded bg-blue-800/75 p-4 text-white hover:bg-blue-800/80"
-        href="{{ url_for('leaderboard', slug=tournament.slug) }}"
-      >
-        Leaderboard
-      </a>
+      {%
+        for name, route in (
+          ("Manage your team", "manage"),
+          ("Player stats", "player_stats"),
+          ("Leaderboard", "leaderboard"),
+        )
+      %}
+        <a
+          class="rounded bg-blue-800/75 p-4 text-white shadow-lg hover:bg-blue-800/90 dark:bg-red-700/75 hover:dark:bg-red-700/90"
+          href="{{ url_for(route, slug=request.view_args.slug) }}"
+        >
+          {{ name }}
+        </a>
+      {% endfor %}
     </div>
 
-    <table class="border-separate border-spacing-x-2 bg-gray-100 p-4">
+    <table
+      class="border-separate border-spacing-x-2 border-spacing-y-1 bg-gray-100 p-4 dark:bg-red-900"
+    >
       <thead>
         <tr>
-          <th class="text-right text-lg">Tournament ruleset</th>
+          <th
+            colspan="2"
+            class="border-b-1 border-b-gray-500 text-lg dark:border-b-gray-100"
+          >
+            Fantasy tournament ruleset
+          </th>
         </tr>
       </thead>
       <tbody>
@@ -88,7 +91,7 @@
               <div class="group relative">
                 <div>{{ coef_short(coef) }}</div>
                 <div
-                  class="absolute bottom-full hidden rounded bg-black px-2 py-1 text-xs text-white group-hover:block"
+                  class="absolute bottom-full mb-1 hidden rounded bg-black px-2 py-1 text-xs text-white group-hover:block"
                 >
                   {{ coef_description(coef) }}
                 </div>
@@ -111,7 +114,7 @@
       </tbody>
     </table>
 
-    <div class="space-y-2 bg-gray-100 p-4">
+    <div class="space-y-2 bg-gray-100 p-4 dark:bg-red-900">
       {% for round in tournament.upcoming_rounds %}
         <div>
           <span class="text-lg">{{ round.name }}</span>

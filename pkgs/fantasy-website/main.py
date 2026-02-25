@@ -56,7 +56,7 @@ def homepage():
     return render_template("homepage.jinja", tournaments=tournaments.data)
 
 
-@app.route("/me")
+@app.route("/profiles/me")
 def my_profile():
     try:
         return redirect(url_for("manager", id=authn()["manager_id"]))
@@ -164,7 +164,7 @@ def leaderboard(slug):
     return render_template("leaderboard.jinja")
 
 
-@app.route("/m/<id>")
+@app.route("/profiles/<id>")
 def manager(id):
     client = api()
     manager = (

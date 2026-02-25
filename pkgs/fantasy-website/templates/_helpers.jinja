@@ -30,25 +30,31 @@
 {% endmacro %}
 
 {% macro perf_explanation(coef, perf) %}
-  {% if coef.highest or coef.lowest %}
+  <span class="whitespace-nowrap">
     <span class="text-green-200">{{ perf.total | decimalformat }}</span>
-    {% if coef.highest %}highest{% else %}lowest{% endif %} amount of
-    {{ coef.variable.description }}
-    {% if coef.divide_by is not none -%}
-      divided by {{ coef.divide_by.description }}
-    {%- endif %}
-  {% else %}
-    <span class="text-green-200">{{ perf.total | decimalformat }}</span>
-    {{ coef.variable.description }}
-    {% if coef.divide_by is not none -%}
-      divided by {{ coef.divide_by.description }}
-    {%- endif %}
-  {% endif %}
+    {% if coef.highest or coef.lowest %}
+      {% if coef.highest %}highest{% else %}lowest{% endif %}
+      amount of {{ coef.variable.description }}
+      {% if coef.divide_by is not none -%}
+        divided by {{ coef.divide_by.description }}
+      {%- endif %}
+    {% else %}
+      {{ coef.variable.description }}
+      {% if coef.divide_by is not none -%}
+        divided by {{ coef.divide_by.description }}
+      {%- endif %}
+    {% endif %}
+  </span>
   <br />
-  &times;
-  <span class="text-yellow-200">{{ coef.coefficient | decimalformat }}</span>
-  score coefficient
+  <span class="whitespace-nowrap">
+    &times;
+    <span class="text-yellow-200">{{ coef.coefficient | decimalformat }}</span>
+    score coefficient
+  </span>
   <br />
-  &equals;
-  <span class="text-red-200">{{ perf.score | decimalformat }}</span> total score
+  <span class="whitespace-nowrap">
+    &equals;
+    <span class="text-red-200">{{ perf.score | decimalformat }}</span> total
+    score
+  </span>
 {% endmacro %}
