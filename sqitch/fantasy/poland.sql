@@ -179,18 +179,18 @@ COPY fantasy.player (steam_id, name, avatar) FROM stdin;
 COPY fantasy.team (id, tournament, name, tag, logo) FROM stdin;
 1	1	Allen's Workshop	\N	\N
 2	1	Aragosting Hazard	\N	\N
-3	1	DIRTY MAGGOTS	\N	\N
-4	1	eepy nappers	\N	\N
-5	1	Fjord Gaming	\N	\N
-6	1	JOEY GUNZ	\N	\N
-7	1	kek minoin samurai	\N	\N
-8	1	LANkle Monitor	\N	\N
-9	1	MANDEM	\N	\N
-10	1	The White Lotus	\N	\N
+3	1	ChudsXLAN	\N	\N
+4	1	DIRTY MAGGOTS	\N	\N
+5	1	eepy nappers	\N	\N
+6	1	Fjord Gaming	\N	\N
+7	1	JOEY GUNZ	\N	\N
+8	1	kek minoin samurai	\N	\N
+9	1	LANkle Monitor	\N	\N
+10	1	MANDEM	\N	\N
 11	1	Puolangan divisioonan 2 tykistörykmentti	\N	\N
 12	1	The Compound	\N	\N
-13	1	Witness Gaming	\N	\N
-14	1	ChudsXLAN	\N	\N
+13	1	The White Lotus	\N	\N
+14	1	Witness Gaming	\N	\N
 \.
 
 COPY fantasy.participant (tournament, player, team, main_class, price) FROM stdin;
