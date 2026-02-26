@@ -22,6 +22,7 @@ drop view participant;
 drop view player;
 drop view player_performance;
 drop view fantasy;
+drop view my_fantasy;
 drop view contract;
 
 commit;

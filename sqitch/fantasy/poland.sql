@@ -33,7 +33,7 @@ COPY fantasy.player_coefficient (scoring_model, variable, divide_by, highest, lo
 1	point_captures	\N	f	f	1
 1	ubercharges	\N	f	f	2
 1	drops	\N	f	f	-3
-1	heals	\N	f	f	0.001
+1	heals	\N	f	f	0.0008
 \.
 
 COPY fantasy.team_coefficient (scoring_model, variable, coefficient) FROM stdin;

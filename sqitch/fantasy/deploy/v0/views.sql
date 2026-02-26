@@ -54,7 +54,18 @@ create view player_performance as
 select * from fantasy.player_performance;
 
 create view fantasy as
-select * from fantasy.fantasy;
+select id
+     , tournament
+     , manager
+     , case when muted_until > now() then null else fantasy.name end as name
+     , initial_budget
+from fantasy.fantasy
+join fantasy.manager on manager.steam_id = fantasy.manager;
+
+create view my_fantasy as
+select *
+from fantasy.fantasy
+where manager = current_setting('request.jwt.claims', true)::json->>'manager_id';
 
 create view contract as
 select * from fantasy.contract;

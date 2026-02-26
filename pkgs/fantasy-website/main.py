@@ -1,5 +1,4 @@
 import urllib.parse
-from datetime import timedelta
 
 import flask_assets
 import httpx
@@ -7,7 +6,6 @@ import jwt
 import postgrest
 from flask import Flask, make_response, redirect, render_template, request, url_for
 from flask_babel import Babel
-from werkzeug.routing import BuildError as RoutingBuildError
 from whenever import Instant, OffsetDateTime
 
 app = Flask(__name__)
@@ -53,7 +51,12 @@ def authn():
 @app.route("/")
 def homepage():
     tournaments = api().table("tournament").select().execute()
-    return render_template("homepage.jinja", tournaments=tournaments.data)
+    resp = make_response(
+        render_template("homepage.jinja", tournaments=tournaments.data)
+    )
+    resp.cache_control.public = True
+    resp.cache_control.max_age = 600
+    return resp
 
 
 @app.route("/profiles/me")
@@ -61,14 +64,14 @@ def my_profile():
     try:
         return redirect(url_for("manager", id=authn()["manager_id"]))
     except NotAuthenticated:
-        return redirect(url_for("login", next="my_profile"))
+        return redirect(url_for("login", next=request.path))
 
 
 @app.route("/t/<slug>")
 def tournament(slug):
-    client = api()
     tournament = (
-        client.table("tournament")
+        api()
+        .table("tournament")
         .select(
             "*",
             """
@@ -103,11 +106,21 @@ def tournament(slug):
         .maybe_single()
         .execute()
     )
-    return render_template("tournament.jinja", tournament=tournament.data)
+    resp = make_response(
+        render_template("tournament.jinja", tournament=tournament.data)
+    )
+    resp.cache_control.public = True
+    resp.cache_control.max_age = 600
+    return resp
 
 
 @app.route("/t/<slug>/manage")
 def manage(slug):
+    try:
+        auth = authn()
+    except NotAuthenticated:
+        return redirect(url_for("login", next=request.path))
+
     return render_template("manage.jinja")
 
 
@@ -166,7 +179,12 @@ def player_stats(slug):
         .maybe_single()
         .execute()
     )
-    return render_template("player_stats.jinja", tournament=tournament.data)
+    resp = make_response(
+        render_template("player_stats.jinja", tournament=tournament.data)
+    )
+    resp.cache_control.public = True
+    resp.cache_control.max_age = 600
+    return resp
 
 
 @app.route("/t/<slug>/leaderboard")
@@ -176,14 +194,17 @@ def leaderboard(slug):
 
 @app.route("/profiles/<id>")
 def manager(id):
-    client = api()
     manager = (
-        client.table("manager")
+        api()
+        .table("manager")
         .select("*", "fantasy(*, tournament(*), contract(*))")
         .maybe_single()
         .execute()
     )
-    return render_template("manager.jinja", manager=manager.data)
+    resp = make_response(render_template("manager.jinja", manager=manager.data))
+    resp.cache_control.public = True
+    resp.cache_control.max_age = 600
+    return
 
 
 @app.route("/login")
@@ -225,7 +246,11 @@ def openid_steam():
     id = request.args["openid.identity"].split("/")[-1]
 
     authn = jwt.encode(
-        dict(role=JWT_ROLE, manager_id=id),
+        dict(
+            role=JWT_ROLE,
+            manager_id=id,
+            exp=Instant.now().add(hours=14 * 24).py_datetime(),
+        ),
         key=JWT_SECRET,
         algorithm=JWT_ALGORITHM,
     )
@@ -237,12 +262,13 @@ def openid_steam():
         .execute()
     )
 
-    try:
-        url = url_for(request.args.get("next"))
-    except RoutingBuildError:
-        url = url_for("homepage")
-    resp = make_response(redirect(url))
-    resp.set_cookie(COOKIE_AUTHN, authn, max_age=timedelta(days=31))
+    route = request.args.get("next", "!!!")
+
+    if not app.url_map.bind(request.host).test(route):
+        route = url_for("homepage")
+
+    resp = make_response(redirect(route))
+    resp.set_cookie(COOKIE_AUTHN, authn)
 
     return resp
 

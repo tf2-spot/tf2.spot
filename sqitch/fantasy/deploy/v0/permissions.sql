@@ -7,6 +7,7 @@ set search_path to fantasy_v0;
 grant usage on schema fantasy_v0 to fantasy_visitor, fantasy_manager;
 
 grant select, insert, update on me to fantasy_manager;
+grant select, insert, update on my_fantasy to fantasy_manager;
 
 grant select
 on manager
