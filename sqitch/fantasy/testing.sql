@@ -2,16 +2,40 @@ begin;
 
 set search_path to fantasy;
 
+SET standard_conforming_strings = on;
+
 insert into scoring_model values (1, '6v6 v1');
 
-insert into player_coefficient values
-(1, 1, 'kills', null, false, false, 1.0),
-(2, 1, 'assists', null, false, false, 0.5),
-(3, 1, 'kills', 'deaths', true, false, 20);
+COPY fantasy.player_coefficient (scoring_model, variable, divide_by, highest, lowest, coefficient) FROM stdin;
+1	airshots	\N	f	f	0.25
+1	assists	\N	f	f	0.2
+1	backstabs	\N	f	f	1
+1	damage	\N	f	f	0.001
+1	deaths	\N	f	f	-1
+1	headshot_kills	\N	f	f	0.25
+1	health_from_medkits	\N	f	f	0.001
+1	damage	\N	t	f	2
+1	kills	\N	t	f	2
+1	kills	deaths	t	f	2
+1	kills	\N	f	f	1
+1	kills_as_medic	\N	f	f	2
+1	kills_on_medic	\N	f	f	1
+1	point_captures	\N	f	f	1
+1	ubercharges	\N	f	f	2
+1	drops	\N	f	f	-3
+1	heals	\N	f	f	0.001
+\.
+
+COPY fantasy.team_coefficient (scoring_model, variable, coefficient) FROM stdin;
+1	map_win	3
+1	medic_deaths	-0.2
+1	round_wins	2
+1	round_losses	-1.5
+\.
 
 insert into tournament values (1, 'test', 'test', null, 'Europe', 1, 1, now(), now() + interval '2 week', 1000, 10, 2);
 
-insert into round values (1, 1, 'Week 4', now());
+insert into round values (1, 1, 'Week 4', now() + interval '1 hour');
 
 copy team (id, tournament, name) from stdin with delimiter ',';
 1,1,not dead doggo

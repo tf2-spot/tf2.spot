@@ -49,7 +49,7 @@ begin
         join fantasy on fantasy.id = contract.fantasy
         join tournament on tournament.id = fantasy.tournament
         where fantasy = fantasy_id
-        group by (tournament.id)
+        group by tournament.id
         having count(upper(time)) > tournament.transactions
     ) then
         raise exception 'Exceeded amount of transactions available';
@@ -60,7 +60,7 @@ begin
         from contract
         join fantasy on fantasy.id = contract.fantasy
         where contract.fantasy = fantasy_id
-        group by (fantasy.id)
+        group by fantasy.id
         having fantasy.initial_budget + sum(coalesce(sale_price, 0) - purchase_price) < 0
     ) then
         raise exception 'Exceeded budget spending';

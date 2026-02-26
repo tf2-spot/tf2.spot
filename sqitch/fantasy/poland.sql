@@ -37,7 +37,7 @@ COPY fantasy.player_coefficient (scoring_model, variable, divide_by, highest, lo
 \.
 
 COPY fantasy.team_coefficient (scoring_model, variable, coefficient) FROM stdin;
-1	win	3
+1	map_win	3
 1	medic_deaths	-0.2
 1	round_wins	2
 1	round_losses	-1.5

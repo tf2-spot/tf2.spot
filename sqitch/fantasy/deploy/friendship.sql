@@ -5,7 +5,7 @@ begin;
 set search_path to fantasy;
 
 create table friendship
-( manager_a  text not null
+( manager_a text not null
 , manager_b text not null
 , primary key (manager_a, manager_b)
 , foreign key (manager_a) references manager

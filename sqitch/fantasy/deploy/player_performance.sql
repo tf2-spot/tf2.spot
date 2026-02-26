@@ -13,13 +13,13 @@ with pre as (
        , map.id as map
        , coef.id as player_coefficient
        , case when highest and divide_by is not null
-              then ( sum(var.value) / greatest(sum(div.value), 1)
-                     = max(sum(var.value) / greatest(sum(div.value), 1)) over (partition by map.id, coef.id)
+              then ( sum(var.value) / coalesce(nullif(sum(div.value), 0), 1)
+                     = max(sum(var.value) / coalesce(nullif(sum(div.value), 0), 1)) over (partition by map.id, coef.id)
                    )::int::decimal
 
               when lowest and divide_by is not null
-              then ( sum(var.value) / greatest(sum(div.value), 1)
-                     = min(sum(var.value) / greatest(sum(div.value), 1)) over (partition by map.id, coef.id)
+              then ( sum(var.value) / coalesce(nullif(sum(div.value), 0), 1)
+                     = min(sum(var.value) / coalesce(nullif(sum(div.value), 0), 1)) over (partition by map.id, coef.id)
                    )::int::decimal
 
               when highest
@@ -31,7 +31,7 @@ with pre as (
                    )::int::decimal
 
               when divide_by is not null
-              then sum(var.value) / greatest(sum(div.value), 1)
+              then sum(var.value) / coalesce(nullif(sum(div.value), 0), 1)
 
               else sum(var.value)
          end as total
@@ -50,42 +50,43 @@ with pre as (
   join team on team.id in (match.team_a, match.team_b)
   join participant on participant.team = team.id
   left join substitution on substitution.map = map.id and substitution.participant = participant.id
-  join player on player.steam_id in (participant.player, substitution.substitute)
   
   left join extract_player_stats var
     on var.log_id in (map.log_id, map.golden_cap_log_id)
-    and var.steam_id = player.steam_id
+    and var.steam_id in (participant.player, substitution.substitute)
     and var.statistic = coef.variable
   
   left join extract_player_stats div
     on div.log_id in (map.log_id, map.golden_cap_log_id)
-    and div.steam_id = player.steam_id
+    and div.steam_id in (participant.player, substitution.substitute)
     and div.statistic = coef.divide_by
 
   group by (map.id, coef.id, participant.id)
 )
 
 select participant
-     , tournament
+     , any_value(tournament) as tournament
      , round
      , match
      , map
      , player_coefficient
+     , sum(variable) as variable
+     , sum(divide_by) as divide_by
      , case when grouping(player_coefficient) = 1 then null
-            when any_value(is_average) then sum(variable)/greatest(sum(divide_by), 1)
+            when any_value(is_average) then sum(variable)/coalesce(nullif(sum(divide_by), 0), 1)
             else sum(total)
        end as total
      , sum(total * coefficient) as score
 from pre
 group by grouping sets
-( (participant, tournament, round, match, map, player_coefficient)
-, (participant, tournament, round, match, map)
-, (participant, tournament, round, match, player_coefficient)
-, (participant, tournament, round, match)
-, (participant, tournament, round, player_coefficient)
-, (participant, tournament, round)
-, (participant, tournament, player_coefficient)
-, (participant, tournament)
+( (participant, round, match, map, player_coefficient)
+, (participant, round, match, map)
+, (participant, round, match, player_coefficient)
+, (participant, round, match)
+, (participant, round, player_coefficient)
+, (participant, round)
+, (participant, player_coefficient)
+, (participant)
 );
 
 comment on materialized view player_performance is 'how much of a statistic has a player achieved';

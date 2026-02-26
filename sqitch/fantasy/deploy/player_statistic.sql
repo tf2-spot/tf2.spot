@@ -67,11 +67,11 @@ deaths_to_spy,,
 deaths_with_95_99_uber,,
 deaths_within_20s_after_uber,,
 drops,Drops,dropped übercharges
-headshot_kills,HS Kills,kills with a headshot
+headshot_kills,Headshot Kills,kills with a headshot
 headshots,,
 heals,Heals,heals
 heals_received,,
-health_from_medkits,Health kits,heals gathered from health kits
+health_from_medkits,Health picked up,heals gathered from health kits
 intel_captures,,
 kill_participations_on_demoman,,
 kill_participations_on_engineer,,
