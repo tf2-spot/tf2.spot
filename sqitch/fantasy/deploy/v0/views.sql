@@ -6,8 +6,8 @@ set search_path to fantasy_v0;
 
 create view manager as
 select steam_id
-     , case when muted_until > now then null else name as name
-     , case when muted_until > now then null else avatar as avatar
+     , case when muted_until > now() then null else name end as name
+     , case when muted_until > now() then null else avatar end as avatar
      , last_login
      , fetched
 from fantasy.manager;

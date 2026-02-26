@@ -14,10 +14,10 @@ create table player_statistic
 comment on table player_statistic is 'static set of possible measurements of a player during a map';
 
 copy player_statistic (id, short, description) from stdin with delimiter ',';
-advantages_lost,,
+advantages_lost,Ad lost,übercharge advantage lost
 airshots,Airshots,airshots
 assists,Assists,assists
-assists_as_demoman,assists :demoman:,assists as demoman
+assists_as_demoman,,
 assists_as_engineer,,
 assists_as_heavyweapons,,
 assists_as_medic,,
@@ -30,9 +30,9 @@ average_charge_length,,
 average_time_before_healing,,
 average_time_before_using,,
 average_time_to_build,,
-backstabs,,
+backstabs,Backstabs,backstabs
 biggest_advantage_lost,,
-damage,,
+damage,Damage,damage dealt
 damage_as_demoman,,
 damage_as_engineer,,
 damage_as_heavyweapons,,
@@ -43,9 +43,9 @@ damage_as_sniper,,
 damage_as_soldier,,
 damage_as_spy,,
 damage_real,,
-damage_taken,,
+damage_taken,Damage taken,damage taken
 damage_taken_real,,
-deaths,,
+deaths,Deaths,deaths
 deaths_as_demoman,,
 deaths_as_engineer,,
 deaths_as_heavyweapons,,
@@ -66,11 +66,12 @@ deaths_to_soldier,,
 deaths_to_spy,,
 deaths_with_95_99_uber,,
 deaths_within_20s_after_uber,,
-drops,,
-headshot_kills,,
+drops,Drops,dropped übercharges
+headshot_kills,HS Kills,kills with a headshot
 headshots,,
+heals,Heals,heals
 heals_received,,
-health_from_medkits,,
+health_from_medkits,Health kits,heals gathered from health kits
 intel_captures,,
 kill_participations_on_demoman,,
 kill_participations_on_engineer,,
@@ -81,11 +82,11 @@ kill_participations_on_scout,,
 kill_participations_on_sniper,,
 kill_participations_on_soldier,,
 kill_participations_on_spy,,
-kills,,
+kills,Kills,kills
 kills_as_demoman,,
 kills_as_engineer,,
 kills_as_heavyweapons,,
-kills_as_medic,,
+kills_as_medic,Kills as Medic,kills as Medic
 kills_as_pyro,,
 kills_as_scout,,
 kills_as_sniper,,
@@ -94,7 +95,7 @@ kills_as_spy,,
 kills_on_demoman,,
 kills_on_engineer,,
 kills_on_heavyweapons,,
-kills_on_medic,,
+kills_on_medic,Medic Kills,enemy Medics killed
 kills_on_pyro,,
 kills_on_scout,,
 kills_on_sniper,,
@@ -102,7 +103,7 @@ kills_on_soldier,,
 kills_on_spy,,
 longest_killstreak,,
 medkits,,
-point_captures,,
+point_captures,Captures,points captured
 sentries,,
 suicides,,
 time_as_demoman,,
@@ -114,7 +115,7 @@ time_as_scout,,
 time_as_sniper,,
 time_as_soldier,,
 time_as_spy,,
-ubercharges,,
+ubercharges,Übers,übercharges used
 ubercharges_kritzkrieg,,
 ubercharges_medigun,,
 ubercharges_quickfix,,

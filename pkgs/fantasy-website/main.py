@@ -95,6 +95,11 @@ def tournament(slug):
         .order(foreign_table="upcoming_rounds", column="time")
         .lt("past_rounds.time", "now")
         .order(foreign_table="past_rounds", column="time")
+        .order(
+            foreign_table="scoring_model.player_coefficient",
+            column="highest,lowest,variable,divide_by",
+        )
+        .order(foreign_table="scoring_model.team_coefficient", column="variable")
         .maybe_single()
         .execute()
     )
@@ -153,6 +158,11 @@ def player_stats(slug):
         .is_("team.participant.perf.match", "null")
         .is_("team.participant.perf.map", "null")
         .not_.is_("team.participant.perf.player_coefficient", "null")
+        .order(
+            foreign_table="scoring_model.player_coefficient",
+            column="highest,lowest,variable,divide_by",
+        )
+        .order(foreign_table="scoring_model.team_coefficient", column="variable")
         .maybe_single()
         .execute()
     )
