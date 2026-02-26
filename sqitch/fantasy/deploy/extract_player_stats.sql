@@ -26,7 +26,7 @@ with extract_player as (
   , headshot_kills         int path '$.value.headshots'
   , headshots              int path '$.value.headshots_hit'
   , sentries               int path '$.value.sentries'
-  , heal                   int path '$.value.heal'
+  , heals                  int path '$.value.heal'
   , point_captures         int path '$.value.cpc'
   , intel_captures         int path '$.value.ic'
   , ubercharges            int path '$.value.ubers'

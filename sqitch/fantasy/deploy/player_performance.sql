@@ -12,29 +12,32 @@ with pre as (
        , any_value(match.id) as match
        , map.id as map
        , coef.id as player_coefficient
-       , case when highest and divide_by is not null
-              then ( sum(var.value) / coalesce(nullif(sum(div.value), 0), 1)
-                     = max(sum(var.value) / coalesce(nullif(sum(div.value), 0), 1)) over (partition by map.id, coef.id)
-                   )::int::decimal
+       , coalesce(case
+         when highest and divide_by is not null
+         then ( sum(var.value) / coalesce(nullif(sum(div.value), 0), 1)
+                = max(sum(var.value) / coalesce(nullif(sum(div.value), 0), 1)) over (partition by map.id, coef.id)
+              )::int::decimal
 
-              when lowest and divide_by is not null
-              then ( sum(var.value) / coalesce(nullif(sum(div.value), 0), 1)
-                     = min(sum(var.value) / coalesce(nullif(sum(div.value), 0), 1)) over (partition by map.id, coef.id)
-                   )::int::decimal
+         when lowest and divide_by is not null
+         then ( sum(var.value) / coalesce(nullif(sum(div.value), 0), 1)
+                = min(sum(var.value) / coalesce(nullif(sum(div.value), 0), 1)) over (partition by map.id, coef.id)
+              )::int::decimal
 
-              when highest
-              then ( sum(var.value) = max(sum(var.value)) over (partition by map.id, coef.id)
-                   )::int::decimal
+         when highest
+         then ( sum(var.value) = max(sum(var.value)) over (partition by map.id, coef.id)
+              )::int::decimal
 
-              when lowest
-              then ( sum(var.value) = min(sum(var.value)) over (partition by map.id, coef.id)
-                   )::int::decimal
+         when lowest
+         then ( sum(var.value) = min(sum(var.value)) over (partition by map.id, coef.id)
+              )::int::decimal
 
-              when divide_by is not null
-              then sum(var.value) / coalesce(nullif(sum(div.value), 0), 1)
+         when divide_by is not null
+         then sum(var.value) / coalesce(nullif(sum(div.value), 0), 1)
 
-              else sum(var.value)
-         end as total
+         else sum(var.value)
+
+         end, 0)
+         as total
        , coef.coefficient
        , divide_by is not null and not highest and not lowest as is_average
        , sum(var.value) as variable
