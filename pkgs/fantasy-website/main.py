@@ -16,6 +16,7 @@ from flask import (
     url_for,
 )
 from flask_babel import Babel
+from werkzeug.middleware.proxy_fix import ProxyFix
 from whenever import Instant, OffsetDateTime
 
 STEAM_OPENID = "https://steamcommunity.com/openid/login"
@@ -36,6 +37,8 @@ CLASS_ORDER = [
 
 
 app = Flask(__name__)
+
+app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1)
 
 app.config.from_prefixed_env()
 

@@ -7,7 +7,7 @@ set search_path to fantasy;
 create table manager
 ( steam_id    text not null
 , name        text
-, avatar      mathesar_types.uri
+, avatar      text
 , last_login  timestamptz not null
 , fetched     timestamptz
 , muted_until timestamptz

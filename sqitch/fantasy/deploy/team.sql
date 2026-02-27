@@ -9,7 +9,7 @@ create table team
 , tournament int not null
 , name       text not null
 , tag        text
-, logo       mathesar_types.uri
+, logo       text
 , primary key (id)
 , foreign key (tournament) references tournament
 );
