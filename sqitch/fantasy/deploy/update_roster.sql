@@ -30,7 +30,8 @@ begin
     set time = tstzrange(lower(time), now)
       , sale_price = p.price
     from participant p
-    where p.id = participant
+    where contract.fantasy = fantasy_id
+    and p.id = participant
     and upper(time) is null
     and not (participant = any(desired_roster));
 
