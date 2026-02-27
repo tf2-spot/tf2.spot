@@ -419,6 +419,7 @@ def openid_steam():
 
     resp = make_response(redirect(route))
     resp.set_cookie(COOKIE_AUTHN, authn, max_age=31 * 24 * 60 * 60)
+    resp.cache_control.no_store
 
     return resp
 
@@ -427,6 +428,7 @@ def openid_steam():
 def logout():
     resp = make_response(redirect(url_for("homepage")))
     resp.set_cookie(COOKIE_AUTHN, "", expires=0)
+    resp.cache_control.no_store
     return resp
 
 
