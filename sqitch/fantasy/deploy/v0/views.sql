@@ -6,7 +6,7 @@ set search_path to fantasy_v0;
 
 create view manager as
 select steam_id
-     , case when muted_until > now() then null else name end as name
+     , case when muted_until > now() or name is null then 'Manager #' || steam_id else name end as name
      , case when muted_until > now() then null else avatar end as avatar
      , last_login
      , fetched
@@ -57,7 +57,7 @@ create view fantasy as
 select id
      , tournament
      , manager
-     , case when muted_until > now() then null else fantasy.name end as name
+     , case when muted_until > now() or fantasy.name is null then 'Unnamed team' else fantasy.name end as name
      , initial_budget
 from fantasy.fantasy
 join fantasy.manager on manager.steam_id = fantasy.manager;
@@ -69,6 +69,21 @@ where manager = current_setting('request.jwt.claims', true)::json->>'manager_id'
 
 create view contract as
 select * from fantasy.contract;
+
+create function time_signed(contract)
+returns timestamptz
+language sql
+as $$
+    select lower($1.time);
+$$;
+
+create function time_terminated(contract)
+returns timestamptz
+language sql
+as $$
+    select upper($1.time);
+$$;
+
 
 create function player_performance(participant)
 returns setof player_performance

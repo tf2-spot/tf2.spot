@@ -12,8 +12,9 @@
     >
       <thead>
         <tr>
-          <td></td>
           <th colspan="2">Participant</th>
+
+          <td></td>
 
           <th>Cost</th>
 
@@ -35,7 +36,6 @@
         {% for team in tournament.team %}
           {% for participant in team.participant | sort_by_main_class %}
             <tr>
-              <td></td>
               <td>
                 {# TODO: can't fillcolor this because it's an img, should be an svg #}
                 <img
@@ -43,6 +43,7 @@
                   src="/static/class/{{ participant.main_class }}.svg"
                 />
               </td>
+
               <td>
                 <a
                   href="https://steamcommunity.com/profiles/{{ participant.player.steam_id }}"
@@ -54,20 +55,44 @@
                 </a>
               </td>
 
+              <td>
+                <form
+                  method="post"
+                  action="{{ url_for('manage', slug=request.view_args.slug) }}"
+                  class="group relative"
+                >
+                  <input
+                    type="hidden"
+                    name="add"
+                    value="{{ participant.id }}"
+                  />
+                  <button
+                    class="h-5 w-5 rounded-full text-center shadow-lg hover:cursor-pointer hover:bg-blue-200/50 hover:dark:bg-red-800/50"
+                  >
+                    <span class="text-2xl/0 font-light">+</span>
+                  </button>
+                  <div
+                    class="absolute bottom-full left-1/2 mb-2 hidden -translate-x-1/2 rounded bg-black px-2 py-1 text-xs text-white group-hover:block"
+                  >
+                    Add to desired roster
+                  </div>
+                </form>
+              </td>
+
               <td class="text-right slashed-zero tabular-nums">
                 {{ participant.price | currencyformat("USD") }}
               </td>
 
               <td class="slashed-zero tabular-nums">
-                {% for i in participant.total_score %}{{ i.score | decimalformat("#.0") }}{% else %}0.0{% endfor %}
+                {% for i in participant.total_score %}{{ i.score | decimalformat("#,###.0") }}{% else %}0.0{% endfor %}
               </td>
 
               {% for coef in tournament.scoring_model.player_coefficient %}
                 <td class="slashed-zero tabular-nums">
-                  {% for perf in participant.perf if perf.player_coefficient.id == coef.id %}
+                  {% for perf in participant.perf if perf.player_coefficient.id == coef.id and perf.total != 0 %}
                     <div class="group relative">
                       <div class="hover:underline">
-                        {{ perf.total | decimalformat("#.#") }}
+                        {{ perf.total | decimalformat("#,###.#") }}
                       </div>
                       <div
                         class="absolute bottom-full left-1/2 mb-1 hidden -translate-x-1/2 rounded bg-black px-2 py-1 text-xs text-white group-hover:block"
@@ -76,7 +101,7 @@
                       </div>
                     </div>
                   {% else %}
-                    0
+                    <span class="text-black/25 dark:text-white/25">0</span>
                   {% endfor %}
                 </td>
               {% endfor %}

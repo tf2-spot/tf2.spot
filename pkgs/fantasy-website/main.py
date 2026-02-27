@@ -4,7 +4,17 @@ import flask_assets
 import httpx
 import jwt
 import postgrest
-from flask import Flask, make_response, redirect, render_template, request, url_for
+from flask import (
+    Flask,
+    abort,
+    flash,
+    make_response,
+    redirect,
+    render_template,
+    request,
+    session,
+    url_for,
+)
 from flask_babel import Babel
 from whenever import Instant, OffsetDateTime
 
@@ -12,6 +22,8 @@ app = Flask(__name__)
 app.config.from_prefixed_env()
 app.jinja_options["autoescape"] = True
 app.jinja_env.add_extension("jinja2.ext.debug")
+
+app.secret_key = "goo goo, ga ga"
 
 assets = flask_assets.Environment(app)
 
@@ -72,9 +84,8 @@ def tournament(slug):
     tournament = (
         api()
         .table("tournament")
-        .select(
-            "*",
-            """
+        .select("""
+            *,
             scoring_model(
                 player_coefficient(
                     variable: player_statistic!variable(*),
@@ -87,25 +98,28 @@ def tournament(slug):
                     variable: team_statistic(*),
                     coefficient
                 )
-            )
-            """,
-            "composition(*)",
-            "upcoming_rounds: round(*)",
-            "past_rounds: round(*)",
-        )
+            ),
+            composition(*),
+            upcoming_rounds: round(*),
+            past_rounds: round(*)
+        """)
         .eq("slug", slug)
-        .gte("upcoming_rounds.time", "now")
-        .order(foreign_table="upcoming_rounds", column="time")
-        .lt("past_rounds.time", "now")
-        .order(foreign_table="past_rounds", column="time")
         .order(
             foreign_table="scoring_model.player_coefficient",
             column="highest,lowest,variable,divide_by",
         )
         .order(foreign_table="scoring_model.team_coefficient", column="variable")
+        .gte("upcoming_rounds.time", "now")
+        .order(foreign_table="upcoming_rounds", column="time")
+        .lt("past_rounds.time", "now")
+        .order(foreign_table="past_rounds", column="time")
         .maybe_single()
         .execute()
     )
+
+    if tournament is None:
+        abort(404)
+
     resp = make_response(
         render_template("tournament.jinja", tournament=tournament.data)
     )
@@ -114,14 +128,112 @@ def tournament(slug):
     return resp
 
 
-@app.route("/t/<slug>/manage")
+@app.route("/t/<slug>/manage", methods=["GET", "POST"])
 def manage(slug):
+    if "add" in request.form:
+        session[slug] = list(set(session.get(slug, [])) | {int(request.form["add"])})
+        return redirect(request.path)
+
+    if "remove" in request.form:
+        session[slug] = list(set(session.get(slug, [])) - {int(request.form["remove"])})
+        return redirect(request.path)
+
     try:
         auth = authn()
     except NotAuthenticated:
         return redirect(url_for("login", next=request.path))
 
-    return render_template("manage.jinja")
+    if "reset" in request.form:
+        x = (
+            api(request.cookies[COOKIE_AUTHN])
+            .table("tournament")
+            .select("...my_fantasy(...contract(...participant(id)))")
+            .eq("slug", slug)
+            .is_("my_fantasy.contract.time_terminated", "null")
+            .single()
+            .execute()
+        )
+
+        session[slug] = x.data["id"][0]
+        return redirect(request.path)
+
+    if "commit" in request.form:
+        client = api(request.cookies[COOKIE_AUTHN])
+
+        tournament = (
+            client.table("tournament")
+            .select("id", "initial_budget")
+            .eq("slug", slug)
+            .single()
+            .execute()
+        )
+
+        my_fantasy = (
+            client.table("my_fantasy")
+            .upsert(
+                dict(
+                    tournament=tournament.data["id"],
+                    manager=auth["manager_id"],
+                    initial_budget=tournament.data["initial_budget"],
+                ),
+                on_conflict="tournament,manager",
+                returning="representation",
+            )
+            .execute()
+        )
+
+        try:
+            client.rpc(
+                "update_roster",
+                dict(
+                    fantasy_id=my_fantasy.data[0]["id"],
+                    desired_roster=session[slug],
+                ),
+            ).execute()
+        except postgrest.APIError as e:
+            flash(e.message or "Not really sure but something went wrong", "error")
+
+        return redirect(request.path)
+
+    tournament = (
+        api(request.cookies[COOKIE_AUTHN])
+        .table("tournament")
+        .select("""
+            *,
+            my_fantasy(
+                *,
+                contract(
+                    id,
+                    time_signed,
+                    time_terminated,
+                    purchase_price,
+                    sale_price,
+                    participant(
+                        id
+                    )
+                )
+            ),
+            participant(
+                id,
+                main_class,
+                price,
+                ...player(name),
+                team(id, name, tag)
+            )
+        """)
+        .eq("slug", slug)
+        .order(
+            foreign_table="participant",
+            column="team",
+        )
+        .maybe_single()
+        .execute()
+    )
+
+    if tournament is None:
+        abort(404)
+
+    return render_template("manage.jinja", tournament=tournament.data)
 
 
 @app.route("/t/<slug>/player-stats")
@@ -129,8 +241,7 @@ def player_stats(slug):
     tournament = (
         api()
         .table("tournament")
-        .select(
-            """
+        .select("""
             id,
             slug,
             name,
@@ -160,9 +271,13 @@ def player_stats(slug):
                     )
                 )
             )
-            """
-        )
+        """)
         .eq("slug", slug)
+        .order(
+            foreign_table="scoring_model.player_coefficient",
+            column="highest,lowest,variable,divide_by",
+        )
+        .order(foreign_table="scoring_model.team_coefficient", column="variable")
         .is_("team.participant.total_score.round", "null")
         .is_("team.participant.total_score.match", "null")
         .is_("team.participant.total_score.map", "null")
@@ -171,14 +286,13 @@ def player_stats(slug):
         .is_("team.participant.perf.match", "null")
         .is_("team.participant.perf.map", "null")
         .not_.is_("team.participant.perf.player_coefficient", "null")
-        .order(
-            foreign_table="scoring_model.player_coefficient",
-            column="highest,lowest,variable,divide_by",
-        )
-        .order(foreign_table="scoring_model.team_coefficient", column="variable")
         .maybe_single()
         .execute()
     )
+
+    if tournament is None:
+        abort(404)
+
     resp = make_response(
         render_template("player_stats.jinja", tournament=tournament.data)
     )
@@ -198,13 +312,18 @@ def manager(id):
         api()
         .table("manager")
         .select("*", "fantasy(*, tournament(*), contract(*))")
+        .eq("steam_id", id)
         .maybe_single()
         .execute()
     )
+
+    if manager is None:
+        abort(404)
+
     resp = make_response(render_template("manager.jinja", manager=manager.data))
     resp.cache_control.public = True
     resp.cache_control.max_age = 600
-    return
+    return resp
 
 
 @app.route("/login")
@@ -255,9 +374,9 @@ def openid_steam():
         algorithm=JWT_ALGORITHM,
     )
 
-    client = api(authn)
     req = (
-        client.table("me")
+        api(authn)
+        .table("me")
         .upsert(dict(steam_id=id, last_login=Instant.now().format_common_iso()))
         .execute()
     )
@@ -268,7 +387,7 @@ def openid_steam():
         route = url_for("homepage")
 
     resp = make_response(redirect(route))
-    resp.set_cookie(COOKIE_AUTHN, authn)
+    resp.set_cookie(COOKIE_AUTHN, authn, max_age=31 * 24 * 60 * 60)
 
     return resp
 
@@ -304,14 +423,30 @@ def parsedatetime(dt):
     return OffsetDateTime.parse_common_iso(dt).py_datetime()
 
 
-CLASS_ORDER = dict(
-    scout=1, soldier=2, pyro=3, demoman=4, heavy=5, engineer=6, medic=7, sniper=8, spy=9
-)
+@app.template_filter()
+def sort_by_main_class(participants):
+    CLASS_ORDER = [
+        "scout",
+        "soldier",
+        "pyro",
+        "demoman",
+        "heavy",
+        "engineer",
+        "medic",
+        "sniper",
+        "spy",
+    ]
+    return sorted(participants, key=lambda p: CLASS_ORDER.index(p["main_class"]))
 
 
 @app.template_filter()
-def sort_by_main_class(participants):
-    return sorted(participants, key=lambda p: CLASS_ORDER[p["main_class"]])
+def to_map(participants):
+    return {x["id"]: x for x in participants}
+
+
+@app.errorhandler(404)
+def handle_not_found(e):
+    return render_template("not-found.jinja")
 
 
 if __name__ == "__main__":

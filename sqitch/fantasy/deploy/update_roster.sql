@@ -50,7 +50,7 @@ begin
         join tournament on tournament.id = fantasy.tournament
         where fantasy = fantasy_id
         group by tournament.id
-        having count(upper(time)) > tournament.transactions
+        having count(upper(time)) > any_value(tournament.transactions)
     ) then
         raise exception 'Exceeded amount of transactions available';
     end if;
@@ -61,7 +61,7 @@ begin
         join fantasy on fantasy.id = contract.fantasy
         where contract.fantasy = fantasy_id
         group by fantasy.id
-        having fantasy.initial_budget + sum(coalesce(sale_price, 0) - purchase_price) < 0
+        having any_value(fantasy.initial_budget) + sum(coalesce(sale_price, 0) - purchase_price) < 0
     ) then
         raise exception 'Exceeded budget spending';
     end if;
@@ -74,15 +74,15 @@ begin
         join composition on composition.id = tournament.composition
         where fantasy = fantasy_id
         and upper(time) is null
-        having max(composition.scout) = count(1) filter (where main_class = 'scout')
-        and max(composition.soldier)  = count(1) filter (where main_class = 'soldier')
-        and max(composition.pyro)     = count(1) filter (where main_class = 'pyro')
-        and max(composition.demoman)  = count(1) filter (where main_class = 'demoman')
-        and max(composition.heavy)    = count(1) filter (where main_class = 'heavy')
-        and max(composition.engineer) = count(1) filter (where main_class = 'engineer')
-        and max(composition.medic)    = count(1) filter (where main_class = 'medic')
-        and max(composition.sniper)   = count(1) filter (where main_class = 'sniper')
-        and max(composition.spy)      = count(1) filter (where main_class = 'spy')
+        having any_value(composition.scout) = count(1) filter (where main_class = 'scout')
+        and any_value(composition.soldier)  = count(1) filter (where main_class = 'soldier')
+        and any_value(composition.pyro)     = count(1) filter (where main_class = 'pyro')
+        and any_value(composition.demoman)  = count(1) filter (where main_class = 'demoman')
+        and any_value(composition.heavy)    = count(1) filter (where main_class = 'heavy')
+        and any_value(composition.engineer) = count(1) filter (where main_class = 'engineer')
+        and any_value(composition.medic)    = count(1) filter (where main_class = 'medic')
+        and any_value(composition.sniper)   = count(1) filter (where main_class = 'sniper')
+        and any_value(composition.spy)      = count(1) filter (where main_class = 'spy')
     ) then
         raise exception 'Invalid class composition';
     end if;

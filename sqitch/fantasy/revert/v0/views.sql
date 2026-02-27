@@ -4,6 +4,8 @@ begin;
 
 set search_path to fantasy_v0;
 
+drop function time_signed(contract);
+drop function time_terminated(contract);
 drop function player_performance(participant);
 drop function player_coefficient(player_performance);
 

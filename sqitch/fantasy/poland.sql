@@ -44,7 +44,7 @@ COPY fantasy.team_coefficient (scoring_model, variable, coefficient) FROM stdin;
 \.
 
 COPY fantasy.tournament (id, name, slug, logo, region, scoring_model, composition, start_time, end_time, initial_budget, transactions, max_from_single_team) FROM stdin;
-1	poLANd.tf 2026	poland-2026	\N	Europe	1	1	2026-02-27 13:00:00+00	2026-03-01 22:00:00+00	135000	20	2
+1	poLANd.tf 2026	poland-2026	\N	Europe	1	1	2026-02-27 13:00:00+00	2026-03-01 22:00:00+00	135000	28	2
 \.
 
 COPY fantasy.round (tournament, name, "time") FROM stdin;
@@ -187,7 +187,7 @@ COPY fantasy.team (id, tournament, name, tag, logo) FROM stdin;
 8	1	kek minoin samurai	\N	\N
 9	1	LANkle Monitor	\N	\N
 10	1	MANDEM	\N	\N
-11	1	Puolangan divisioonan 2 tykistörykmentti	\N	\N
+11	1	Puolangan divisioonan 2 tykistörykmentti	.fi	\N
 12	1	The Compound	\N	\N
 13	1	The White Lotus	\N	\N
 14	1	Witness Gaming	\N	\N

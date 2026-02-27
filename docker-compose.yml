@@ -27,7 +27,8 @@ services:
     environment:
       <<: *config
       PGRST_DB_URI: postgres://postgrest:postgrest@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}
-      PGRST_DB_SCHEMA: fantasy_v0,fantasy
+      PGRST_DB_SCHEMA: fantasy_v0
+      PGRST_DB_EXTRA_SEARCH_PATH: public,fantasy
       PGRST_DB_ANON_ROLE: fantasy_visitor
       PGRST_JWT_SECRET: m93oLRACWZOFGrgHiXFnp4mZoqL3qHy4
       PGRST_OPENAPI_MODE: ignore-privileges
