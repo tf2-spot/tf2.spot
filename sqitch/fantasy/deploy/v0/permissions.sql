@@ -25,6 +25,7 @@ on manager
  , player_performance
  , fantasy
  , contract
+ , contract_value
 to fantasy_visitor, fantasy_manager;
 
 commit;

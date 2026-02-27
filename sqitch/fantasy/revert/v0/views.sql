@@ -4,10 +4,13 @@ begin;
 
 set search_path to fantasy_v0;
 
+drop function contract_value(contract);
+drop function my_fantasy(tournament);
+drop function player_coefficient(player_performance);
+drop function player_performance(participant);
+drop function round(contract_value);
 drop function time_signed(contract);
 drop function time_terminated(contract);
-drop function player_performance(participant);
-drop function player_coefficient(player_performance);
 
 drop view manager;
 drop view me;
@@ -25,6 +28,7 @@ drop view player;
 drop view player_performance;
 drop view fantasy;
 drop view my_fantasy;
+drop view contract_value;
 drop view contract;
 
 commit;

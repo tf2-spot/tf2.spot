@@ -22,6 +22,7 @@ on manager
  , player_performance
  , fantasy
  , contract
+ , contract_value
 from fantasy_visitor, fantasy_manager;
 
 revoke usage on schema fantasy_v0 from fantasy_visitor, fantasy_manager;

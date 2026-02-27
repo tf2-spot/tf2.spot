@@ -392,9 +392,16 @@
   .rounded-full {
     border-radius: calc(infinity * 1px);
   }
+  .border-y-1 {
+    border-block-style: var(--tw-border-style);
+    border-block-width: 1px;
+  }
   .border-b-1 {
     border-bottom-style: var(--tw-border-style);
     border-bottom-width: 1px;
+  }
+  .border-y-black {
+    border-block-color: var(--color-black);
   }
   .border-b-black {
     border-bottom-color: var(--color-black);

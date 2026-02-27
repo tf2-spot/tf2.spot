@@ -18,28 +18,37 @@ from flask import (
 from flask_babel import Babel
 from whenever import Instant, OffsetDateTime
 
+STEAM_OPENID = "https://steamcommunity.com/openid/login"
+COOKIE_AUTHN = "authn"
+JWT_ALGORITHM = "HS256"
+JWT_ROLE = "fantasy_manager"
+CLASS_ORDER = [
+    "scout",
+    "soldier",
+    "pyro",
+    "demoman",
+    "heavy",
+    "engineer",
+    "medic",
+    "sniper",
+    "spy",
+]
+
+
 app = Flask(__name__)
+
 app.config.from_prefixed_env()
+
 app.jinja_options["autoescape"] = True
 app.jinja_env.add_extension("jinja2.ext.debug")
-
-app.secret_key = "goo goo, ga ga"
 
 assets = flask_assets.Environment(app)
 
 babel = Babel(app)
 
-STEAM_OPENID = "https://steamcommunity.com/openid/login"
-
-COOKIE_AUTHN = "authn"
-POSTGREST = "http://localhost:8080/postgrest"
-JWT_SECRET = "m93oLRACWZOFGrgHiXFnp4mZoqL3qHy4"
-JWT_ALGORITHM = "HS256"
-JWT_ROLE = "fantasy_manager"
-
 
 def api(auth=None):
-    client = postgrest.SyncPostgrestClient(POSTGREST, schema="fantasy_v0")
+    client = postgrest.SyncPostgrestClient(app.config["POSTGREST"], schema="fantasy_v0")
     if auth is not None:
         client.auth(auth)
     return client
@@ -52,7 +61,9 @@ class NotAuthenticated(Exception):
 def authn():
     try:
         return jwt.decode(
-            request.cookies[COOKIE_AUTHN], key=JWT_SECRET, algorithms=JWT_ALGORITHM
+            request.cookies[COOKIE_AUTHN],
+            key=app.config["JWT_SECRET"],
+            algorithms=JWT_ALGORITHM,
         )
     except KeyError:
         raise NotAuthenticated from None
@@ -154,7 +165,7 @@ def manage(slug):
             .execute()
         )
 
-        session[slug] = x.data["id"][0]
+        session[slug] = x.data["id"]
         return redirect(request.path)
 
     if "commit" in request.form:
@@ -202,14 +213,23 @@ def manage(slug):
             *,
             my_fantasy(
                 *,
-                contract(
+                active: contract(
+                    id,
+                    time_signed,
+                    participant(id),
+                    contract_value(
+                        score,
+                        round(name, time)
+                    )
+                ),
+                old: contract(
                     id,
                     time_signed,
                     time_terminated,
-                    purchase_price,
-                    sale_price,
-                    participant(
-                        id
+                    participant(id),
+                    contract_value(
+                        score,
+                        round(name, time)
                     )
                 )
             ),
@@ -222,6 +242,14 @@ def manage(slug):
             )
         """)
         .eq("slug", slug)
+        .order(foreign_table="my_fantasy.active", column="time_signed")
+        .is_("my_fantasy.active.time_terminated", "null")
+        .order(foreign_table="my_fantasy.active.contract_value", column="round(time)")
+        .not_.is_("my_fantasy.active.contract_value.score", "null")
+        .order(foreign_table="my_fantasy.old", column="time_signed")
+        .not_.is_("my_fantasy.old.time_terminated", "null")
+        .order(foreign_table="my_fantasy.old.contract_value", column="round(time)")
+        .not_.is_("my_fantasy.old.contract_value.score", "null")
         .order(
             foreign_table="participant",
             column="team",
@@ -370,7 +398,7 @@ def openid_steam():
             manager_id=id,
             exp=Instant.now().add(hours=14 * 24).py_datetime(),
         ),
-        key=JWT_SECRET,
+        key=app.config["JWT_SECRET"],
         algorithm=JWT_ALGORITHM,
     )
 
@@ -403,7 +431,9 @@ def logout():
 def ctx_login():
     try:
         authn = jwt.decode(
-            request.cookies[COOKIE_AUTHN], key=JWT_SECRET, algorithms=JWT_ALGORITHM
+            request.cookies[COOKIE_AUTHN],
+            key=app.config["JWT_SECRET"],
+            algorithms=JWT_ALGORITHM,
         )
         return dict(me=authn)
     except KeyError:
@@ -425,17 +455,6 @@ def parsedatetime(dt):
 
 @app.template_filter()
 def sort_by_main_class(participants):
-    CLASS_ORDER = [
-        "scout",
-        "soldier",
-        "pyro",
-        "demoman",
-        "heavy",
-        "engineer",
-        "medic",
-        "sniper",
-        "spy",
-    ]
     return sorted(participants, key=lambda p: CLASS_ORDER.index(p["main_class"]))
 
 
