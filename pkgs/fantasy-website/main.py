@@ -172,6 +172,10 @@ def manage(slug):
         return redirect(request.path)
 
     if "commit" in request.form:
+        if session.get(slug, []) == []:
+            flash("You need players in your roster", "error")
+            return redirect(request.path)
+
         client = api(request.cookies[COOKIE_AUTHN])
 
         tournament = (
