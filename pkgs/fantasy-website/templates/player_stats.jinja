@@ -3,27 +3,61 @@
 
 {% block title %}{{ tournament.name }}{% endblock %}
 
+{% block head %}
+  {{ super () }}
+
+  {%
+    assets
+    "../js/tablesort.js",
+    "../js/tablesort.number.js",
+    "../js/init-tablesort.js",
+    output="tablesort.js"
+  %}
+    <script src="{{ ASSET_URL }}"></script>
+  {% endassets %}
+{% endblock %}
+
 {% block mainclasses %}class="mx-auto max-w-[120rem]"{% endblock %}
 
 {% block main %}
   <div class="flex overflow-x-auto">
     <table
-      class="shrink-0 grow table-fixed border-separate border-spacing-x-6 border-spacing-y-2 bg-gray-100 p-4 pt-30 pr-6 dark:bg-red-900"
+      class="tablesort shrink-0 grow table-fixed border-separate border-spacing-x-6 border-spacing-y-2 bg-gray-100 p-4 pt-30 pr-6 dark:bg-red-900"
     >
       <thead>
         <tr>
-          <th colspan="2">Participant</th>
+          <td data-sort-method="none"></td>
 
-          <td></td>
+          <th class="cursor-pointer aria-asc:overline aria-desc:underline">
+            Participant
+          </th>
 
-          <th>Cost</th>
+          <td data-sort-method="none"></td>
 
-          <th class="whitespace-nowrap">
-            <div class="w-0 origin-left -rotate-45">Total score</div>
+          <th
+            class="cursor-pointer aria-asc:overline aria-desc:underline"
+            data-sort-method="number"
+            data-sort-reverse
+          >
+            Cost
+          </th>
+
+          <th
+            class="cursor-pointer whitespace-nowrap aria-asc:overline aria-desc:underline"
+            data-sort-method="number"
+            data-sort-reverse
+          >
+            <div class="w-0 origin-left -rotate-45 cursor-pointer">
+              Total score
+            </div>
           </th>
 
           {% for coef in tournament.scoring_model.player_coefficient %}
-            <th class="whitespace-nowrap">
+            <th
+              class="cursor-pointer whitespace-nowrap aria-asc:overline aria-desc:underline"
+              data-sort-method="number"
+              data-sort-reverse
+            >
               <div class="w-0 origin-left -rotate-45">
                 {{ coef_short(coef) }}
               </div>
@@ -44,7 +78,10 @@
                 />
               </td>
 
-              <td>
+              <td
+                data-sort-column-key="name"
+                data-sort="{{ participant.player.name }}"
+              >
                 <a
                   href="https://steamcommunity.com/profiles/{{ participant.player.steam_id }}"
                 >
@@ -79,16 +116,20 @@
                 </form>
               </td>
 
-              <td class="text-right slashed-zero tabular-nums">
+              <td
+                class="text-right slashed-zero tabular-nums"
+                data-sort-column-key="cost"
+                data-sort="{{ participant.price }}"
+              >
                 {{ participant.price | currencyformat("USD") }}
               </td>
 
-              <td class="slashed-zero tabular-nums">
+              <td class="tabular-nums">
                 {% for i in participant.total_score %}{{ i.score | decimalformat("#,###.0") }}{% else %}0.0{% endfor %}
               </td>
 
               {% for coef in tournament.scoring_model.player_coefficient %}
-                <td class="slashed-zero tabular-nums">
+                <td class="tabular-nums">
                   {% for perf in participant.perf if perf.player_coefficient.id == coef.id and perf.total != 0 %}
                     <div class="group relative">
                       <div class="hover:underline">
@@ -107,7 +148,6 @@
               {% endfor %}
             </tr>
           {% endfor %}
-          <tr></tr>
         {% endfor %}
       </tbody>
     </table>

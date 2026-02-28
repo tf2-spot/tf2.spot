@@ -51,16 +51,12 @@
 
         <tr>
           <th class="text-right">Max transactions</th>
-          <td class="slashed-zero tabular-nums">
-            {{ tournament.transactions }}
-          </td>
+          <td class="tabular-nums">{{ tournament.transactions }}</td>
         </tr>
 
         <tr>
           <th class="text-right">Max players from a single team</th>
-          <td class="slashed-zero tabular-nums">
-            {{ tournament.max_from_single_team }}
-          </td>
+          <td class="tabular-nums">{{ tournament.max_from_single_team }}</td>
         </tr>
 
         <tr>
@@ -97,7 +93,7 @@
                 </div>
               </div>
             </td>
-            <td class="slashed-zero tabular-nums">
+            <td class="tabular-nums">
               &times; {{ coef.coefficient | decimalformat("#.####") }}
             </td>
           </tr>
@@ -106,7 +102,7 @@
         {% for coef in tournament.scoring_model.team_coefficient %}
           <tr>
             <td class="text-right">{{ coef.variable.short }}</td>
-            <td class="slashed-zero tabular-nums">
+            <td class="tabular-nums">
               &times; {{ coef.coefficient | decimalformat }}
             </td>
           </tr>
