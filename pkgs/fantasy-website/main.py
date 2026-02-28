@@ -159,6 +159,32 @@ def manage(slug):
     except NotAuthenticated:
         return redirect(url_for("login", next=request.path))
 
+    if "name" in request.form:
+        client = api(request.cookies[COOKIE_AUTHN])
+
+        tournament = (
+            client.table("tournament")
+            .select("id", "initial_budget")
+            .eq("slug", slug)
+            .single()
+            .execute()
+        )
+
+        (
+            client.table("my_fantasy")
+            .upsert(
+                dict(
+                    tournament=tournament.data["id"],
+                    manager=auth["manager_id"],
+                    name=request.form["name"],
+                    initial_budget=tournament.data["initial_budget"],
+                ),
+                on_conflict="tournament,manager",
+            )
+            .execute()
+        )
+        return redirect(request.path)
+
     if "reset" in request.form:
         x = (
             api(request.cookies[COOKIE_AUTHN])

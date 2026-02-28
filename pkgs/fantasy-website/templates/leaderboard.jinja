@@ -19,16 +19,16 @@
     <tbody>
       {% for fantasy in tournament.fantasy %}
         <tr>
-          <td class="w-xs">
+          <td>
             <a
               href="{{ url_for('fantasy', slug=request.view_args.slug, id=fantasy.manager.steam_id) }}"
-              class="block max-w-full truncate text-lg whitespace-nowrap"
+              class="block max-w-md truncate text-lg whitespace-nowrap"
             >
               {{ fantasy.name }}
             </a>
             <a
               href="{{ url_for('manager', id=fantasy.manager.steam_id) }}"
-              class="block max-w-full truncate text-sm whitespace-nowrap"
+              class="block max-w-md truncate text-sm whitespace-nowrap"
               >by {{ fantasy.manager.name }}</a
             >
           </td>
