@@ -1,7 +1,7 @@
 <table class="border-separate border-spacing-2 text-lg">
   <tbody>
     {% set hack = dict(total=0) %}
-    {% for participant in participants if participant.id in session.get(request.view_args.slug, []) %}
+    {% for participant in participants if participant.id in (session.get(request.view_args.slug) or []) %}
       {% set _ = hack.update(dict(total = hack.total + participant.price)) %}
       <tr>
         <td>

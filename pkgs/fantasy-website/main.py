@@ -145,11 +145,13 @@ def tournament(slug):
 @app.route("/t/<slug>/manage", methods=["GET", "POST"])
 def manage(slug):
     if "add" in request.form:
-        session[slug] = list(set(session.get(slug, [])) | {int(request.form["add"])})
+        session[slug] = list(set(session.get(slug) or []) | {int(request.form["add"])})
         return redirect(request.path)
 
     if "remove" in request.form:
-        session[slug] = list(set(session.get(slug, [])) - {int(request.form["remove"])})
+        session[slug] = list(
+            set(session.get(slug) or []) - {int(request.form["remove"])}
+        )
         return redirect(request.path)
 
     try:
@@ -172,7 +174,7 @@ def manage(slug):
         return redirect(request.path)
 
     if "commit" in request.form:
-        if session.get(slug, []) == []:
+        if session.get(slug) is None:
             flash("You need players in your roster", "error")
             return redirect(request.path)
 
