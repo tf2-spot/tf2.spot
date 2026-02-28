@@ -21,6 +21,7 @@ on manager
  , player
  , player_performance
  , fantasy
+ , fantasy_value
  , contract
  , contract_value
 from fantasy_visitor, fantasy_manager;

@@ -178,4 +178,22 @@ as $$
     select * from round where id = $1.round;
 $$;
 
+--
+
+create view fantasy_value as
+select fantasy.id as fantasy
+     , sum(coalesce(score, 0)) as score
+     , dense_rank() over (order by sum(coalesce(score, 0)) desc) as rank
+from fantasy.fantasy
+left join fantasy.contract on contract.fantasy = fantasy.id
+join contract_value on contract_value.contract = contract.id
+group by fantasy.id;
+
+create function fantasy_value(fantasy)
+returns setof fantasy_value rows 1
+language sql
+as $$
+    select * from fantasy_value where fantasy = $1.id
+$$;
+
 commit;
