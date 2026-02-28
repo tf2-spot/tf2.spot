@@ -275,13 +275,17 @@ def manage(slug):
 
 @app.route("/t/<slug>/player-stats")
 def player_stats(slug):
-    tournament = (
+    if request.args.get("round") == "":
+        return redirect(request.path)
+
+    req = (
         api()
         .table("tournament")
         .select("""
             id,
             slug,
             name,
+            round(id, name),
             scoring_model(
                 player_coefficient(
                     id,
@@ -310,22 +314,34 @@ def player_stats(slug):
             )
         """)
         .eq("slug", slug)
+        .order(foreign_table="round", column="time")
         .order(
             foreign_table="scoring_model.player_coefficient",
             column="highest,lowest,variable,divide_by",
         )
         .order(foreign_table="scoring_model.team_coefficient", column="variable")
-        .is_("team.participant.total_score.round", "null")
         .is_("team.participant.total_score.match", "null")
         .is_("team.participant.total_score.map", "null")
         .is_("team.participant.total_score.player_coefficient", "null")
-        .is_("team.participant.perf.round", "null")
         .is_("team.participant.perf.match", "null")
         .is_("team.participant.perf.map", "null")
         .not_.is_("team.participant.perf.player_coefficient", "null")
-        .maybe_single()
-        .execute()
     )
+
+    if request.args.get("round"):
+        req = (
+            (req)
+            .eq("team.participant.total_score.round", request.args["round"])
+            .eq("team.participant.perf.round", request.args["round"])
+        )
+    else:
+        req = (
+            (req)
+            .is_("team.participant.total_score.round", "null")
+            .is_("team.participant.perf.round", "null")
+        )
+
+    tournament = req.maybe_single().execute()
 
     if tournament is None:
         abort(404)

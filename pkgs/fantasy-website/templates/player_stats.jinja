@@ -22,9 +22,40 @@
 {% block main %}
   <div class="flex overflow-x-auto">
     <table
-      class="tablesort shrink-0 grow table-fixed border-separate border-spacing-x-6 border-spacing-y-2 bg-gray-100 p-4 pt-30 pr-6 dark:bg-red-900"
+      class="tablesort shrink-0 grow table-fixed border-separate border-spacing-x-6 border-spacing-y-2 bg-gray-100 p-4 pt-20 pr-6 dark:bg-red-900"
     >
       <thead>
+        <tr>
+          <td colspan="4">
+            <form>
+              <select name="round" class="cursor-pointer text-xl">
+                <option
+                  value=""
+                  {% if not request.args.get("round") %}
+                    selected
+                  {% endif %}
+                >
+                  Whole tournament
+                </option>
+                {% for round in tournament.round %}
+                  <option
+                    value="{{ round.id }}"
+                    {% if request.args.get("round") == (round.id|string) %}
+                      selected
+                    {% endif %}
+                  >
+                    {{ round.name }}
+                  </option>
+                {% endfor %}
+              </select>
+              <button
+                class="rounded-full p-2 text-xl shadow-lg hover:cursor-pointer hover:bg-blue-200/50 hover:dark:bg-red-800/50"
+              >
+                Go
+              </button>
+            </form>
+          </td>
+        </tr>
         <tr>
           <td data-sort-method="none"></td>
 
