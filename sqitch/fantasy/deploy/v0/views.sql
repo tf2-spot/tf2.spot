@@ -186,7 +186,7 @@ select fantasy.id as fantasy
      , dense_rank() over (order by sum(coalesce(score, 0)) desc) as rank
 from fantasy.fantasy
 left join fantasy.contract on contract.fantasy = fantasy.id
-join contract_value on contract_value.contract = contract.id
+join contract_value on contract_value.contract = contract.id and contract_value.round is null
 group by fantasy.id;
 
 create function fantasy_value(fantasy)
