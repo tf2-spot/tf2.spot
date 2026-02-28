@@ -15,6 +15,8 @@
       {% endassets %}
 
       <link rel="icon" href="data:image/png;base64,iVBORw0KGgo=" />
+      <link rel="preload" as="image" href="/static/bg/light.png" />
+      <link rel="preload" as="image" href="/static/bg/dark.png" />
 
       <title>
         {% block fulltitle %}{% block title %}{% endblock %} — Fantasy TF2{% endblock %}
@@ -22,7 +24,9 @@
     {% endblock head %}
   </head>
 
-  <body class="bg-blue-100 dark:bg-red-950 dark:text-white">
+  <body
+    class="bg-size[512px] bg-blue-100 bg-[url(/static/bg/light.png)] dark:bg-red-950 dark:bg-[url(/static/bg/dark.png)] dark:text-white"
+  >
     <header
       class="mx-auto mt-4 mb-12 flex max-w-3xl items-baseline justify-between px-2"
     >

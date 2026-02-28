@@ -478,6 +478,9 @@
   .bg-white {
     background-color: var(--color-white);
   }
+  .bg-\[url\(\/static\/bg\/light\.png\)\] {
+    background-image: url(/static/bg/light.png);
+  }
   .p-2 {
     padding: calc(var(--spacing) * 2);
   }
@@ -745,6 +748,11 @@
   .dark\:bg-red-950 {
     @media (prefers-color-scheme: dark) {
       background-color: var(--color-red-950);
+    }
+  }
+  .dark\:bg-\[url\(\/static\/bg\/dark\.png\)\] {
+    @media (prefers-color-scheme: dark) {
+      background-image: url(/static/bg/dark.png);
     }
   }
   .dark\:text-stone-100\/30 {
