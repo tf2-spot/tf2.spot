@@ -340,7 +340,32 @@ def player_stats(slug):
 
 @app.route("/t/<slug>/leaderboard")
 def leaderboard(slug):
-    return render_template("leaderboard.jinja")
+    tournament = (
+        api()
+        .table("tournament")
+        .select("""
+            fantasy(
+                *,
+                manager(steam_id, name),
+                ...fantasy_value(score, rank)
+            )
+        """)
+        .eq("slug", slug)
+        .not_.is_("fantasy.fantasy_value", "null")
+        .order(foreign_table="fantasy", column="fantasy_value(rank)")
+        .maybe_single()
+        .execute()
+    )
+
+    if tournament is None:
+        abort(404)
+
+    resp = make_response(
+        render_template("leaderboard.jinja", tournament=tournament.data)
+    )
+    resp.cache_control.public = True
+    resp.cache_control.max_age = 600
+    return resp
 
 
 @app.route("/profiles/<id>")
