@@ -6,9 +6,12 @@
   <div class="flex flex-col gap-4 bg-gray-100 p-4 dark:bg-red-900">
     <div class="m-4 flex items-baseline justify-between">
       <div class="w-3/4">
-        <h1 class="text-7xl">{{ fantasy.name }}</h1>
+        <h1 class="truncate text-7xl" title="{{ fantasy.name }}">
+          {{ fantasy.name }}
+        </h1>
         <a
-          class="text-3xl"
+          class="truncate text-3xl"
+          title="{{ fantasy.manager.name }}"
           href="{{ url_for('manager', id=request.view_args.id) }}"
         >
           by {{ fantasy.manager.name }}

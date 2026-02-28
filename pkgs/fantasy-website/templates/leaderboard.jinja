@@ -23,14 +23,17 @@
             <a
               href="{{ url_for('fantasy', slug=request.view_args.slug, id=fantasy.manager.steam_id) }}"
               class="block max-w-md truncate text-lg whitespace-nowrap"
+              title="{{ fantasy.name }}"
             >
               {{ fantasy.name }}
             </a>
             <a
               href="{{ url_for('manager', id=fantasy.manager.steam_id) }}"
               class="block max-w-md truncate text-sm whitespace-nowrap"
-              >by {{ fantasy.manager.name }}</a
+              title="{{ fantasy.manager.name }}"
             >
+              by {{ fantasy.manager.name }}
+            </a>
           </td>
           <td class="text-right text-5xl font-extralight tabular-nums">
             {{ fantasy.score | decimalformat("#,###.0") }}

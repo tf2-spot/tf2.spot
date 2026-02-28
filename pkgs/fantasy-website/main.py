@@ -176,7 +176,7 @@ def manage(slug):
                 dict(
                     tournament=tournament.data["id"],
                     manager=auth["manager_id"],
-                    name=request.form["name"],
+                    name=request.form["name"].strip() or "Unnamed team",
                     initial_budget=tournament.data["initial_budget"],
                 ),
                 on_conflict="tournament,manager",
