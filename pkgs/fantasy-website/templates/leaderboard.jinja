@@ -1,5 +1,7 @@
 {% extends "base.jinja" %}
 
+{% block title %}{{ tournament.name }}{% endblock %}
+
 {% block main %}
   <table
     class="mx-auto border-separate border-spacing-x-6 border-spacing-y-2 bg-gray-100 p-4 dark:bg-red-900"
@@ -18,9 +20,12 @@
       {% for fantasy in tournament.fantasy %}
         <tr>
           <td class="w-xs">
-            <div class="max-w-full truncate text-lg whitespace-nowrap">
+            <a
+              href="{{ url_for('fantasy', slug=request.view_args.slug, id=fantasy.manager.steam_id) }}"
+              class="block max-w-full truncate text-lg whitespace-nowrap"
+            >
               {{ fantasy.name }}
-            </div>
+            </a>
             <a
               href="{{ url_for('manager', id=fantasy.manager.steam_id) }}"
               class="block max-w-full truncate text-sm whitespace-nowrap"

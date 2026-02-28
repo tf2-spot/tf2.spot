@@ -344,6 +344,7 @@ def leaderboard(slug):
         api()
         .table("tournament")
         .select("""
+            name,
             fantasy(
                 *,
                 manager(steam_id, name),
@@ -368,15 +369,71 @@ def leaderboard(slug):
     return resp
 
 
+@app.route("/t/<slug>/<id>")
+def fantasy(slug, id):
+    fantasy = (
+        api()
+        .table("fantasy")
+        .select("""
+            *,
+            manager(steam_id, name),
+            ...fantasy_value(score, rank),
+            active: contract(
+                id,
+                time_signed,
+                participant(
+                    main_class,
+                    price,
+                    ...player(name),
+                    team(name, tag)
+                ),
+                contract_value(
+                    score,
+                    round(name, time)
+                )
+            ),
+            old: contract(
+                id,
+                time_signed,
+                time_terminated,
+                participant(
+                    main_class,
+                    price,
+                    ...player(name),
+                    team(name, tag)
+                ),
+                contract_value(
+                    score,
+                    round(name, time)
+                )
+            )
+        """)
+        .eq("manager", id)
+        .order(foreign_table="active", column="time_signed")
+        .is_("active.time_terminated", "null")
+        .order(foreign_table="active.contract_value", column="round(time)")
+        .not_.is_("active.contract_value.score", "null")
+        .order(foreign_table="old", column="time_signed")
+        .not_.is_("old.time_terminated", "null")
+        .order(foreign_table="old.contract_value", column="round(time)")
+        .not_.is_("old.contract_value.score", "null")
+        .maybe_single()
+        .execute()
+    )
+
+    if fantasy is None:
+        abort(404)
+
+    resp = make_response(render_template("fantasy.jinja", fantasy=fantasy.data))
+    resp.cache_control.public = True
+    resp.cache_control.max_age = 600
+    return resp
+
+
 @app.route("/profiles/<id>")
 def manager(id):
     manager = (
-        api()
-        .table("manager")
-        .select("*", "fantasy(*, tournament(*), contract(*))")
-        .eq("steam_id", id)
-        .maybe_single()
-        .execute()
+        api().table("manager").select("*").eq("steam_id", id).maybe_single().execute()
     )
 
     if manager is None:
