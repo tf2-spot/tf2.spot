@@ -3,14 +3,14 @@
 {% block title %}Login failure{% endblock %}
 
 {% block main %}
-  <div class="mx-auto w-1/3 space-y-4 bg-red-500/25 p-8">
+  <div class="mx-auto w-1/3 space-y-4 bg-red-500/66 p-8">
     <h1 class="text-3xl">Login failure</h1>
     <p>
       We failed to verify your identity during the Steam authentication process.
     </p>
     <div class="flex">
       <a
-        class="mx-auto p-4 hover:bg-red-500/50"
+        class="mx-auto rounded p-4 shadow-lg hover:bg-black/50"
         href="{{ url_for('login', next=request.args.get('next')) }}"
       >
         Try again

@@ -71,7 +71,10 @@
           <tr>
             <td class="text-right">
               {{ c | capitalize }}
-              <img class="inline h-5" src="/static/class/{{ c }}.svg" />
+              <img
+                class="inline h-5 dark:invert"
+                src="/static/class/{{ c }}.svg"
+              />
             </td>
             <td class="tabular-nums">{{ tournament.composition[c] }}</td>
           </tr>

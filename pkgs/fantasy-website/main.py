@@ -76,7 +76,9 @@ def authn():
 
 @app.route("/")
 def homepage():
-    tournaments = api().table("tournament").select().execute()
+    tournaments = (
+        api().table("tournament").select("name, slug, start_time, end_time").execute()
+    )
     resp = make_response(
         render_template("homepage.jinja", tournaments=tournaments.data)
     )
@@ -114,8 +116,8 @@ def tournament(slug):
                 )
             ),
             composition(*),
-            upcoming_rounds: round(*),
-            past_rounds: round(*)
+            upcoming_rounds: round(name, time),
+            past_rounds: round(name, time)
         """)
         .eq("slug", slug)
         .order(
@@ -245,12 +247,10 @@ def manage(slug):
         api(request.cookies[COOKIE_AUTHN])
         .table("tournament")
         .select("""
-            *,
             my_fantasy(
                 *,
                 active: contract(
                     id,
-                    time_signed,
                     participant(id),
                     contract_value(
                         score,
@@ -259,8 +259,6 @@ def manage(slug):
                 ),
                 old: contract(
                     id,
-                    time_signed,
-                    time_terminated,
                     participant(id),
                     contract_value(
                         score,
@@ -270,10 +268,10 @@ def manage(slug):
             ),
             participant(
                 id,
+                ...player(name),
                 main_class,
                 price,
-                ...player(name),
-                team(id, name, tag)
+                team(name, tag)
             )
         """)
         .eq("slug", slug)
@@ -475,13 +473,38 @@ def fantasy(slug, id):
 @app.route("/profiles/<id>")
 def manager(id):
     manager = (
-        api().table("manager").select("*").eq("steam_id", id).maybe_single().execute()
+        api()
+        .table("manager")
+        .select("""
+            name,
+            avatar,
+            steam_id,
+            fantasy(
+                name,
+                ...fantasy_value(score, rank),
+                contract(participant(player(name), main_class)),
+                tournament(name, slug, start_time)
+            )
+        """)
+        .eq("steam_id", id)
+        .order(foreign_table="fantasy", column="tournament(start_time)")
+        .is_("fantasy.contract.time_terminated", "null")
+        .order(foreign_table="fantasy.contract", column="participant(main_class)")
+        .maybe_single()
+        .execute()
     )
 
     if manager is None:
         abort(404)
 
-    resp = make_response(render_template("manager.jinja", manager=manager.data))
+    try:
+        is_me = manager.data["steam_id"] == authn()["manager_id"]
+    except NotAuthenticated:
+        is_me = False
+
+    resp = make_response(
+        render_template("manager.jinja", manager=manager.data, is_me=is_me)
+    )
     resp.cache_control.public = True
     resp.cache_control.max_age = 600
     return resp

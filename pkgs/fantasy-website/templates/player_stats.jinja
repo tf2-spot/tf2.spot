@@ -102,9 +102,8 @@
           {% for participant in team.participant | sort_by_main_class %}
             <tr>
               <td>
-                {# TODO: can't fillcolor this because it's an img, should be an svg #}
                 <img
-                  class="w-6"
+                  class="w-6 dark:invert"
                   src="/static/class/{{ participant.main_class }}.svg"
                 />
               </td>

@@ -19,15 +19,19 @@
       </div>
 
       <div class="relative">
-        <div class="absolute bottom-12">Rank</div>
-        <div class="text-light text-5xl">#{{ fantasy.rank }}</div>
-      </div>
-
-      <div class="relative">
-        <div class="absolute bottom-12">Total score:</div>
+        <div class="absolute bottom-12 text-black/50 dark:text-white/50">
+          Total score
+        </div>
         <div class="text-light text-4xl">
           {{ fantasy.score | decimalformat("#,###.0") }}
         </div>
+      </div>
+
+      <div class="relative">
+        <div class="absolute bottom-12 text-black/50 dark:text-white/50">
+          Rank
+        </div>
+        <div class="text-light text-5xl">#{{ fantasy.rank }}</div>
       </div>
     </div>
 
@@ -41,7 +45,7 @@
             <tr>
               <td>
                 <img
-                  class="h-8 w-8"
+                  class="h-8 w-8 dark:invert"
                   src="/static/class/{{ contract.participant.main_class }}.svg"
                 />
               </td>

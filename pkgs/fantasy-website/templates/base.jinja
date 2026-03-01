@@ -30,7 +30,9 @@
     <header
       class="mx-auto mt-4 mb-12 flex max-w-3xl items-baseline justify-between px-2"
     >
-      <a href="{{ url_for('homepage') }}" class="text-5xl">Fantasy TF2</a>
+      <a class="text-5xl text-shadow-lg" href="{{ url_for('homepage') }}">
+        Fantasy TF2
+      </a>
 
       <a
         href="{{ url_for('my_profile') }}"
@@ -42,9 +44,9 @@
 
     {% with messages = get_flashed_messages(with_categories=true) %}
       {% if messages %}
-        <ul>
+        <ul class="mx-auto my-4 flex max-w-xl flex-col gap-2 bg-red-500/75">
           {% for category, message in messages %}
-            <li class="">{{ message }}</li>
+            <li class="px-8 py-2 font-bold">{{ message }}</li>
           {% endfor %}
         </ul>
       {% endif %}
