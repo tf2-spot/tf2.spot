@@ -1,13 +1,5 @@
+{ tf-assets, tf-linux, tf-windows }:
 { lib, pkgs, ... }:
-let
-  chunks = lib.importJSON ../chunks.json;
-  assets = pkgs.callPackage ../pkgs/assets-joined { inherit (chunks) date assets; };
-  binaries = pkgs.pkgsi686Linux.callPackage ../pkgs/linux-binaries {
-    inherit (chunks) date;
-    depot = pkgs.callPackage ../pkgs/fetch-depot chunks.linux;
-  };
-  windowsBinaries = pkgs.callPackage ../pkgs/fetch-depot chunks.windows;
-in
 {
 
   name = "run-tf2ds";
@@ -27,7 +19,9 @@ in
 
       imports = [ ../nixos/tf2-dedicated-server.nix ];
       services.tf2-dedicated-server = {
-        inherit binaries windowsBinaries assets;
+        assets = tf-assets;
+        binaries = tf-linux;
+        windowsBinaries = tf-windows;
 
         addons = [ ];
 

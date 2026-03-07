@@ -24,30 +24,56 @@
 
         config = {
           lib = {
-            fetchDepot = pkgs.callPackage ./pkgs/fetch-depot;
+            manifests = {
+              steamworks-linux = [{ app = "1007"; depot = "1006"; }];
+
+              tf-windows = [{ app = "232250"; depot = "232255"; }];
+              tf-linux = [{ app = "232250"; depot = "232256"; }];
+              tf-assets = [
+                { app = "232250"; depot = "232250"; fileList = builtins.readFile ./files-tf-assets.txt; }
+                { app = "232250"; depot = "232250"; startsWith = "hl2/hl2_misc_"; }
+                { app = "232250"; depot = "232250"; startsWith = "tf/tf2_misc_"; }
+              ];
+            };
+
             chunks = lib.importJSON ./chunks.json;
+
+            fetchDepot = pkgs.callPackage ./pkgs/fetch-depot;
+
+            fetchJoinChunk = { name, date, chunk }:
+              pkgs.callPackage ./pkgs/fetch-join-chunk {
+                inherit name date chunk;
+                inherit (config.lib) fetchDepot;
+              };
           };
 
           packages = {
-            fetch-latest-manifests = pkgs.callPackage ./pkgs/fetch-latest-manifests { };
-            parse-manifests = pkgs.callPackage ./pkgs/parse-manifests { };
+            fetch-latest-manifests = pkgs.callPackage ./pkgs/fetch-latest-manifests { inherit (config.lib) manifests; };
+            parse-manifests = pkgs.callPackage ./pkgs/parse-manifests { inherit (config.lib) manifests; };
             prefetch-missing = pkgs.callPackage ./pkgs/prefetch-missing { };
 
-            assets-joined = pkgs.callPackage ./pkgs/assets-joined {
-              inherit (config.lib.chunks) date assets;
-              fetchDepot = config.lib.fetchDepot;
+            steamworks-linux = config.lib.fetchDepot (builtins.head config.lib.chunks.steamworks-linux);
+
+            tf-assets = config.lib.fetchJoinChunk {
+              name = "tf2ds-assets";
+              date = config.lib.chunks.dates."232250";
+              chunk = config.lib.chunks.tf-assets;
             };
 
-            linux-binaries = pkgs.pkgsi686Linux.callPackage ./pkgs/linux-binaries {
-              inherit (config.lib.chunks) date;
-              depot = config.lib.fetchDepot config.lib.chunks.linux;
+            tf-linux = pkgs.pkgsi686Linux.callPackage ./pkgs/tf-linux-binaries {
+              date = config.lib.chunks.dates."232256";
+              depot = config.lib.fetchDepot (builtins.head config.lib.chunks.tf-linux);
             };
 
-            windows-binaries = config.lib.fetchDepot config.lib.chunks.windows;
+            tf-windows = config.lib.fetchDepot (builtins.head config.lib.chunks.tf-windows);
           };
 
           checks = {
-            run-tf2ds = pkgs.testers.runNixOSTest ./tests/run-tf2ds.nix;
+            run-tf2ds = pkgs.testers.runNixOSTest (
+              import ./tests/run-tf2ds.nix {
+                inherit (config.packages) tf-assets tf-linux tf-windows;
+              }
+            );
           };
 
           devShells.plugins =

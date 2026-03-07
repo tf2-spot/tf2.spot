@@ -1,20 +1,33 @@
-{ writeShellApplication, eza, jq }:
+{ lib
+, writeShellApplication
+, writeText
+, eza
+, jq
+, manifests
+}:
+let
+  fileArgs = lib.pipe manifests [
+    builtins.attrValues
+    (builtins.concatMap (x: x))
+    (builtins.map (x: "  --rawfile ${x.depot} \"$(newest manifests/manifest_${x.depot}_*.txt)\" \\"))
+    lib.unique
+    (builtins.concatStringsSep "\n")
+  ];
+in
 writeShellApplication {
   name = "parse-manifests";
 
   runtimeInputs = [ eza jq ];
   runtimeEnv = {
-    ASSETS_FILELIST = ./filelist-assets-no-vpk.txt;
+    MANIFESTS = writeText "manifests.json" (builtins.toJSON manifests);
     PARSE_MANIFESTS = ./parse-manifests.jq;
   };
   text = ''
     newest() { eza --sort=time -1 "$@" | head -1; }
+
     jq \
-      --null-input \
-      --rawfile assets_filelist $ASSETS_FILELIST \
-      --rawfile assets  "$(newest manifests/manifest_232250_*.txt)" \
-      --rawfile windows "$(newest manifests/manifest_232255_*.txt)" \
-      --rawfile linux   "$(newest manifests/manifest_232256_*.txt)" \
-      --from-file $PARSE_MANIFESTS
+    ${fileArgs}
+      --from-file $PARSE_MANIFESTS \
+      "$MANIFESTS"
   '';
 }

@@ -1,12 +1,20 @@
-{ writeShellApplication, depotdownloader }:
+{ lib
+, writeShellApplication
+, depotdownloader
+, manifests
+}:
+
 writeShellApplication {
   name = "fetch-latest-manifests";
 
   runtimeInputs = [ depotdownloader ];
 
-  text = ''
-    DepotDownloader -app 232250 -depot 232250 -manifest-only -dir manifests
-    DepotDownloader -app 232250 -depot 232255 -manifest-only -dir manifests
-    DepotDownloader -app 232250 -depot 232256 -manifest-only -dir manifests
-  '';
+  text = lib.pipe manifests [
+    builtins.attrValues
+    (builtins.concatMap (x: x))
+    (builtins.map (lib.getAttrs [ "app" "depot" ]))
+    lib.unique
+    (builtins.map (x: "DepotDownloader -app ${x.app} -depot ${x.depot} -manifest-only -dir manifests"))
+    (builtins.concatStringsSep "\n")
+  ];
 }
