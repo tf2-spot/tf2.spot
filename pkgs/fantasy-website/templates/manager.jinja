@@ -67,7 +67,7 @@
             <div class="relative">
               <div class="absolute bottom-full">Score:</div>
               <div class="text-4xl">
-                {{ fantasy.score | decimalformat("#,###.0") }}
+                {{ fantasy.score or 0.0 | decimalformat("#,###.0") }}
               </div>
             </div>
 

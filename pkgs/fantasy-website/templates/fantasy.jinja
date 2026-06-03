@@ -23,7 +23,7 @@
           Total score
         </div>
         <div class="text-light text-4xl">
-          {{ fantasy.score | decimalformat("#,###.0") }}
+          {{ fantasy.score or 0.0 | decimalformat("#,###.0") }}
         </div>
       </div>
 
