@@ -97,7 +97,21 @@
               </div>
             </td>
             <td class="tabular-nums">
-              &times; {{ coef.coefficient | decimalformat("#.####") }}
+              <div class="group relative">
+                <div>&times; {{ coef.coefficient | decimalformat("#.####") }}</div>
+                {% if (coef.coefficient | abs) < 1 %}
+                <div
+                  class="absolute bottom-full mb-1 hidden rounded bg-black px-2 py-1 text-xs text-white group-hover:block"
+                >
+                    {% if coef.coefficient < 0 %}
+                    -1
+                    {% else %}
+                    +1
+                    {% endif %}
+                    point per {{ (1 / (coef.coefficient | abs)) | round | int }}
+                </div>
+                {% endif %}
+              </div>
             </td>
           </tr>
         {% endfor %}
