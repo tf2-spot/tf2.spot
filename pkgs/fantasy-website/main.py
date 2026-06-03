@@ -416,6 +416,7 @@ def fantasy(slug, id):
         .table("fantasy")
         .select("""
             *,
+            tournament!inner(slug),
             manager(steam_id, name),
             ...fantasy_value(score, rank),
             active: contract(
@@ -448,6 +449,7 @@ def fantasy(slug, id):
                 )
             )
         """)
+        .eq("tournament.slug", slug)
         .eq("manager", id)
         .order(foreign_table="active", column="time_signed")
         .is_("active.time_terminated", "null")
