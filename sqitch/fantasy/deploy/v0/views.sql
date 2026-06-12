@@ -183,7 +183,7 @@ $$;
 create view fantasy_value as
 select fantasy.id as fantasy
      , sum(coalesce(score, 0)) as score
-     , dense_rank() over (order by sum(coalesce(score, 0)) desc) as rank
+     , dense_rank() over (partition by tournament order by sum(coalesce(score, 0)) desc) as rank
 from fantasy.fantasy
 left join fantasy.contract on contract.fantasy = fantasy.id
 join contract_value on contract_value.contract = contract.id and contract_value.round is null
