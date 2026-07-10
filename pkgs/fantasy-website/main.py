@@ -72,6 +72,8 @@ def authn():
         raise NotAuthenticated from None
     except jwt.DecodeError:
         raise NotAuthenticated from None
+    except jwt.ExpiredSignatureError:
+        raise NotAuthenticated from None
 
 
 @app.route("/")
@@ -599,6 +601,8 @@ def ctx_login():
     except KeyError:
         pass
     except jwt.DecodeError:
+        pass
+    except jwt.ExpiredSignatureError:
         pass
     return dict(me=None)
 
