@@ -184,6 +184,15 @@ in
       jwtSecretFile = cfg.postgrest.jwtSecretFile;
     };
 
+    users = mkIf cfg.mathesar.enable {
+      users.mathesar = {
+        group = "mathesar";
+        isSystemUser = true;
+      };
+
+      groups.mathesar = { };
+    };
+
     virtualisation.oci-containers.containers = mkIf cfg.mathesar.enable {
       mathesar = {
         image = "docker.io/mathesar/mathesar:${cfg.mathesar.version}";
@@ -203,6 +212,8 @@ in
           "msar_media:/code/.media"
           "/var/run/postgresql:/var/run/postgresql"
         ];
+
+        podman.user = "mathesar";
       };
     };
   };
