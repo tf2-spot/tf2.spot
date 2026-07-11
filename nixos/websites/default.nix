@@ -188,6 +188,7 @@ in
       users.mathesar = {
         group = "mathesar";
         isSystemUser = true;
+        linger = true;
       };
 
       groups.mathesar = { };
