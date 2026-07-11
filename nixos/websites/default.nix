@@ -87,7 +87,7 @@ in
         || cfg.postgrest.enable || cfg.mathesar.enable)
       {
         enable = true;
-        openFirewall = true;
+        # openFirewall = true;
 
         virtualHosts = mkMerge [
           (mkIf cfg.toplevel.enable {
