@@ -7,11 +7,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1765835352,
-        "narHash": "sha256-XswHlK/Qtjasvhd1nOa1e8MgZ8GS//jBoTqWtrS1Giw=",
+        "lastModified": 1782949081,
+        "narHash": "sha256-vp6Y/Grm98ESt6ceOkWiHWyZRDV3J1RID4w+6NWK9yA=",
         "owner": "hercules-ci",
         "repo": "flake-parts",
-        "rev": "a34fae9c08a15ad73f295041fec82323541400a9",
+        "rev": "17c9d6cdfc60c64f4ee8d306f9bc0b4ccb51481e",
         "type": "github"
       },
       "original": {
@@ -28,11 +28,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1764593611,
-        "narHash": "sha256-6SdexcO69Dlu14YN2xuB1A6JHWSrcqMj7Na9oK7IT2M=",
+        "lastModified": 1783352529,
+        "narHash": "sha256-FZDPaZdAAjFbJWR/BoWCCVYB16WV0b472vhUPlQawh0=",
         "owner": "nix-community",
         "repo": "flakelight",
-        "rev": "0d63256401341f528dd628f1a8e96d3afecade7a",
+        "rev": "da36ab2f725feb14b287ff1d6d56f6fc8ce6be5a",
         "type": "github"
       },
       "original": {
@@ -43,11 +43,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1765779637,
-        "narHash": "sha256-KJ2wa/BLSrTqDjbfyNx70ov/HdgNBCBBSQP3BIzKnv4=",
+        "lastModified": 1783522502,
+        "narHash": "sha256-iffAls3iaNTyJC2faYcUXSI+Gp02cDjYl+MygxKl2GI=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "1306659b587dc277866c7b69eb97e5f07864d8c4",
+        "rev": "0bb7ec54c8483066ec9d7720e780a5caa71f8612",
         "type": "github"
       },
       "original": {
@@ -73,11 +73,11 @@
         "steam-fetcher": "steam-fetcher"
       },
       "locked": {
-        "lastModified": 1764614608,
-        "narHash": "sha256-3/qSfFU4pmnkc2SVUFg/bpkGqbFJ1V5RTZ0mnhwOKVs=",
+        "lastModified": 1783695318,
+        "narHash": "sha256-b4R1j9o3+g56pI9bd/oN1B4QhppMiezntSTYYbrwStE=",
         "ref": "refs/heads/main",
-        "rev": "b270759886f7f30944b0003e6ea2556eda4fbc1a",
-        "revCount": 35,
+        "rev": "e8b2232d59653266708dfd14b77392b6cfde6f76",
+        "revCount": 87,
         "type": "git",
         "url": "https://codeberg.org/spire/nix"
       },

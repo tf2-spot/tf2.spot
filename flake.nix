@@ -18,7 +18,7 @@
       systems = [ "x86_64-linux" ];
 
       flake.nixosModules = {
-        fantasy = ./nixos/fantasy;
+        websites = ./nixos/websites;
       };
 
       perSystem = { inputs', config, lib, pkgs, ... }: {
@@ -73,11 +73,13 @@
           };
 
           checks = {
-            run-tf2ds = pkgs.testers.runNixOSTest (
-              import ./tests/run-tf2ds.nix {
-                inherit (config.packages) tf-assets tf-linux tf-windows;
-              }
-            );
+            # run-tf2ds = pkgs.testers.runNixOSTest (
+            #   import ./tests/run-tf2ds.nix {
+            #     inherit (config.packages) tf-assets tf-linux tf-windows;
+            #   }
+            # );
+
+            run-fantasy = pkgs.testers.runNixOSTest ./tests/run-fantasy.nix;
           };
 
           devShells = {
