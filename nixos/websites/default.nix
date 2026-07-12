@@ -37,8 +37,12 @@ in
           type = types.str;
         };
 
-        userConfigFile = mkOption {
-          type = types.path;
+        userConfig = mkOption {
+          type = types.str;
+        };
+
+        envFile = mkOption {
+          type = types.str;
         };
 
         projects = mkOption {
@@ -203,6 +207,12 @@ in
 
         path = [ pkgs.sqitchPg ];
 
+        preStart = ''
+          ${pkgs.envsubst}/bin/envsubst \
+            -o /run/sqitch/sqitch.conf \
+            -i ${pkgs.writeText "sqitch.conf" cfg.sqitch.userConfig}
+        '';
+
         script = lib.concatMapStringsSep "\n"
           (project: ''
             sqitch --chdir '${../../sqitch /* TODO: stop using path */}/${project}' deploy
@@ -210,7 +220,7 @@ in
           cfg.sqitch.projects;
 
         environment = {
-          SQITCH_USER_CONFIG = "%d/sqitch.conf";
+          SQITCH_USER_CONFIG = "/run/sqitch/sqitch.conf";
           SQITCH_TARGET = cfg.sqitch.target;
           SQITCH_FULLNAME = "sqitch service";
           SQITCH_EMAIL = "sqitch.service@tf2.spot";
@@ -221,8 +231,10 @@ in
           RemainAfterExit = true;
 
           DynamicUser = true;
+          RuntimeDirectory = "sqitch";
+          RuntimeDirectoryMode = "0700";
 
-          LoadCredential = "sqitch.conf:${cfg.sqitch.userConfigFile}";
+          EnvironmentFile = cfg.sqitch.envFile;
         };
       };
     };
