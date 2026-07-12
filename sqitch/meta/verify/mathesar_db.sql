@@ -1,1 +1,0 @@
--- Verify meta:mathesar_db in pg
