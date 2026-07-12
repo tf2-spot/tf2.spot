@@ -32,7 +32,12 @@ in
 
       sqitch = {
         enable = mkEnableOption "";
-        apps = mkOption {
+
+        userConfigFile = mkOption {
+          type = types.path;
+        };
+
+        projects = mkOption {
           type = with types; listOf str;
           default = [ "meta" "fantasy" ];
         };
@@ -73,6 +78,8 @@ in
   };
 
   config = {
+    networking.firewall.allowedTCPPorts = [ 80 443 ];
+
     security.acme = mkIf cfg.tls {
       certs = mkMerge [
         (mkIf cfg.toplevel.enable { "${cfg.toplevel.domain}".group = "caddy"; })
@@ -145,7 +152,7 @@ in
         {
           name = "sqitch";
           ensureClauses = {
-            superuser = false;
+            superuser = true;
           };
         }
 
@@ -184,11 +191,44 @@ in
       jwtSecretFile = cfg.postgrest.jwtSecretFile;
     };
 
+    systemd.services = mkIf cfg.sqitch.enable {
+      sqitch = {
+        after = [ "postgresql.service" ];
+        requires = [ "postgresql.service" ];
+        wantedBy = [ "multi-user.target" ];
+
+        path = [ pkgs.sqitchPg ];
+
+        script = lib.concatMapStringsSep "\n"
+          (project: ''
+            sqitch --chdir '${../../sqitch /* TODO: stop using path */}/${project}' deploy prod
+          '')
+          cfg.sqitch.projects;
+
+        environment = {
+          SQITCH_USER_CONFIG = "%d/sqitch.conf";
+        };
+
+        serviceConfig = {
+          Type = "oneshot";
+          RemainAfterExit = true;
+
+          DynamicUser = true;
+
+          LoadCredential = "sqitch.conf:${cfg.sqitch.userConfigFile}";
+        };
+      };
+    };
+
     users = mkIf cfg.mathesar.enable {
       users.mathesar = {
-        group = "mathesar";
         isSystemUser = true;
-        linger = true;
+
+        group = "mathesar";
+        home = "/var/lib/podman-mathesar";
+
+        autoSubUidGidRange = true;
+        linger = false;
       };
 
       groups.mathesar = { };
