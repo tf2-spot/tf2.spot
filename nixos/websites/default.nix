@@ -156,6 +156,11 @@ in
         postgres  mathesar   mathesar
       '';
 
+      initialScript = ''
+        create user mathesar login;
+        grant connect on database postgres to mathesar;
+      '';
+
       ensureUsers = [
         {
           name = "sqitch";
