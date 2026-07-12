@@ -156,7 +156,7 @@ in
         postgres  mathesar   mathesar
       '';
 
-      initialScript = ''
+      initialScript = pkgs.writeText "init.sql" ''
         create user mathesar login;
         grant connect on database postgres to mathesar;
       '';
