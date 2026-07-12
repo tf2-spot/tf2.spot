@@ -205,7 +205,7 @@ in
         requires = [ "postgresql.service" ];
         wantedBy = [ "multi-user.target" ];
 
-        path = [ pkgs.sqitchPg ];
+        path = [ pkgs.sqitchPg pkgs.postgresql ];
 
         preStart = ''
           ${pkgs.envsubst}/bin/envsubst \
