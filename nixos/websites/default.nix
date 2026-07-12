@@ -33,6 +33,10 @@ in
       sqitch = {
         enable = mkEnableOption "";
 
+        target = mkOption {
+          type = types.str;
+        };
+
         userConfigFile = mkOption {
           type = types.path;
         };
@@ -207,6 +211,9 @@ in
 
         environment = {
           SQITCH_USER_CONFIG = "%d/sqitch.conf";
+          SQITCH_TARGET = cfg.sqitch.target;
+          SQITCH_FULLNAME = "sqitch service";
+          SQITCH_EMAIL = "sqitch.service@tf2.spot";
         };
 
         serviceConfig = {
