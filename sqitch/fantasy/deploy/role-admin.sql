@@ -2,6 +2,6 @@
 
 begin;
 
-create user fantasy_admin noinherit password :password_fantasy_admin;
+create user fantasy_admin noinherit password :"password_fantasy_admin";
 
 commit;
