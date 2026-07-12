@@ -104,45 +104,53 @@ in
         enable = true;
         # openFirewall = true;
 
-        virtualHosts = mkMerge [
-          (mkIf cfg.toplevel.enable {
-            "${cfg.toplevel.domain}" = {
-              useACMEHost = mkIf cfg.tls "${cfg.toplevel.domain}";
-              extraConfig = ''
-                file_server {
-                  root ${../../src/tf2.spot /* TODO: stop using path */}
-                }
-              '';
-            };
-          })
+        virtualHosts =
+          let
+            d =
+              if cfg.tls then
+                domain: "https://${domain}"
+              else
+                domain: "http://${domain}";
+          in
+          mkMerge [
+            (mkIf cfg.toplevel.enable {
+              "${d cfg.toplevel.domain}" = {
+                useACMEHost = mkIf cfg.tls "${cfg.toplevel.domain}";
+                extraConfig = ''
+                  file_server {
+                    root ${../../src/tf2.spot /* TODO: stop using path */}
+                  }
+                '';
+              };
+            })
 
-          (mkIf cfg.fantasy.enable {
-            "${cfg.fantasy.domain}" = {
-              useACMEHost = mkIf cfg.tls "${cfg.fantasy.domain}";
-              extraConfig = ''
-                respond 500
-              '';
-            };
-          })
+            (mkIf cfg.fantasy.enable {
+              "${d cfg.fantasy.domain}" = {
+                useACMEHost = mkIf cfg.tls "${cfg.fantasy.domain}";
+                extraConfig = ''
+                  respond 500
+                '';
+              };
+            })
 
-          (mkIf cfg.postgrest.enable {
-            "${cfg.postgrest.domain}" = {
-              useACMEHost = mkIf cfg.tls "${cfg.postgrest.domain}";
-              extraConfig = ''
-                reverse_proxy unix/${config.services.postgrest.settings.server-unix-socket}
-              '';
-            };
-          })
+            (mkIf cfg.postgrest.enable {
+              "${d cfg.postgrest.domain}" = {
+                useACMEHost = mkIf cfg.tls "${cfg.postgrest.domain}";
+                extraConfig = ''
+                  reverse_proxy unix/${config.services.postgrest.settings.server-unix-socket}
+                '';
+              };
+            })
 
-          (mkIf cfg.mathesar.enable {
-            "${cfg.mathesar.domain}" = {
-              useACMEHost = mkIf cfg.tls "${cfg.mathesar.domain}";
-              extraConfig = ''
-                reverse_proxy http://localhost:8280
-              '';
-            };
-          })
-        ];
+            (mkIf cfg.mathesar.enable {
+              "${d cfg.mathesar.domain}" = {
+                useACMEHost = mkIf cfg.tls "${cfg.mathesar.domain}";
+                extraConfig = ''
+                  reverse_proxy http://localhost:8280
+                '';
+              };
+            })
+          ];
       };
 
     services.postgresql = mkIf cfg.postgresql.enable {
