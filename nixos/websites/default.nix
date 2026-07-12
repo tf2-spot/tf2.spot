@@ -95,7 +95,7 @@ in
               useACMEHost = mkIf cfg.tls "${cfg.toplevel.domain}";
               extraConfig = ''
                 file_server {
-                  root /var/empty # TODO
+                  root ${../../src/tf2.spot /* TODO: stop using path */}
                 }
               '';
             };
