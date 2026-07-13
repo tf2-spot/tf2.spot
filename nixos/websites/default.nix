@@ -258,10 +258,8 @@ in
     systemd.services.podman-mathesar = mkIf cfg.mathesar.enable {
       # Mathesar gets stuck with no socket when postgresql restarts,
       # make it stop when postgresql stops.
-      serviceConfig = {
-        After = [ "postgresql.service" ];
-        BindsTo = [ "postgresql.service" ];
-      };
+      after = [ "postgresql.service" ];
+      bindsTo = [ "postgresql.service" ];
     };
 
     users = mkIf cfg.mathesar.enable {
