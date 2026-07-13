@@ -272,6 +272,7 @@ in
         image = "docker.io/mathesar/mathesar:${cfg.mathesar.version}";
 
         environment = {
+          ALLOWED_HOSTS = "${cfg.mathesar.domain}";
           DJANGO_SETTINGS_MODULE = "config.settings.production";
           POSTGRES_USER = "mathesar";
           POSTGRES_DB = "mathesar";
