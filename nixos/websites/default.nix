@@ -217,43 +217,50 @@ in
       jwtSecretFile = cfg.postgrest.jwtSecretFile;
     };
 
-    systemd.services = mkIf cfg.sqitch.enable {
-      sqitch = {
-        after = [ "postgresql.service" ];
-        requires = [ "postgresql.service" ];
-        wantedBy = [ "multi-user.target" ];
+    systemd.services.sqitch = mkIf cfg.sqitch.enable {
+      after = [ "postgresql.service" ];
+      requires = [ "postgresql.service" ];
+      wantedBy = [ "multi-user.target" ];
 
-        path = [ pkgs.sqitchPg pkgs.postgresql ];
+      path = [ pkgs.sqitchPg pkgs.postgresql ];
 
-        preStart = ''
-          ${pkgs.envsubst}/bin/envsubst \
-            -o /run/sqitch/sqitch.conf \
-            -i ${pkgs.writeText "sqitch.conf" cfg.sqitch.userConfig}
-        '';
+      preStart = ''
+        ${pkgs.envsubst}/bin/envsubst \
+          -o /run/sqitch/sqitch.conf \
+          -i ${pkgs.writeText "sqitch.conf" cfg.sqitch.userConfig}
+      '';
 
-        script = lib.concatMapStringsSep "\n"
-          (project: ''
-            sqitch --chdir '${../../sqitch /* TODO: stop using path */}/${project}' deploy
-          '')
-          cfg.sqitch.projects;
+      script = lib.concatMapStringsSep "\n"
+        (project: ''
+          sqitch --chdir '${../../sqitch /* TODO: stop using path */}/${project}' deploy
+        '')
+        cfg.sqitch.projects;
 
-        environment = {
-          SQITCH_USER_CONFIG = "/run/sqitch/sqitch.conf";
-          SQITCH_TARGET = cfg.sqitch.target;
-          SQITCH_FULLNAME = "sqitch service";
-          SQITCH_EMAIL = "sqitch.service@tf2.spot";
-        };
+      environment = {
+        SQITCH_USER_CONFIG = "/run/sqitch/sqitch.conf";
+        SQITCH_TARGET = cfg.sqitch.target;
+        SQITCH_FULLNAME = "sqitch service";
+        SQITCH_EMAIL = "sqitch.service@tf2.spot";
+      };
 
-        serviceConfig = {
-          Type = "oneshot";
-          RemainAfterExit = true;
+      serviceConfig = {
+        Type = "oneshot";
+        RemainAfterExit = true;
 
-          DynamicUser = true;
-          RuntimeDirectory = "sqitch";
-          RuntimeDirectoryMode = "0700";
+        DynamicUser = true;
+        RuntimeDirectory = "sqitch";
+        RuntimeDirectoryMode = "0700";
 
-          EnvironmentFile = cfg.sqitch.envFile;
-        };
+        EnvironmentFile = cfg.sqitch.envFile;
+      };
+    };
+
+    systemd.services.podman-mathesar = mkIf cfg.mathesar.enable {
+      # Mathesar gets stuck with no socket when postgresql restarts,
+      # make it stop when postgresql stops.
+      serviceConfig = {
+        After = [ "postgresql.service" ];
+        BindsTo = [ "postgresql.service" ];
       };
     };
 
