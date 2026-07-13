@@ -157,6 +157,10 @@ in
       enable = true;
       package = pkgs.postgresql_17;
 
+      authentication = ''
+        local all all peer map=postgres
+      '';
+
       identMap = ''
         # map     # system   # role
         postgres  sqitch     sqitch
