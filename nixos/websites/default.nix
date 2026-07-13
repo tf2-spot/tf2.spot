@@ -162,11 +162,12 @@ in
         postgres  sqitch     sqitch
         postgres  postgrest  postgrest
         postgres  mathesar   mathesar
+        postgres  mathesar   fantasy_admin
       '';
 
       initialScript = pkgs.writeText "init.sql" ''
         create user mathesar login;
-        grant connect on database postgres to mathesar;
+        grant connect, create on database postgres to mathesar;
       '';
 
       ensureUsers = [
