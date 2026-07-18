@@ -8,6 +8,7 @@ dependencies = [
     "flask>=3.1.2",
     "flask-assets>=2.1.0",
     "flask-babel>=4.0.0",
+    "gunicorn>=26.0.0",
     "httpx[http2]>=0.28.1",
     "postgrest>=2.27.3",
     "pyjwt>=2.11.0",
