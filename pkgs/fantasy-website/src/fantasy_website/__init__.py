@@ -82,7 +82,7 @@ def homepage():
         api().table("tournament").select("name, slug, start_time, end_time").execute()
     )
     resp = make_response(
-        render_template("homepage.jinja", tournaments=tournaments.data)
+        render_template("homepage.jinja", tournaments={})
     )
     resp.cache_control.public = True
     resp.cache_control.max_age = 600
@@ -632,5 +632,9 @@ def handle_not_found(e):
     return render_template("not-found.jinja")
 
 
-if __name__ == "__main__":
+def main():
     app.run()
+
+
+if __name__ == "__main__":
+    main()

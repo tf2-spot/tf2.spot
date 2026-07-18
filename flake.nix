@@ -11,15 +11,31 @@
       url = "git+https://codeberg.org/spire/nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    pyproject-nix = {
+      url = "github:pyproject-nix/pyproject.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    uv2nix = {
+      url = "github:pyproject-nix/uv2nix";
+      inputs.pyproject-nix.follows = "pyproject-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    pyproject-build-systems = {
+      url = "github:pyproject-nix/build-system-pkgs";
+      inputs.pyproject-nix.follows = "pyproject-nix";
+      inputs.uv2nix.follows = "uv2nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs @ { flake-parts, ... }:
     flake-parts.lib.mkFlake { inherit inputs; } {
       systems = [ "x86_64-linux" ];
 
-      flake.nixosModules = {
-        websites = ./nixos/websites;
-      };
+      imports = [ ./websites-part.nix ];
 
       perSystem = { inputs', config, lib, pkgs, ... }: {
         options = {
@@ -83,36 +99,6 @@
           };
 
           devShells = {
-            fantasy = pkgs.mkShell {
-              packages = [
-                pkgs.postgresql
-                pkgs.sqitchPg
-
-                pkgs.uv
-                pkgs.ruff
-                pkgs.ty
-                pkgs.jinja-lsp
-                (pkgs.python3.withPackages (p: [
-                  p.babel
-                  p.flask
-                  p.flask-assets
-                  p.flask-babel
-                  p.gunicorn
-                  p.requests
-                  p.pyjwt
-                  (p.callPackage ./pkgs/python-postgrest { })
-                  p.whenever
-                ]))
-
-                pkgs.tailwindcss_4
-                pkgs.watchman
-
-                # tmp
-                pkgs.podman-compose
-                pkgs.nodejs
-              ];
-            };
-
             plugins = pkgs.mkShell {
               nativeBuildInputs =
                 let
