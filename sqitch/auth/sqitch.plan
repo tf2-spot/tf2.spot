@@ -1,0 +1,9 @@
+%syntax-version=1.0.0
+%project=auth
+%uri=https://auth.tf2.spot/
+
+schema 2026-06-03T17:12:35Z Lucas <lucas@lde.sg> # schema
+user [schema] 2026-06-03T16:58:44Z Lucas <lucas@lde.sg> # table
+session [user] 2026-06-03T17:13:25Z Lucas <lucas@lde.sg> # table
+access_token [session] 2026-06-03T18:05:28Z Lucas <lucas@lde.sg> # table
+friendship [user] 2026-06-04T13:40:08Z Lucas <lucas@lde.sg> # table

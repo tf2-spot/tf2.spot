@@ -1,0 +1,1 @@
+-- Verify auth:schema to pg
