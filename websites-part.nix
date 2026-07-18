@@ -71,5 +71,9 @@ in
           '';
         };
       };
+
+      checks = {
+        run-fantasy = pkgs.testers.runNixOSTest ./tests/run-fantasy.nix;
+      };
     };
 }
