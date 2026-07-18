@@ -1,6 +1,7 @@
 [tool.uv.workspace]
 members = [
     "pkgs/fantasy-website",
+    "pkgs/fantasy-jobs",
 ]
 
 [tool.uv]

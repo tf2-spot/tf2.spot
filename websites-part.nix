@@ -28,6 +28,18 @@ in
       inherit (pkgs.callPackages inputs.pyproject-nix.build.util { }) mkApplication;
     in
     {
+      packages = {
+        # fantasy-website = mkApplication {
+        #   inherit venv;
+        #   package = pythonSet.fantasy-website;
+        # };
+
+        fantasy-jobs = mkApplication {
+          inherit venv;
+          package = pythonSet.fantasy-jobs;
+        };
+      };
+
       devShells = {
         websites = pkgs.mkShell {
           packages = [

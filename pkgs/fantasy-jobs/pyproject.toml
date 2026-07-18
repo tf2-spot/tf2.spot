@@ -1,0 +1,17 @@
+[project]
+name = "fantasy-jobs"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "ldesgoui", email = "ldesgoui@gmail.com" }
+]
+requires-python = ">=3.14"
+dependencies = []
+
+[project.scripts]
+fantasy-jobs = "fantasy_jobs:main"
+
+[build-system]
+requires = ["uv_build>=0.11.26,<0.12.0"]
+build-backend = "uv_build"
