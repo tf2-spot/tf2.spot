@@ -1,0 +1,1 @@
+-- Verify auth:friendship to pg
