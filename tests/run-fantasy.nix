@@ -8,11 +8,11 @@
 
       tf2-spot = {
         tls = false;
-
         fantasy.enable = true;
         postgresql.enable = true;
         postgrest.enable = true;
         sqitch.enable = true;
+        sqitch.target = "db:pg://sqitch@/postgres";
       };
     };
   };

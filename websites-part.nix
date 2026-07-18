@@ -33,10 +33,7 @@ in
     in
     {
       packages = {
-        # fantasy-website = mkApplication {
-        #   inherit venv;
-        #   package = pythonSet.fantasy-website;
-        # };
+        fantasy-website = venv;
 
         fantasy-jobs = mkApplication {
           inherit venv;
