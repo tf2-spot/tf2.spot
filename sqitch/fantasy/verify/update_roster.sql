@@ -1,0 +1,1 @@
+-- Verify fantasy:update_roster to pg

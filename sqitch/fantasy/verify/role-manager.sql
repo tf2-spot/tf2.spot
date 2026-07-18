@@ -1,0 +1,1 @@
+-- Verify fantasy:role-manager in pg

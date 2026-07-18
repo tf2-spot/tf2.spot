@@ -1,0 +1,1 @@
+-- Verify fantasy:tournament in pg

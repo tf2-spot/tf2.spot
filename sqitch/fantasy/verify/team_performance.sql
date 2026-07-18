@@ -1,0 +1,1 @@
+-- Verify fantasy:team_performance to pg

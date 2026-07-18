@@ -1,0 +1,1 @@
+-- Verify fantasy:contract in pg

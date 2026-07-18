@@ -1,0 +1,1 @@
+-- Verify fantasy:price_history to pg

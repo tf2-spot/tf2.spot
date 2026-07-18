@@ -1,0 +1,1 @@
+-- Verify fantasy:role-admin in pg

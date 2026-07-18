@@ -1,0 +1,1 @@
+-- Verify fantasy:schema in pg

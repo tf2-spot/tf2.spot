@@ -1,0 +1,50 @@
+%syntax-version=1.0.0
+%project=fantasy
+%uri=https://fantasy.tf2.spot/
+
+role-visitor 2026-01-16T00:00:00Z Lucas <lucas@lde.sg> # role
+role-manager 2026-01-16T00:00:00Z Lucas <lucas@lde.sg> # role
+role-admin 2026-01-16T00:00:00Z Lucas <lucas@lde.sg> # role
+
+schema 2026-01-16T00:00:00Z Lucas <lucas@lde.sg> # schema
+
+to_steamid64 [schema] 2026-01-20T12:26:03Z Lucas <lucas@lde.sg> # function
+
+scoring_model [schema] 2026-01-16T22:00:31Z Lucas <lucas@lde.sg> # table
+player_statistic [schema] 2026-01-16T22:05:19Z Lucas <lucas@lde.sg> # table
+player_coefficient [scoring_model player_statistic] 2026-01-16T22:14:42Z Lucas <lucas@lde.sg> # table
+team_statistic [schema] 2026-01-20T17:23:45Z Lucas <lucas@lde.sg> # table
+team_coefficient [scoring_model team_statistic] 2026-01-20T17:23:59Z Lucas <lucas@lde.sg> # table
+
+logstf_document [schema] 2026-01-18T12:47:17Z Lucas <lucas@lde.sg> # table
+extract_player_stats [logstf_document] 2026-02-07T13:45:03Z Lucas <lucas@lde.sg> # view
+
+region [schema] 2026-01-16T00:00:00Z Lucas <lucas@lde.sg> # table
+composition [schema] 2026-01-20T17:39:45Z Lucas <lucas@lde.sg> # table
+tournament [region scoring_model composition] 2026-01-16T00:00:00Z Lucas <lucas@lde.sg> # table
+round [tournament] 2026-01-16T21:44:04Z Lucas <lucas@lde.sg> # table
+
+class [schema] 2026-01-16T15:57:35Z Lucas <lucas@lde.sg> # table
+player [schema] 2026-01-16T16:24:42Z Lucas <lucas@lde.sg> # table
+team [tournament] 2026-01-16T16:04:00Z Lucas <lucas@lde.sg> # table
+participant [tournament player team class] 2026-01-16T16:24:42Z Lucas <lucas@lde.sg> # table
+price_history [participant] 2026-01-21T01:44:20Z Lucas <lucas@lde.sg> # table, function and trigger
+
+match [round team] 2026-01-16T21:46:03Z Lucas <lucas@lde.sg> # table
+map [match] 2026-01-16T21:46:09Z Lucas <lucas@lde.sg> # table
+substitution [map participant player] 2026-01-18T12:47:01Z Lucas <lucas@lde.sg> # table
+player_performance [map player player_statistic] 2026-01-17T00:14:29Z Lucas <lucas@lde.sg> # view
+team_performance [map team team_statistic] 2026-01-20T17:24:03Z Lucas <lucas@lde.sg> # view
+
+manager [schema] 2026-01-16T00:00:00Z Lucas <lucas@lde.sg> # table
+friendship [manager] 2026-01-16T16:42:24Z Lucas <lucas@lde.sg> # table
+fantasy [tournament manager] 2026-01-16T16:21:38Z Lucas <lucas@lde.sg> # table
+contract [meta:@v1 fantasy participant] 2026-01-16T17:40:28Z Lucas <lucas@lde.sg> # table
+update_roster [contract] 2026-01-17T17:48:44Z Lucas <lucas@lde.sg> # function
+
+permissions [meta:@v1 role-visitor role-manager] 2026-02-05T18:03:06Z Lucas <lucas@lde.sg> # permissions
+
+v0/schema 2026-02-04T19:31:36Z Lucas <lucas@lde.sg> # schema
+v0/views 2026-02-10T00:29:27Z Lucas <lucas@lde.sg> # views
+v0/permissions 2026-02-05T18:03:27Z Lucas <lucas@lde.sg> # permissions
+v0/rpc 2026-02-26T22:47:58Z Lucas <lucas@lde.sg> # rpc
