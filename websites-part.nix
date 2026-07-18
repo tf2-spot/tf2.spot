@@ -11,6 +11,10 @@ let
   };
 in
 {
+  flake.nixosModules = {
+    websites = ./nixos/websites;
+  };
+
   perSystem = { pkgs, ... }:
     let
       pythonSet = (pkgs.callPackage inputs.pyproject-nix.build.packages {
