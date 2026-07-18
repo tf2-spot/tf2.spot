@@ -1,0 +1,128 @@
+{% extends "base.jinja" %}
+{% set mapping = tournament.participant | to_map %}
+
+{% block title %}Manage{% endblock %}
+
+{% set fantasy = tournament.my_fantasy %}
+
+{% block main %}
+  <div class="grid gap-4 md:grid-cols-2">
+    <div class="flex bg-gray-100 p-4 dark:bg-red-900">
+      {% if fantasy is not none %}
+        <table class="grow border-separate border-spacing-2 text-lg">
+          <tbody>
+            {% for set in (fantasy.active, fantasy.old) %}
+              {% for contract in set %}
+                {% set participant = mapping[contract.participant.id] %}
+                <tr>
+                  <td>
+                    <img
+                      class="h-8 w-8 dark:invert"
+                      src="/static/class/{{ participant.main_class }}.svg"
+                    />
+                  </td>
+
+                  <td>
+                    <span class="text-black/50 dark:text-white/50">
+                      {{ participant.team.tag or participant.team.name }}
+                    </span>
+                    <span> {{ participant.name }} </span>
+                  </td>
+                </tr>
+
+                {% for value in contract.contract_value %}
+                  <tr class="text-sm">
+                    <td></td>
+                    <td class="text-right">
+                      {% if value.round is not none %}
+                        {{ value.round.name }}:
+                      {% else %}
+                        Total:
+                      {% endif %}
+                    </td>
+
+                    <td class="tabular-nums">
+                      {{ value.score | decimalformat }}
+                    </td>
+                  </tr>
+                {% endfor %}
+              {% endfor %}
+              {% if loop.nextitem is defined %}
+                <tr>
+                  <td colspan="3">Terminated contracts:</td>
+                </tr>
+              {% endif %}
+            {% endfor %}
+          </tbody>
+        </table>
+      {% else %}
+        No active roster
+      {% endif %}
+    </div>
+
+    <div class="flex flex-col gap-4 bg-gray-100 p-4 dark:bg-red-900">
+      <div>
+        <form method="post" class="flex gap-2">
+          <button
+            class="rounded bg-blue-800/75 px-4 py-2 text-white shadow-lg hover:bg-blue-800/90 dark:bg-red-700/75 hover:dark:bg-red-700/90"
+          >
+            Change name
+          </button>
+          <input
+            class="grow rounded px-4 py-2 shadow-lg"
+            type="text"
+            name="name"
+            value="{{ fantasy.name }}"
+          />
+        </form>
+      </div>
+
+      <div>
+        <form method="post">
+          <input type="hidden" name="reset" value="" />
+          <button
+            class="rounded bg-blue-800/75 px-4 py-2 text-white shadow-lg hover:bg-blue-800/90 dark:bg-red-700/75 hover:dark:bg-red-700/90"
+          >
+            Reset to active roster
+          </button>
+        </form>
+      </div>
+
+      <p>Desired roster</p>
+      {% set participants = tournament.participant %}
+      {% include "partial/desired.jinja" %}
+
+      <div>
+        <form method="post" class="flex gap-2">
+          <button
+            class="rounded bg-blue-800/75 px-4 py-2 text-white shadow-lg hover:bg-blue-800/90 dark:bg-red-700/75 hover:dark:bg-red-700/90"
+          >
+            Add
+          </button>
+          <select name="add" class="grow px-2 shadow-sm">
+            <option value="" selected disabled>Pick a player</option>
+            {% for participant in participants %}
+              <option value="{{ participant.id }}">
+                {{ participant.team.tag or participant.team.name }}
+                {{ participant.name }}
+                ({{ participant.main_class | capitalize }}
+                {{ participant.price | currencyformat("USD") }})
+              </option>
+            {% endfor %}
+          </select>
+        </form>
+      </div>
+
+      <div>
+        <form method="post">
+          <input type="hidden" name="commit" value="" />
+          <button
+            class="w-full rounded bg-blue-800/75 py-2 text-lg font-bold text-white uppercase shadow-lg hover:bg-blue-800/90 dark:bg-red-700/75 hover:dark:bg-red-700/90"
+          >
+            Commit roster
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock %}

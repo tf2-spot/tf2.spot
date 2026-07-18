@@ -1,0 +1,6 @@
+@import "tailwindcss";
+
+@custom-variant hover (&:hover);
+
+@custom-variant aria-asc (&[aria-sort="ascending"]);
+@custom-variant aria-desc (&[aria-sort="descending"]);

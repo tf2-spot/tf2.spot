@@ -1,0 +1,80 @@
+{% extends "base.jinja" %}
+
+{% block title %}{{ fantasy.team }} by {{ fantasy.manager.name }}{% endblock %}
+
+{% block main %}
+  <div class="flex flex-col gap-4 bg-gray-100 p-4 dark:bg-red-900">
+    <div class="m-4 flex items-baseline justify-between">
+      <div class="w-3/4">
+        <h1 class="truncate text-7xl" title="{{ fantasy.name }}">
+          {{ fantasy.name }}
+        </h1>
+        <a
+          class="truncate text-3xl"
+          title="{{ fantasy.manager.name }}"
+          href="{{ url_for('manager', id=request.view_args.id) }}"
+        >
+          by {{ fantasy.manager.name }}
+        </a>
+      </div>
+
+      <div class="relative">
+        <div class="absolute bottom-12 text-black/50 dark:text-white/50">
+          Total score
+        </div>
+        <div class="text-light text-4xl">
+          {{ fantasy.score or 0.0 | decimalformat("#,###.0") }}
+        </div>
+      </div>
+
+      <div class="relative">
+        <div class="absolute bottom-12 text-black/50 dark:text-white/50">
+          Rank
+        </div>
+        <div class="text-light text-5xl">#{{ fantasy.rank }}</div>
+      </div>
+    </div>
+
+    <table class="grow border-separate border-spacing-2 text-lg">
+      <tbody>
+        {% for title, set in (("Active roster", fantasy.active), ("Terminated contracts", fantasy.old)) %}
+          <tr>
+            <th colspan="3" class="text-left">{{ title }}:</th>
+          </tr>
+          {% for contract in set %}
+            <tr>
+              <td>
+                <img
+                  class="h-8 w-8 dark:invert"
+                  src="/static/class/{{ contract.participant.main_class }}.svg"
+                />
+              </td>
+
+              <td>
+                <span class="text-black/50 dark:text-white/50">
+                  {{ contract.participant.team.tag or contract.participant.team.name }}
+                </span>
+                <span> {{ contract.participant.name }} </span>
+              </td>
+            </tr>
+
+            {% for value in contract.contract_value %}
+              <tr class="text-sm">
+                <td></td>
+                <td class="text-right">
+                  {% if value.round is not none %}
+                    {{ value.round.name }}:
+                  {% else %}
+                    Total:
+                  {% endif %}
+                </td>
+
+                <td class="tabular-nums">{{ value.score | decimalformat }}</td>
+              </tr>
+            {% endfor %}
+          {% endfor %}
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}

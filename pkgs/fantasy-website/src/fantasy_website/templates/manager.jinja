@@ -1,0 +1,101 @@
+{% extends "base.jinja" %}
+
+{% set name = "Manager #" + manager.steam_id if manager.name is none else manager.name %}
+{% set id = manager.steam_id %}
+
+{% block title %}{{ name }}{% endblock %}
+
+{% block main %}
+  <div class="align-center flex flex-col">
+    <div class="flex justify-center">
+      <img
+        class="h-46 w-46 bg-black"
+        {% if manager.avatar is not none %}src="{{ manager.avatar }}"{% endif %}
+      />
+      <div
+        class="flex flex-col justify-between bg-gray-100 p-8 pb-4 dark:bg-red-900"
+      >
+        <span class="text-4xl">{{ name }}</span>
+        {% if manager.fetched is none %}
+          <span class="text-sm text-black/33 dark:text-white/33">
+            Fetching profile data from Steam...
+          </span>
+        {% endif %}
+        <div class="flex justify-center gap-2">
+          {%
+            for name, url in (
+              ("Steam", "https://steamcommunity.com/profiles/"),
+              ("logs.tf", "https://logs.tf/profile/"),
+              ("ETF2L", "https://etf2l.org/search/"),
+              ("RGL", "https://rgl.gg/Public/PlayerProfile.aspx?p="),
+              ("ozfortress", "https://warzone.ozfortress.com/users/steam_id/"),
+            )
+          %}
+            <a
+              class="block rounded p-4 shadow-lg hover:bg-blue-200/50 hover:underline hover:dark:bg-red-700/50"
+              href="{{ url }}{{ id }}"
+              target="_blank"
+            >
+              {{ name }}
+            </a>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="mt-4 flex flex-col justify-between gap-2 bg-gray-100 p-4 dark:bg-red-900"
+    >
+      {% for fantasy in manager.fantasy %}
+        <div class="flex flex-col gap-2">
+          <div class="flex items-end gap-4">
+            <div class="grow">
+              <a
+                href="{{ url_for('fantasy', slug=fantasy.tournament.slug, id=manager.steam_id) }}"
+                class="block truncate text-3xl"
+                title="{{ fantasy.name }}"
+              >
+                {{ fantasy.name }}
+              </a>
+              <a
+                href="{{ url_for('tournament', slug=fantasy.tournament.slug) }}"
+              >
+                Team for {{ fantasy.tournament.name }}
+              </a>
+            </div>
+
+            <div class="relative">
+              <div class="absolute bottom-full">Score:</div>
+              <div class="text-4xl">
+                {{ fantasy.score or 0.0 | decimalformat("#,###.0") }}
+              </div>
+            </div>
+
+            <div class="text-6xl">#{{ fantasy.rank }}</div>
+          </div>
+
+          <div class="flex justify-around">
+            {% for contract in fantasy.contract %}
+              <div class="rounded-full py-1 pr-4 pl-2 shadow-sm">
+                <img
+                  class="mr-1 inline h-6 w-6 dark:invert"
+                  src="/static/class/{{ contract.participant.main_class }}.svg"
+                />
+                {{ contract.participant.player.name }}
+              </div>
+            {% endfor %}
+
+            {% if is_me %}
+              <a
+                href="{{ url_for('manage', slug=fantasy.tournament.slug) }}"
+                class="rounded-full bg-blue-800/75 px-4 py-1 text-white shadow-lg hover:bg-blue-800/90 dark:bg-red-700/75 hover:dark:bg-red-700/90"
+              >
+                Manage
+              </a>
+            {% endif %}
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+{% endblock %}

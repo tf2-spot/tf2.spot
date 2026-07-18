@@ -1,0 +1,14 @@
+[tool.uv.workspace]
+members = [
+    "pkgs/fantasy-website",
+]
+
+[tool.uv]
+dev-dependencies = [
+    "ruff",
+    "ty",
+]
+
+[tool.ruff.lint]
+extend-select = ["I"]
+

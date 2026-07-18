@@ -1,0 +1,72 @@
+{% from "_helpers.jinja" import temporal %}
+{% extends "base.jinja" %}
+
+{% block fulltitle %}Fantasy TF2{% endblock %}
+
+{% block main %}
+  <div class="grid gap-4 md:grid-cols-2">
+    <div class="space-y-4 bg-gray-100 p-4 dark:bg-red-900">
+      <h1 class="text-xl/12 font-light">Welcome to Fantasy TF2</h1>
+
+      <p>
+        Please bear with us as this website is hastily thrown together. The
+        functionality behind the scenes was built to last more than one event,
+        the frontend will be upgraded as we go. :)
+      </p>
+
+      <p>
+        <u>What is Fantasy TF2?</u><br />
+        You are the manager of a fictional roster of real players, your goal is
+        to get as many points as possible by trading the players you think will
+        do best according to the scoring model.
+      </p>
+
+      <p>
+        <u>How is score calculated?</u><br />
+        You get score from all the players you have in active contracts, for
+        each round, <b>as the round starts</b>.<br />
+        This means that you
+        <b>must</b> purchase players before a round starts if you want to get
+        score from them.<br />
+        It also means that you cannot "double dip" by selling a player that
+        played early in a round and buying a player that hasn't played yet.
+      </p>
+
+      <p>
+        <u>What is a transaction?</u><br />
+        A transaction happens any time you replace one player in your roster.
+        <br />
+        Eventually, a transaction will only count if the player you removed was
+        in your roster during one of the rounds. If you have spent all your
+        transactions shuffling your roster before a round, get in touch and
+        we'll rectify manually.
+      </p>
+
+      <p>If you decide to use distasteful names, they will be hidden.</p>
+    </div>
+
+    <div class="space-y-4">
+      {% for tournament in tournaments %}
+        <a
+          href="{{ url_for('tournament', slug=tournament.slug) }}"
+          class="block bg-gray-100 p-4 hover:bg-white dark:bg-red-900 hover:dark:bg-red-800"
+        >
+          <div class="text-lg">{{ tournament.name }}</div>
+          {% if tournament.start_time is not none %}
+            Starts {{ temporal(tournament.start_time) }}
+          {% else %}
+            No set start time
+          {% endif %}
+          <br />
+          {% if tournament.end_time is not none %}
+            Ends {{ temporal(tournament.end_time) }}
+          {% else %}
+            No set end time
+          {% endif %}
+        </a>
+      {% else %}
+        No tournaments planned yet
+      {% endfor %}
+    </div>
+  </div>
+{% endblock %}

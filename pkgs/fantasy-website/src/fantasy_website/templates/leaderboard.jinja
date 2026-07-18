@@ -1,0 +1,46 @@
+{% extends "base.jinja" %}
+
+{% block title %}{{ tournament.name }}{% endblock %}
+
+{% block main %}
+  <table
+    class="mx-auto border-separate border-spacing-x-6 border-spacing-y-2 bg-gray-100 p-4 dark:bg-red-900"
+  >
+    <thead>
+      <tr>
+        <th colspan="3" class="text-xl">Leaderboard</th>
+      </tr>
+      <tr>
+        <td></td>
+        <th>Score</th>
+        <th>Rank</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for fantasy in tournament.fantasy %}
+        <tr>
+          <td>
+            <a
+              href="{{ url_for('fantasy', slug=request.view_args.slug, id=fantasy.manager.steam_id) }}"
+              class="block max-w-md truncate text-lg whitespace-nowrap"
+              title="{{ fantasy.name }}"
+            >
+              {{ fantasy.name }}
+            </a>
+            <a
+              href="{{ url_for('manager', id=fantasy.manager.steam_id) }}"
+              class="block max-w-md truncate text-sm whitespace-nowrap"
+              title="{{ fantasy.manager.name }}"
+            >
+              by {{ fantasy.manager.name }}
+            </a>
+          </td>
+          <td class="text-right text-5xl font-extralight tabular-nums">
+            {{ fantasy.score | decimalformat("#,###.0") }}
+          </td>
+          <td class="text-5xl font-light">#{{ fantasy.rank }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

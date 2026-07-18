@@ -1,0 +1,48 @@
+<table class="border-separate border-spacing-2 text-lg">
+  <tbody>
+    {% set hack = dict(total=0) %}
+    {% for participant in participants if participant.id in (session.get(request.view_args.slug) or []) %}
+      {% set _ = hack.update(dict(total = hack.total + participant.price)) %}
+      <tr>
+        <td>
+          <form method="post">
+            <input type="hidden" name="remove" value="{{ participant.id }}" />
+            <button
+              class="h-6 w-6 rounded-full text-center shadow-lg hover:cursor-pointer hover:bg-blue-200/50 hover:dark:bg-red-800/50"
+            >
+              <span>-</span>
+            </button>
+          </form>
+        </td>
+
+        <td>
+          <img
+            class="h-8 w-8 dark:invert"
+            src="/static/class/{{ participant.main_class }}.svg"
+          />
+        </td>
+
+        <td>
+          <span class="text-black/50 dark:text-white/50">
+            {{ participant.team.tag or participant.team.name }}
+          </span>
+          <span> {{ participant.name }} </span>
+        </td>
+
+        <td class="text-right slashed-zero tabular-nums">
+          {{ participant.price | currencyformat("USD") }}
+        </td>
+      </tr>
+    {% endfor %}
+  </tbody>
+  <tfoot>
+    <tr>
+      <td></td>
+      <td></td>
+      <td class="text-right">Total:</td>
+      <td class="text-right slashed-zero tabular-nums">
+        {{ hack.total | currencyformat("USD") }}
+      </td>
+    </tr>
+  </tfoot>
+</table>

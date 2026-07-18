@@ -1,0 +1,185 @@
+{% from "_helpers.jinja" import temporal, coef_short, coef_description, perf_explanation %}
+{% extends "base.jinja" %}
+
+{% block title %}{{ tournament.name }}{% endblock %}
+
+{% block head %}
+  {{ super () }}
+
+  {%
+    assets
+    "../js/tablesort.js",
+    "../js/tablesort.number.js",
+    "../js/init-tablesort.js",
+    output="tablesort.js"
+  %}
+    <script src="{{ ASSET_URL }}"></script>
+  {% endassets %}
+{% endblock %}
+
+{% block mainclasses %}class="mx-auto max-w-[120rem]"{% endblock %}
+
+{% block main %}
+  <div class="flex overflow-x-auto">
+    <table
+      class="tablesort shrink-0 grow table-fixed border-separate border-spacing-x-6 border-spacing-y-2 bg-gray-100 p-4 pt-20 pr-6 dark:bg-red-900"
+    >
+      <thead>
+        <tr>
+          <td colspan="4">
+            <form>
+              <select name="round" class="cursor-pointer text-xl">
+                <option
+                  value=""
+                  {% if not request.args.get("round") %}
+                    selected
+                  {% endif %}
+                >
+                  Whole tournament
+                </option>
+                {% for round in tournament.round %}
+                  <option
+                    value="{{ round.id }}"
+                    {% if request.args.get("round") == (round.id|string) %}
+                      selected
+                    {% endif %}
+                  >
+                    {{ round.name }}
+                  </option>
+                {% endfor %}
+              </select>
+              <button
+                class="rounded-full p-2 text-xl shadow-lg hover:cursor-pointer hover:bg-blue-200/50 hover:dark:bg-red-800/50"
+              >
+                Go
+              </button>
+            </form>
+          </td>
+        </tr>
+        <tr>
+          <td data-sort-method="none"></td>
+
+          <th class="cursor-pointer aria-asc:overline aria-desc:underline">
+            Participant
+          </th>
+
+          <td data-sort-method="none"></td>
+
+          <th
+            class="cursor-pointer aria-asc:overline aria-desc:underline"
+            data-sort-method="number"
+            data-sort-reverse
+          >
+            Cost
+          </th>
+
+          <th
+            class="cursor-pointer whitespace-nowrap aria-asc:overline aria-desc:underline"
+            data-sort-method="number"
+            data-sort-reverse
+          >
+            <div class="w-0 origin-left -rotate-45 cursor-pointer">
+              Total score
+            </div>
+          </th>
+
+          {% for coef in tournament.scoring_model.player_coefficient %}
+            <th
+              class="cursor-pointer whitespace-nowrap aria-asc:overline aria-desc:underline"
+              data-sort-method="number"
+              data-sort-reverse
+            >
+              <div class="w-0 origin-left -rotate-45">
+                {{ coef_short(coef) }}
+              </div>
+            </th>
+          {% endfor %}
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for team in tournament.team %}
+          {% for participant in team.participant | sort_by_main_class %}
+            <tr>
+              <td>
+                <img
+                  class="w-6 dark:invert"
+                  src="/static/class/{{ participant.main_class }}.svg"
+                />
+              </td>
+
+              <td
+                data-sort-column-key="name"
+                data-sort="{{ participant.player.name }}"
+              >
+                <a
+                  href="https://steamcommunity.com/profiles/{{ participant.player.steam_id }}"
+                >
+                  <span class="text-black/50 dark:text-white/50"
+                    >{{ team.tag or team.name }}</span
+                  >
+                  <span>{{ participant.player.name }}</span>
+                </a>
+              </td>
+
+              <td>
+                <form
+                  method="post"
+                  action="{{ url_for('manage', slug=request.view_args.slug) }}"
+                  class="group relative"
+                >
+                  <input
+                    type="hidden"
+                    name="add"
+                    value="{{ participant.id }}"
+                  />
+                  <button
+                    class="h-5 w-5 rounded-full text-center shadow-lg hover:cursor-pointer hover:bg-blue-200/50 hover:dark:bg-red-800/50"
+                  >
+                    <span class="text-2xl/0 font-light">+</span>
+                  </button>
+                  <div
+                    class="absolute bottom-full left-1/2 mb-2 hidden -translate-x-1/2 rounded bg-black px-2 py-1 text-xs text-white group-hover:block"
+                  >
+                    Add to desired roster
+                  </div>
+                </form>
+              </td>
+
+              <td
+                class="text-right slashed-zero tabular-nums"
+                data-sort-column-key="cost"
+                data-sort="{{ participant.price }}"
+              >
+                {{ participant.price | currencyformat("USD") }}
+              </td>
+
+              <td class="tabular-nums">
+                {% for i in participant.total_score %}{{ i.score | decimalformat("#,###.0") }}{% else %}0.0{% endfor %}
+              </td>
+
+              {% for coef in tournament.scoring_model.player_coefficient %}
+                <td class="tabular-nums">
+                  {% for perf in participant.perf if perf.player_coefficient.id == coef.id and perf.total != 0 %}
+                    <div class="group relative">
+                      <div class="hover:underline">
+                        {{ perf.total | decimalformat("#,###.#") }}
+                      </div>
+                      <div
+                        class="absolute bottom-full left-1/2 mb-1 hidden -translate-x-1/2 rounded bg-black px-2 py-1 text-xs text-white group-hover:block"
+                      >
+                        {{ perf_explanation(coef, perf) }}
+                      </div>
+                    </div>
+                  {% else %}
+                    <span class="text-black/25 dark:text-white/25">0</span>
+                  {% endfor %}
+                </td>
+              {% endfor %}
+            </tr>
+          {% endfor %}
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}

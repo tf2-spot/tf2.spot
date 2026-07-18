@@ -1,0 +1,22 @@
+[project]
+name = "fantasy-website"
+version = "0.1.0"
+description = "Flask website that serves https://fantasy.tf2.spot"
+requires-python = ">=3.13"
+dependencies = [
+    "babel>=2.18.0",
+    "flask>=3.1.2",
+    "flask-assets>=2.1.0",
+    "flask-babel>=4.0.0",
+    "httpx[http2]>=0.28.1",
+    "postgrest>=2.27.3",
+    "pyjwt>=2.11.0",
+    "whenever>=0.9.5",
+]
+
+[project.scripts]
+fantasy-website = "fantasy_website:main"
+
+[build-system]
+requires = ["uv_build>=0.11.26,<0.12.0"]
+build-backend = "uv_build"

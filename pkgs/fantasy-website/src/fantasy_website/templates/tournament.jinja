@@ -1,0 +1,153 @@
+{% from "_helpers.jinja" import temporal, coef_short, coef_description %}
+{% extends "base.jinja" %}
+
+{% block title %}{{ tournament.name }}{% endblock %}
+
+{% block main %}
+  <div class="grid gap-4 lg:grid-cols-2">
+    <div class="bg-gray-100 p-4 dark:bg-red-900">
+      <h1 class="text-2xl">{{ tournament.name }}</h1>
+      <p>Starts {{ temporal(tournament.start_time) }}</p>
+      <p>Ends {{ temporal(tournament.end_time) }}</p>
+    </div>
+
+    <div class="flex items-center justify-between">
+      {%
+        for name, route in (
+          ("Manage your team", "manage"),
+          ("Player stats", "player_stats"),
+          ("Leaderboard", "leaderboard"),
+        )
+      %}
+        <a
+          class="rounded bg-blue-800/75 p-4 text-white shadow-lg hover:bg-blue-800/90 dark:bg-red-700/75 hover:dark:bg-red-700/90"
+          href="{{ url_for(route, slug=request.view_args.slug) }}"
+        >
+          {{ name }}
+        </a>
+      {% endfor %}
+    </div>
+
+    <table
+      class="border-separate border-spacing-x-2 border-spacing-y-1 bg-gray-100 px-2 py-4 dark:bg-red-900"
+    >
+      <thead>
+        <tr>
+          <th
+            colspan="2"
+            class="border-b-1 border-b-black text-lg dark:border-b-white"
+          >
+            Fantasy tournament ruleset
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th class="w-2/3 text-right">Initial budget</th>
+          <td class="w-1/3 slashed-zero tabular-nums">
+            {{ tournament.initial_budget | currencyformat("USD") }}
+          </td>
+        </tr>
+
+        <tr>
+          <th class="text-right">Max transactions</th>
+          <td class="tabular-nums">{{ tournament.transactions }}</td>
+        </tr>
+
+        <tr>
+          <th class="text-right">Max players from a single team</th>
+          <td class="tabular-nums">{{ tournament.max_from_single_team }}</td>
+        </tr>
+
+        <tr>
+          <th class="text-right">Team composition</th>
+          <td>{{ tournament.composition.name }}</td>
+        </tr>
+
+        {%
+          for c in ('scout', 'soldier', 'pyro', 'demoman', 'heavy', 'engineer', 'medic', 'sniper', 'spy')
+          if tournament.composition[c]
+        %}
+          <tr>
+            <td class="text-right">
+              {{ c | capitalize }}
+              <img
+                class="inline h-5 dark:invert"
+                src="/static/class/{{ c }}.svg"
+              />
+            </td>
+            <td class="tabular-nums">{{ tournament.composition[c] }}</td>
+          </tr>
+        {% endfor %}
+
+        <tr>
+          <th class="text-right">Scoring model</th>
+        </tr>
+
+        {% for coef in tournament.scoring_model.player_coefficient %}
+          <tr>
+            <td class="text-right">
+              <div class="group relative">
+                <div>{{ coef_short(coef) }}</div>
+                <div
+                  class="absolute bottom-full mb-1 hidden rounded bg-black px-2 py-1 text-xs text-white group-hover:block"
+                >
+                  {{ coef_description(coef) }}
+                </div>
+              </div>
+            </td>
+            <td class="tabular-nums">
+              <div class="group relative">
+                <div>&times; {{ coef.coefficient | decimalformat("#.####") }}</div>
+                {% if (coef.coefficient | abs) < 1 %}
+                <div
+                  class="absolute bottom-full mb-1 hidden rounded bg-black px-2 py-1 text-xs text-white group-hover:block"
+                >
+                    {% if coef.coefficient < 0 %}
+                    -1
+                    {% else %}
+                    +1
+                    {% endif %}
+                    point per {{ (1 / (coef.coefficient | abs)) | round | int }}
+                </div>
+                {% endif %}
+              </div>
+            </td>
+          </tr>
+        {% endfor %}
+
+        {% for coef in tournament.scoring_model.team_coefficient %}
+          <tr>
+            <td class="text-right">{{ coef.variable.short }}</td>
+            <td class="tabular-nums">
+              &times; {{ coef.coefficient | decimalformat }}
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <div class="space-y-2 bg-gray-100 p-4 dark:bg-red-900">
+      {% for round in tournament.upcoming_rounds %}
+        <div>
+          <span class="text-lg">{{ round.name }}</span>
+          <br />
+          <span class="text-sm">{{ temporal(round.time) }}</span>
+        </div>
+      {% else %}
+        <p>No upcoming rounds</p>
+      {% endfor %}
+
+      {% if tournament.past_rounds %}
+        <hr />
+      {% endif %}
+      {% for round in tournament.past_rounds %}
+        <div>
+          <span class="text-lg">{{ round.name }}</span>
+          <br />
+          <span class="text-sm">{{ temporal(round.time) }}</span>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+{% endblock %}
