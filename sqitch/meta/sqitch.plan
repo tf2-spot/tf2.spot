@@ -1,0 +1,5 @@
+%syntax-version=1.0.0
+%project=meta
+
+btree_gist 2026-01-16T00:00:00Z Lucas <lucas@lde.sg> # install extension btree_gist
+@v1 2026-01-16T00:00:00Z Lucas <lucas@lde.sg> # v1

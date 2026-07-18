@@ -1,0 +1,1 @@
+-- Verify meta:btree_gist in pg
