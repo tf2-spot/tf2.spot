@@ -1,10 +1,11 @@
+{ module, ... }:
 { pkgs, ... }:
 {
   name = "run-fantasy";
 
   nodes = {
     server = {
-      imports = [ ../nixos/websites ];
+      imports = [ module ];
 
       tf2-spot = {
         tls = false;

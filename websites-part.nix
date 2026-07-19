@@ -1,4 +1,4 @@
-{ lib, inputs, ... }:
+top@{ withSystem, lib, inputs, ... }:
 let
   workspace = inputs.uv2nix.lib.workspace.loadWorkspace { workspaceRoot = ./.; };
 
@@ -12,7 +12,13 @@ let
 in
 {
   flake.nixosModules = {
-    websites = ./nixos/websites;
+    websites = { pkgs, ... }: {
+      imports = [ ./nixos/websites ];
+      config.tf2-spot = withSystem pkgs.stdenv.hostPlatform.system ({ config, ... }: {
+        toplevel.package = config.packages.toplevel-website;
+        fantasy.package = config.packages.fantasy-website;
+      });
+    };
   };
 
   perSystem = { pkgs, ... }:
@@ -74,7 +80,9 @@ in
       };
 
       checks = {
-        run-fantasy = pkgs.testers.runNixOSTest ./tests/run-fantasy.nix;
+        run-fantasy = pkgs.testers.runNixOSTest (import ./tests/run-fantasy.nix {
+          module = top.config.flake.nixosModules.websites;
+        });
       };
     };
 }
