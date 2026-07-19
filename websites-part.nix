@@ -43,7 +43,7 @@ in
           cp -r ${./pkgs/toplevel-website} $out
         '';
 
-        fantasy-website = venv;
+        fantasy-website = venv // { meta.mainProgram = "fantasy-website"; };
 
         fantasy-jobs = mkApplication {
           inherit venv;
