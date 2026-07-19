@@ -12,6 +12,7 @@ in
 
         target = mkOption {
           type = types.str;
+          default = "db:pg://sqitch@/postgres";
         };
 
         userConfig = mkOption {
