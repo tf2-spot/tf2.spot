@@ -67,7 +67,7 @@ in
 
       environment = {
         FLASK_POSTGREST = "http${if cfg.tls then "s" else ""}://${cfg.postgrest.domain}";
-        ASSETS_CACHE = "$(CACHE_DIRECTORY)/webassets";
+        FLASK_ASSETS_CACHE = "%C/fantasy-website/webassets";
       };
 
       serviceConfig = {

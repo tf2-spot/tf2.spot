@@ -81,9 +81,7 @@ def homepage():
     tournaments = (
         api().table("tournament").select("name, slug, start_time, end_time").execute()
     )
-    resp = make_response(
-        render_template("homepage.jinja", tournaments={})
-    )
+    resp = make_response(render_template("homepage.jinja", tournaments=tournaments))
     resp.cache_control.public = True
     resp.cache_control.max_age = 600
     return resp
@@ -639,4 +637,4 @@ def main():
 if __name__ == "__main__":
     main()
 
-__all__ = [ "app", "main" ]
+__all__ = ["app", "main"]
