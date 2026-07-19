@@ -28,6 +28,11 @@ in
           type = types.str;
           default = "fantasy.tf2.spot";
         };
+
+        envFile = mkOption {
+          type = with types; nullOr str;
+          default = null;
+        };
       };
     };
   };
@@ -60,6 +65,10 @@ in
       wantedBy = [ "multi-user.target" ];
       after = [ "network.target" ];
 
+      environment = {
+        FLASK_POSTGREST = "http${if cfg.tls then "s" else ""}://${cfg.postgrest.domain}";
+      };
+
       serviceConfig = {
         ExecStart = "${cfg.fantasy.package}/bin/gunicorn fantasy_website:app --config ${gunicornConfig}";
         ExecReload = "${pkgs.coreutils}/bin/kill -s HUP $MAINPID";
@@ -70,6 +79,8 @@ in
         KillMode = "mixed";
 
         DynamicUser = true;
+
+        EnvironmentFile = cfg.fantasy.envFile;
       };
     };
   };
