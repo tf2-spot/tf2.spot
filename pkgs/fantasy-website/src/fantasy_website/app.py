@@ -607,12 +607,12 @@ def ctx_login():
 
 @app.template_filter()
 def diffnow(dt):
-    return (OffsetDateTime.from_py_datetime(dt) - Instant.now()).py_timedelta()
+    return (OffsetDateTime(dt) - Instant.now()).to_stdlib()
 
 
 @app.template_filter()
 def parsedatetime(dt):
-    return OffsetDateTime.parse_common_iso(dt).py_datetime()
+    return OffsetDateTime.parse_iso(dt).to_stdlib()
 
 
 @app.template_filter()
