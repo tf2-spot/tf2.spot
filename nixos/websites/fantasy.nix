@@ -67,11 +67,14 @@ in
 
       environment = {
         FLASK_POSTGREST = "http${if cfg.tls then "s" else ""}://${cfg.postgrest.domain}";
+        ASSETS_CACHE = "$(CACHE_DIRECTORY)/webassets";
       };
 
       serviceConfig = {
         ExecStart = "${cfg.fantasy.package}/bin/gunicorn fantasy_website:app --config ${gunicornConfig}";
         ExecReload = "${pkgs.coreutils}/bin/kill -s HUP $MAINPID";
+
+        EnvironmentFile = cfg.fantasy.envFile;
 
         Type = "notify";
         NotifyAccess = "main";
@@ -79,8 +82,7 @@ in
         KillMode = "mixed";
 
         DynamicUser = true;
-
-        EnvironmentFile = cfg.fantasy.envFile;
+        CacheDirectory = "fantasy-website";
       };
     };
   };
