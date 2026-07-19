@@ -2,7 +2,7 @@
 let
   inherit (lib) types mkOption mkEnableOption mkIf;
 
-  cfg = config.tf2-spot;
+  cfg = config.tf2-spot.fantasy;
 
   gunicornConfig = pkgs.writeText "gunicorn.conf.py" ''
     import multiprocessing
@@ -29,6 +29,14 @@ in
           default = "fantasy.tf2.spot";
         };
 
+        tls = mkEnableOption "" // { default = true; };
+
+        url = mkOption {
+          type = types.str;
+          internal = true;
+          default = "http${lib.optionalString cfg.tls "s"}://${cfg.domain}";
+        };
+
         envFile = mkOption {
           type = with types; nullOr str;
           default = null;
@@ -37,9 +45,9 @@ in
     };
   };
 
-  config = mkIf cfg.fantasy.enable {
+  config = mkIf cfg.enable {
     security.acme.certs = mkIf cfg.tls {
-      "${cfg.fantasy.domain}".group = "caddy";
+      "${cfg.domain}".group = "caddy";
     };
 
     services.caddy = {
@@ -47,8 +55,8 @@ in
       openFirewall = true;
 
       virtualHosts = {
-        "http${if cfg.tls then "s" else ""}://${cfg.fantasy.domain}" = {
-          useACMEHost = mkIf cfg.tls "${cfg.fantasy.domain}";
+        "${cfg.url}" = {
+          useACMEHost = mkIf cfg.tls "${cfg.domain}";
           extraConfig = ''
             reverse_proxy {
               to http://localhost:8180
@@ -66,15 +74,15 @@ in
       after = [ "network.target" ];
 
       environment = {
-        FLASK_POSTGREST = "http${if cfg.tls then "s" else ""}://${cfg.postgrest.domain}";
+        FLASK_POSTGREST = config.tf2-spot.postgrest.url;
         FLASK_ASSETS_CACHE = "%C/fantasy-website/webassets";
       };
 
       serviceConfig = {
-        ExecStart = "${cfg.fantasy.package}/bin/gunicorn fantasy_website:app --config ${gunicornConfig}";
+        ExecStart = "${cfg.package}/bin/gunicorn fantasy_website:app --config ${gunicornConfig}";
         ExecReload = "${pkgs.coreutils}/bin/kill -s HUP $MAINPID";
 
-        EnvironmentFile = cfg.fantasy.envFile;
+        EnvironmentFile = cfg.envFile;
 
         Type = "notify";
         NotifyAccess = "main";

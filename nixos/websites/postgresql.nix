@@ -2,7 +2,7 @@
 let
   inherit (lib) mkEnableOption mkIf;
 
-  cfg = config.tf2-spot;
+  cfg = config.tf2-spot.postgresql;
 in
 {
   options = {
@@ -13,7 +13,7 @@ in
     };
   };
 
-  config = mkIf cfg.postgresql.enable {
+  config = mkIf cfg.enable {
     services.postgresql = {
       enable = true;
       package = pkgs.postgresql_17;

@@ -2,7 +2,7 @@
 let
   inherit (lib) types mkOption mkEnableOption mkIf;
 
-  cfg = config.tf2-spot;
+  cfg = config.tf2-spot.postgrest;
 in
 {
   options = {
@@ -15,6 +15,14 @@ in
           default = "postgrest.tf2.spot";
         };
 
+        tls = mkEnableOption "" // { default = true; };
+
+        url = mkOption {
+          type = types.str;
+          internal = true;
+          default = "http${lib.optionalString cfg.tls "s"}://${cfg.domain}";
+        };
+
         jwtSecretFile = mkOption {
           type = with types; nullOr path;
           default = null;
@@ -23,9 +31,9 @@ in
     };
   };
 
-  config = mkIf cfg.postgrest.enable {
+  config = mkIf cfg.enable {
     security.acme.certs = mkIf cfg.tls {
-      "${cfg.postgrest.domain}".group = "caddy";
+      "${cfg.domain}".group = "caddy";
     };
 
     services.caddy = {
@@ -33,8 +41,8 @@ in
       openFirewall = true;
 
       virtualHosts = {
-        "http${if cfg.tls then "s" else ""}://${cfg.postgrest.domain}" = {
-          useACMEHost = mkIf cfg.tls "${cfg.postgrest.domain}";
+        "${cfg.url}" = {
+          useACMEHost = mkIf cfg.tls "${cfg.domain}";
           extraConfig = ''
             reverse_proxy unix/${config.services.postgrest.settings.server-unix-socket}
           '';
@@ -55,7 +63,7 @@ in
         db-anon-role = "fantasy_visitor";
       };
 
-      jwtSecretFile = cfg.postgrest.jwtSecretFile;
+      jwtSecretFile = cfg.jwtSecretFile;
     };
   };
 }

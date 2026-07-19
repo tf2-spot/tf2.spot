@@ -1,7 +1,3 @@
-{ lib, ... }:
-let
-  inherit (lib) mkEnableOption;
-in
 {
   imports = [
     ./fantasy.nix
@@ -11,10 +7,4 @@ in
     ./sqitch.nix
     ./toplevel.nix
   ];
-
-  options = {
-    tf2-spot = {
-      tls = (mkEnableOption "") // { default = true; };
-    };
-  };
 }

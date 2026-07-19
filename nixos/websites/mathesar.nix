@@ -2,7 +2,7 @@
 let
   inherit (lib) types mkOption mkEnableOption mkIf;
 
-  cfg = config.tf2-spot;
+  cfg = config.tf2-spot.mathesar;
 in
 {
   options = {
@@ -19,6 +19,14 @@ in
           default = "mathesar.tf2.spot";
         };
 
+        tls = mkEnableOption "" // { default = true; };
+
+        url = mkOption {
+          type = types.str;
+          internal = true;
+          default = "http${lib.optionalString cfg.tls "s"}://${cfg.domain}";
+        };
+
         envFile = mkOption {
           type = with types; nullOr path;
           default = null;
@@ -27,9 +35,9 @@ in
     };
   };
 
-  config = mkIf cfg.mathesar.enable {
+  config = mkIf cfg.enable {
     security.acme.certs = mkIf cfg.tls {
-      "${cfg.mathesar.domain}".group = "caddy";
+      "${cfg.domain}".group = "caddy";
     };
 
     services.caddy = {
@@ -37,8 +45,8 @@ in
       openFirewall = true;
 
       virtualHosts = {
-        "http${if cfg.tls then "s" else ""}://${cfg.mathesar.domain}" = {
-          useACMEHost = mkIf cfg.tls "${cfg.mathesar.domain}";
+        "${cfg.url}" = {
+          useACMEHost = mkIf cfg.tls "${cfg.domain}";
           extraConfig = ''
             reverse_proxy http://localhost:8280
           '';
@@ -69,17 +77,17 @@ in
 
     virtualisation.oci-containers.containers = {
       mathesar = {
-        image = "docker.io/mathesar/mathesar:${cfg.mathesar.version}";
+        image = "docker.io/mathesar/mathesar:${cfg.version}";
 
         environment = {
-          ALLOWED_HOSTS = "${cfg.mathesar.domain}";
+          ALLOWED_HOSTS = "${cfg.domain}";
           DJANGO_SETTINGS_MODULE = "config.settings.production";
           POSTGRES_USER = "mathesar";
           POSTGRES_DB = "mathesar";
           POSTGRES_HOST = "/var/run/postgresql";
         };
 
-        environmentFiles = [ cfg.mathesar.envFile ];
+        environmentFiles = [ cfg.envFile ];
 
         ports = [ "127.0.0.1:8280:8000" ];
 

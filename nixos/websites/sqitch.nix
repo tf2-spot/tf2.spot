@@ -2,7 +2,7 @@
 let
   inherit (lib) types mkOption mkEnableOption mkIf;
 
-  cfg = config.tf2-spot;
+  cfg = config.tf2-spot.sqitch;
 in
 {
   options = {
@@ -32,7 +32,7 @@ in
     };
   };
 
-  config = mkIf cfg.sqitch.enable {
+  config = mkIf cfg.enable {
     systemd.services.sqitch = {
       after = [ "postgresql.service" ];
       requires = [ "postgresql.service" ];
@@ -43,18 +43,18 @@ in
       preStart = ''
         ${pkgs.envsubst}/bin/envsubst \
           -o /run/sqitch/sqitch.conf \
-          -i ${pkgs.writeText "sqitch.conf" cfg.sqitch.userConfig}
+          -i ${pkgs.writeText "sqitch.conf" cfg.userConfig}
       '';
 
       script = lib.concatMapStringsSep "\n"
         (project: ''
           sqitch --chdir '${../../sqitch /* TODO: stop using path */}/${project}' deploy
         '')
-        cfg.sqitch.projects;
+        cfg.projects;
 
       environment = {
         SQITCH_USER_CONFIG = "/run/sqitch/sqitch.conf";
-        SQITCH_TARGET = cfg.sqitch.target;
+        SQITCH_TARGET = cfg.target;
         SQITCH_FULLNAME = "sqitch service";
         SQITCH_EMAIL = "sqitch.service@tf2.spot";
       };
@@ -67,7 +67,7 @@ in
         RuntimeDirectory = "sqitch";
         RuntimeDirectoryMode = "0700";
 
-        EnvironmentFile = cfg.sqitch.envFile;
+        EnvironmentFile = cfg.envFile;
       };
     };
   };

@@ -2,7 +2,7 @@
 let
   inherit (lib) types mkOption mkEnableOption mkIf;
 
-  cfg = config.tf2-spot;
+  cfg = config.tf2-spot.toplevel;
 in
 {
   options = {
@@ -18,13 +18,21 @@ in
           type = types.str;
           default = "tf2.spot";
         };
+
+        tls = mkEnableOption "" // { default = true; };
+
+        url = mkOption {
+          type = types.str;
+          internal = true;
+          default = "http${lib.optionalString cfg.tls "s"}://${cfg.domain}";
+        };
       };
     };
   };
 
-  config = mkIf cfg.toplevel.enable {
+  config = mkIf cfg.enable {
     security.acme.certs = mkIf cfg.tls {
-      "${cfg.toplevel.domain}".group = "caddy";
+      "${cfg.domain}".group = "caddy";
     };
 
     services.caddy = {
@@ -32,11 +40,11 @@ in
       openFirewall = true;
 
       virtualHosts = {
-        "http${if cfg.tls then "s" else ""}://${cfg.toplevel.domain}" = {
-          useACMEHost = mkIf cfg.tls "${cfg.toplevel.domain}";
+        "${cfg.url}" = {
+          useACMEHost = mkIf cfg.tls "${cfg.domain}";
           extraConfig = ''
             file_server {
-              root ${cfg.toplevel.package}
+              root ${cfg.package}
             }
           '';
         };

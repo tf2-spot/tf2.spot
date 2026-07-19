@@ -8,10 +8,11 @@
       imports = [ module ];
 
       tf2-spot = {
-        tls = false;
         fantasy.enable = true;
+        fantasy.tls = false;
         postgresql.enable = true;
         postgrest.enable = true;
+        postgrest.tls = false;
         sqitch.enable = true;
         sqitch.target = "db:pg://sqitch@/postgres";
       };
