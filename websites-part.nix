@@ -33,6 +33,10 @@ in
     in
     {
       packages = {
+        toplevel-website = pkgs.runCommand "toplevel-website" { } ''
+          cp -r ${./pkgs/toplevel-website} $out
+        '';
+
         fantasy-website = venv;
 
         fantasy-jobs = mkApplication {

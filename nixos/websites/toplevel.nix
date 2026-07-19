@@ -9,6 +9,11 @@ in
     tf2-spot = {
       toplevel = {
         enable = mkEnableOption "";
+
+        package = mkOption {
+          type = types.raw;
+        };
+
         domain = mkOption {
           type = types.str;
           default = "tf2.spot";
@@ -31,7 +36,7 @@ in
           useACMEHost = mkIf cfg.tls "${cfg.toplevel.domain}";
           extraConfig = ''
             file_server {
-              root ${../../pkgs/toplevel-website /* TODO: stop using path */}
+              root ${cfg.toplevel.package}
             }
           '';
         };
