@@ -563,7 +563,7 @@ def openid_steam():
     req = (
         api(authn)
         .table("me")
-        .upsert(dict(steam_id=id, last_login=Instant.now().format_common_iso()))
+        .upsert(dict(steam_id=id, last_login=Instant.now().format_iso()))
         .execute()
     )
 
