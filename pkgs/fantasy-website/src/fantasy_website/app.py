@@ -81,7 +81,9 @@ def homepage():
     tournaments = (
         api().table("tournament").select("name, slug, start_time, end_time").execute()
     )
-    resp = make_response(render_template("homepage.jinja", tournaments=tournaments))
+    resp = make_response(
+        render_template("homepage.jinja", tournaments=tournaments.data)
+    )
     resp.cache_control.public = True
     resp.cache_control.max_age = 600
     return resp
@@ -554,7 +556,7 @@ def openid_steam():
         dict(
             role=JWT_ROLE,
             manager_id=id,
-            exp=Instant.now().add(hours=14 * 24).py_datetime(),
+            exp=Instant.now().add(hours=14 * 24).to_stdlib(),
         ),
         key=app.config["JWT_SECRET"],
         algorithm=JWT_ALGORITHM,
@@ -626,7 +628,7 @@ def to_map(participants):
 
 
 @app.errorhandler(404)
-def handle_not_found(e):
+def handle_not_found(_):
     return render_template("not-found.jinja")
 
 
