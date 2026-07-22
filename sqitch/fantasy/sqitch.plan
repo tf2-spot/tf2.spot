@@ -48,3 +48,5 @@ v0/schema 2026-02-04T19:31:36Z Lucas <lucas@lde.sg> # schema
 v0/views 2026-02-10T00:29:27Z Lucas <lucas@lde.sg> # views
 v0/permissions 2026-02-05T18:03:27Z Lucas <lucas@lde.sg> # permissions
 v0/rpc 2026-02-26T22:47:58Z Lucas <lucas@lde.sg> # rpc
+
+role-janitor [manager player_performance team_performance] 2026-07-22T00:19:22Z Lucas <lucas@lde.sg> # role
