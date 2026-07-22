@@ -13,7 +13,7 @@ in
 {
   flake.nixosModules = {
     websites = { pkgs, ... }: {
-      imports = [ ./nixos/websites ];
+      imports = [ ./nixos/websites.nix ];
       config.tf2-spot = withSystem pkgs.stdenv.hostPlatform.system ({ config, ... }: {
         toplevel.package = config.packages.toplevel-website;
         fantasy.package = config.packages.fantasy-website;
