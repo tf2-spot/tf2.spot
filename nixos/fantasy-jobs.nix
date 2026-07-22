@@ -37,6 +37,7 @@ in
 
       environment = {
         PGUSER = "fantasy_janitor";
+        PGDATABASE = "postgres";
       };
 
       serviceConfig = {
