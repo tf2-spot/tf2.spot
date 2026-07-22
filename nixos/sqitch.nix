@@ -49,7 +49,7 @@ in
 
       script = lib.concatMapStringsSep "\n"
         (project: ''
-          sqitch --chdir '${../../sqitch /* TODO: stop using path */}/${project}' deploy
+          sqitch --chdir '${../sqitch /* TODO: stop using path */}/${project}' deploy
         '')
         cfg.projects;
 
