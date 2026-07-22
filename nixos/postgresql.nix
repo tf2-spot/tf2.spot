@@ -28,7 +28,7 @@ in
         postgres  postgrest     postgrest
         postgres  mathesar      mathesar
         postgres  mathesar      fantasy_admin
-        postgres  fantasy_jobs  fantasy_janitor
+        postgres  fantasy-jobs  fantasy_janitor
       '';
 
       initialScript = pkgs.writeText "init.sql" ''
