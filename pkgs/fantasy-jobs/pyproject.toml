@@ -1,13 +1,12 @@
 [project]
 name = "fantasy-jobs"
 version = "0.1.0"
-description = "Add your description here"
-readme = "README.md"
-authors = [
-    { name = "ldesgoui", email = "ldesgoui@gmail.com" }
-]
+description = "Recurring tasks for fantasy.tf2.spot"
 requires-python = ">=3.14"
-dependencies = []
+dependencies = [
+    "httpx>=0.28.1",
+    "psycopg[binary]>=3.3.4",
+]
 
 [project.scripts]
 fantasy-jobs = "fantasy_jobs:main"

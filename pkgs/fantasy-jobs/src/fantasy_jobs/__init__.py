@@ -1,2 +1,1 @@
-def main() -> None:
-    print("Hello from fantasy-jobs!")
+from .app import main as main
