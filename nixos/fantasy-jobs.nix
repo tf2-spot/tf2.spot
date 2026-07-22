@@ -42,7 +42,6 @@ in
 
       serviceConfig = {
         Type = "oneshot";
-        RemainAfterExit = true;
 
         ExecStart = "${cfg.package}/bin/fantasy-jobs";
 
