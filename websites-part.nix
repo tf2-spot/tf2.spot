@@ -17,6 +17,7 @@ in
       config.tf2-spot = withSystem pkgs.stdenv.hostPlatform.system ({ config, ... }: {
         toplevel.package = config.packages.toplevel-website;
         fantasy.package = config.packages.fantasy-website;
+        fantasy-jobs.package = config.packages.fantasy-jobs;
       });
     };
   };

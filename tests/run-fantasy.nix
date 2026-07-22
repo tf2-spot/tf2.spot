@@ -10,6 +10,7 @@
       tf2-spot = {
         fantasy.enable = true;
         fantasy.tls = false;
+        fantasy-jobs.enable = true;
         postgresql.enable = true;
         postgrest.enable = true;
         postgrest.tls = false;
